@@ -3,6 +3,14 @@
  * @copyright SP7 Ritmare (http://www.ritmare.it)
  */
 
+function storageType() {
+	if (localStorage.getItem("session") == "l") {
+		return localStorage;
+	} else {
+		return sessionStorage;
+	}
+};
+
 var widgetOptions = {
 	color : function(string) {
 		switch (string) {
@@ -75,21 +83,20 @@ var storage = {
 			});
 		}
 	},
-	storeWidget : function(position, id, xy, name, ws) {
+	storeWidget : function(position, id, xy, name) {
 		var widget = {
 			position : position,
 			id : id,
 			xy : xy,
-			name : name,
-			workspace : ws
+			name : name
 		};
 		var record = JSON.stringify(widget);
-		storageType().setItem(position + ws, record);
+		storageType().setItem(position, record);
 	},
 	countWidgets : function() {
 		var length = 0;
 		for (var i in storageType()) {
-			if ($.isNumeric(i.substring(0, i.length - 3))) {
+			if ($.isNumeric(i)) {
 				length = length + 1;
 			};
 		};
@@ -97,9 +104,9 @@ var storage = {
 	},
 	countWidgetsByName : function(name) {
 		var count = 0;
-		for (var i in window.storageType()) {
+		for (var i in storageType()) {
 			val = storageType().getItem(i);
-			if (val != null && $.isNumeric(i.substring(0, i.length - 3)) && i.substr(1) == storageType().getItem("workspace")) {
+			if (val != null && $.isNumeric(i)) {
 				if (JSON.parse(val).name == name) {
 					count = count + 1;
 				};
@@ -107,24 +114,15 @@ var storage = {
 		};
 		return count;
 	},
-	countWidgetsInWs : function() {
-		var length = 0;
-		for (var i in window.storageType()) {
-			if ($.isNumeric(i.substring(0, i.length - 3)) && i.substr(1) == storageType().getItem("workspace")) {
-				length = length + 1;
-			};
-		};
-		return length;
-	},
 	getWidgetByPosition : function(pos) {
-		return JSON.parse(storageType().getItem(pos + storageType().getItem("workspace")));
+		return JSON.parse(storageType().getItem(pos));
 	},
 	getWidgetById : function(id) {
 		var i = 0;
 		while (i < storage.countWidgets()) {
 			i++;
 			var widget = storage.getWidgetByPosition(i);
-			if (widget != null && widget.workspace == storageType().getItem("workspace")) {
+			if (widget != null) {
 				if (widget.id == id) {
 					return widget;
 				};
@@ -141,7 +139,7 @@ var storage = {
 		while (i < storage.countWidgets()) {
 			i++;
 			var widget = storage.getWidgetByPosition(i);
-			if (widget != null && widget.workspace == storageType().getItem("workspace") && widget.name != 0) {
+			if (widget != null && widget.name != 0) {
 				if (widget.position == 1) {
 					$('.head-b1 span').first().text(widget.name);
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(widget.name));
@@ -172,7 +170,7 @@ var utils = {
 			}
 		});
 	},
-	addBadgeValue : function(str) {
+	addBadgeValue : function() {
 		$('#widget-attivi').find('.badge2').each(function() {
 			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".awidg").attr("id")) + "x");
 		});
@@ -189,14 +187,6 @@ var utils = {
 				return ids[i];
 			}
 		};
-	}
-};
-
-function storageType() {
-	if (localStorage.getItem("session") == 0) {
-		return sessionStorage;
-	} else {
-		return localStorage;
 	}
 };
 
@@ -219,11 +209,11 @@ function addWidget(clickedId) {
 				id = utils.findMissingId();
 			} else {
 				id = actualWidget.id;
-			}
+			};
 			$('#' + id).find("embed").attr("src", widgetOptions.image(formerWidget.name));
 			$('#' + id).attr("name", formerWidget.name);
 			$('#' + id).css("background-color", widgetOptions.color(formerWidget.name));
-			storage.storeWidget(i, id, $("#" + id).position(), formerWidget.name, storageType().getItem("workspace"));
+			storage.storeWidget(i, id, $("#" + id).position(), formerWidget.name);
 			if ($('#' + id).css("visibility") == "hidden") {
 				$('#' + id).css("visibility", "visible");
 			};
@@ -236,9 +226,6 @@ function addWidget(clickedId) {
 	$('.head-b1 span').first().text(clickedId);
 	$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedId));
 
-	//	if (storageType().getItem("1" + storageType().getItem("workspace")) !== null) {
-	//		var nId = storage.getWidgetByPosition("1").id;
-	//	} else {
 	if ($("#draggable1").position().top == 0 && $("#draggable1").position().left == 0) {
 		var nId = "draggable1";
 	} else if ($("#draggable2").position().top == 0 && $("#draggable2").position().left == 0) {
@@ -250,7 +237,6 @@ function addWidget(clickedId) {
 	} else if ($("#draggable5").position().top == 0 && $("#draggable5").position().left == 0) {
 		var nId = "draggable5";
 	}
-	//	};
 
 	if ($('#' + nId).css("visibility") == "hidden") {
 		$('#' + nId).css("visibility", "visible");
@@ -261,7 +247,7 @@ function addWidget(clickedId) {
 	storage.storeWidget(1, nId, {
 		"top" : 0,
 		"left" : 0
-	}, clickedId, storageType().getItem("workspace"));
+	}, clickedId);
 
 	utils.appendToWidgetAttivi(clickedId);
 	utils.addBadgeValue();
@@ -270,12 +256,11 @@ function addWidget(clickedId) {
 $(function() {
 	storage.check();
 	sessionStorage.clear();
-	storageType().setItem("workspace", "ws1");
 	if (localStorage.getItem("session") == null) {
-		localStorage.setItem("session", 0);
+		localStorage.setItem("session", "s");
 	};
-	if (localStorage.getItem("session") == 1) {
-		storage.reloadWidgets(storageType().getItem("workspace"));
+	if (localStorage.getItem("session") == "l") {
+		storage.reloadWidgets();
 	};
 	// localStorage.clear();
 	if (window.location.href.indexOf("code") > -1) {
@@ -292,17 +277,17 @@ $(function() {
 			console.log("ORCID: " + msg.orcid);
 		});
 
-		if (localStorage.getItem("session") == 0) {
+		if (localStorage.getItem("session") == "s") {
 			$("#reload_session").dialog({
 				closeOnEscape : false,
 				buttons : {
 					OK : function() {
-						localStorage.setItem("session", 1);
+						localStorage.setItem("session", "l");
 						$(this).dialog("close");
-						storage.reloadWidgets(storageType().getItem("workspace"));
+						storage.reloadWidgets();
 					},
 					Annulla : function() {
-						localStorage.setItem("session", 0);
+						localStorage.setItem("session", "s");
 						$('[id^=draggable]').css("visibility", "hidden");
 						$('#widget-attivi').find('.badge2').attr("data-badge2", "0x");
 						$('#wrap-icons').find('.badge2').attr("data-badge2", "0x");
@@ -391,8 +376,8 @@ $(function() {
 						$('.head-b1 span').first().text($(event.target).attr('name'));
 						$('.menu-f1 span').removeClass().addClass(widgetOptions.icon($(event.target).attr('name')));
 					}
-					storage.storeWidget(targetPosition, draggedId, targetXy, ui.draggable.attr('name'), storageType().getItem("workspace"));
-					storage.storeWidget(draggedPosition, targetId, draggedXy, $(event.target).attr('name'), storageType().getItem("workspace"));
+					storage.storeWidget(targetPosition, draggedId, targetXy, ui.draggable.attr('name'));
+					storage.storeWidget(draggedPosition, targetId, draggedXy, $(event.target).attr('name'));
 					var i = 0;
 					while (i < 6) {
 						i++;
@@ -433,7 +418,7 @@ $(function() {
 
 	$('#user-press-login').click(function() {
 		if (window.location.href.indexOf("code") > -1) {
-			localStorage.setItem("session", 0);
+			localStorage.setItem("session", "s");
 			//window.location.href = "http://localhost/sp7-geogate-client";
 			window.location.href = "http://155.253.20.62/client";
 		} else {
@@ -451,7 +436,7 @@ $(function() {
 
 	$('.close-f1').click(function() {
 		var widget = storage.getWidgetByPosition(1);
-		storageType().removeItem("1" + storageType().getItem("workspace"));
+		storageType().removeItem("1");
 		utils.addBadgeValue();
 		var i = 0;
 		while (i < 5) {
@@ -471,7 +456,7 @@ $(function() {
 				$('#' + widget.id).find("embed").attr("src", widgetOptions.image(nextWidget.name));
 				$('#' + widget.id).attr("name", nextWidget.name);
 				$('#' + widget.id).css("background-color", widgetOptions.color(nextWidget.name));
-				storage.storeWidget(i, widget.id, widget.xy, nextWidget.name, storageType().getItem("workspace"));
+				storage.storeWidget(i, widget.id, widget.xy, nextWidget.name);
 				if (nextWidget.name == 0) {
 					$('#' + widget.id).css("visibility", "hidden");
 				}
@@ -482,32 +467,18 @@ $(function() {
 				}
 			};
 		};
-		if (storage.countWidgetsInWs() > 0) {
-			$('#' + storage.getWidgetByPosition(storage.countWidgetsInWs()).id).css("visibility", "hidden");
-			var position = storage.getWidgetByPosition(storage.countWidgetsInWs()).position;
-			var id = storage.getWidgetByPosition(storage.countWidgetsInWs()).id;
-			var ws = storage.getWidgetByPosition(storage.countWidgetsInWs()).workspace;
+		if (storage.countWidgets() > 0) {
+			$('#' + storage.getWidgetByPosition(storage.countWidgets()).id).css("visibility", "hidden");
+			var position = storage.getWidgetByPosition(storage.countWidgets()).position;
+			var id = storage.getWidgetByPosition(storage.countWidgets()).id;
 			var value = {
 				position : position,
 				id : id,
 				xy : 0,
-				name : 0,
-				workspace : ws
+				name : 0
 			};
-			storageType().setItem(storage.countWidgetsInWs() + storageType().getItem("workspace"), JSON.stringify(value));
+			storageType().setItem(storage.countWidgets(), JSON.stringify(value));
 		};
-		utils.addBadgeValue();
-
-		for (var i = 0; i < storageType().length; i++) {
-			var item = storageType().getItem(storageType().key(i));
-			console.log(item);
-		};
-	});
-
-	$('.ws').click(function() {
-		var id = String($(this).attr("id"));
-		storageType().setItem("workspace", id);
-		storage.reloadWidgets(id);
 		utils.addBadgeValue();
 	});
 });
