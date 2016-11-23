@@ -3,16 +3,17 @@ $('a').click(function(e) {
 });
 
 $('.menu-f1').click(function() {
+	$('#blocco-menu-f1').fadeIn(500, function() {
+		$('#blocco-menu-f1').addClass('espanso');
+	});
+});
+
+$(document).click(function() {
 	if ($('#blocco-menu-f1').hasClass("espanso")) {
 		$('#blocco-menu-f1').fadeOut(500, function() {
 			$('#blocco-menu-f1').removeClass('espanso');
 		});
-	} else {
-
-		$('#blocco-menu-f1').fadeIn(500, function() {
-			$('#blocco-menu-f1').addClass('espanso');
-		});
-	}
+	};
 });
 
 $('.actmenu').click(function() {
