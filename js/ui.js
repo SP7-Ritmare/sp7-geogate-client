@@ -2,6 +2,10 @@ $('a').click(function(e) {
 	e.preventDefault();
 });
 
+$('.widget-attivi').click(function(e) {
+	e.preventDefault();
+});
+
 $('.menu-f1').click(function() {
 	$('#blocco-menu-f1').fadeIn(500, function() {
 		$('#blocco-menu-f1').addClass('espanso');
@@ -29,10 +33,10 @@ $('.actmenu-top').click(function() {
 	$('.imgclose-top').toggleClass('nascondi');
 });
 
-$('.block').click(function() {
-	var bclass = $(this).attr('rel');
-	$('#logo_r').attr('class', bclass);
-});
+/* $('.block').click(function() {
+ var bclass = $(this).attr('rel');
+ $('#logo_r').attr('class', bclass);
+ }); */
 
 function get_browser_info() {
 	var ua = navigator.userAgent,
@@ -71,6 +75,16 @@ var browser = get_browser_info();
 var vh = window.innerHeight;
 var vw = window.innerWidth;
 
+if (vw < 800) {
+	var i = 0;
+	while (i < 5) {
+		i++;
+		if ($('#draggable' + i).css("visibility") == "hidden") {
+			$('#draggable' + i).css("display", "none");
+		};
+	};
+};
+
 if (browser.name == "Safari" && browser.version < 9 && vw > 800) {
 	var b1w = (vw - 50) * 0.618181818181818;
 
@@ -103,7 +117,25 @@ $(window).on('resize', function() {
 	var vh = window.innerHeight;
 	var vw = window.innerWidth;
 
-	if (browser.name == "Safari" && browser.version < 9 && vw > 800) {
+	if (vw < 800) {
+		var i = 0;
+		while (i < 5) {
+			i++;
+			if ($('#draggable' + i).css("visibility") == "hidden") {
+				$('#draggable' + i).css("display", "none");
+			};
+		};
+	} else if (vw >= 800) {
+		var i = 0;
+		while (i < 5) {
+			i++;
+			if ($('#draggable' + i).css("display") == "none") {
+				$('#draggable' + i).css("display", "");
+			}
+		};
+	}
+
+	if (browser.name == "Safari" && browser.version < 9 && vw >= 800) {
 
 		var b1w = (vw - 50) * 0.618181818181818;
 

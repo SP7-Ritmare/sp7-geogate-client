@@ -159,22 +159,22 @@ var storage = {
 
 var utils = {
 	appendToWidgetAttivi : function(str) {
-		if ($('#widget-attivi .icon-title').text() != str && $('#widget-attivi .icon-title').text().indexOf(str) < 0) {
-			$('#widget-attivi').append('<a href="#"> <span class="badge" data-badge="0"></span> <span class="badge2" data-badge2="' + storage.countWidgetsByName(str) + 'x"></span> <span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span> </a>');
+		if ($('.widget-attivi .icon-title').text() != str && $('.widget-attivi .icon-title').text().indexOf(str) < 0) {
+			$('.widget-attivi').append('<a href="#"> <span class="badge" data-badge="0"></span> <span class="badge2" data-badge2="' + storage.countWidgetsByName(str) + 'x"></span> <span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span> </a>');
 		}
 	},
 	removeFromWidgetAttivi : function() {
-		$('#widget-attivi').find('.badge2').each(function() {
+		$('.widget-attivi').find('.badge2').each(function() {
 			if ($(this).attr("data-badge2") == "0x") {
 				$(this).parent().remove();
 			}
 		});
 	},
 	addBadgeValue : function() {
-		$('#widget-attivi').find('.badge2').each(function() {
+		$('.widget-attivi').find('.badge2').each(function() {
 			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".awidg").attr("id")) + "x");
 		});
-		$('#wrap-icons').find('.badge2').each(function() {
+		$('.wrap-icons').find('.badge2').each(function() {
 			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".cwidg").attr("id")) + "x");
 		});
 		utils.removeFromWidgetAttivi();
@@ -199,7 +199,7 @@ function getUrlVars() {
 };
 
 function addWidget(clickedId) {
-	//add a new widget by drag & drop
+	//add a new widget by drag & drop or click
 	var i = 6;
 	while (--i) {
 		var formerWidget = storage.getWidgetByPosition(i - 1);
@@ -220,27 +220,33 @@ function addWidget(clickedId) {
 			if (formerWidget.name == 0) {
 				$('#' + actualWidget.id).css("visibility", "hidden");
 			};
+			if ($('#' + id).css("display") == "none") {
+				$('#' + id).css("display", "");
+			}
 		};
 	};
 
 	$('.head-b1 span').first().text(clickedId);
 	$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedId));
 
-	if ($("#draggable1").position().top == 0 && $("#draggable1").position().left == 0) {
+	if ($("#draggable1").position().top == 0 && $("#draggable1").position().left == 0 || $("#draggable1").position().top == -50 && $("#draggable1").position().left == 0 || $("#draggable1").position().top == 8 && $("#draggable1").position().left == 8) {
 		var nId = "draggable1";
-	} else if ($("#draggable2").position().top == 0 && $("#draggable2").position().left == 0) {
+	} else if ($("#draggable2").position().top == 0 && $("#draggable2").position().left == 0 || $("#draggable2").position().top == -50 && $("#draggable2").position().left == 0 || $("#draggable2").position().top == 8 && $("#draggable2").position().left == 8) {
 		var nId = "draggable2";
-	} else if ($("#draggable3").position().top == 0 && $("#draggable3").position().left == 0) {
+	} else if ($("#draggable3").position().top == 0 && $("#draggable3").position().left == 0 || $("#draggable3").position().top == -50 && $("#draggable3").position().left == 0 || $("#draggable3").position().top == 8 && $("#draggable3").position().left == 8) {
 		var nId = "draggable3";
-	} else if ($("#draggable4").position().top == 0 && $("#draggable4").position().left == 0) {
+	} else if ($("#draggable4").position().top == 0 && $("#draggable4").position().left == 0 || $("#draggable4").position().top == -50 && $("#draggable4").position().left == 0 || $("#draggable4").position().top == 8 && $("#draggable4").position().left == 8) {
 		var nId = "draggable4";
-	} else if ($("#draggable5").position().top == 0 && $("#draggable5").position().left == 0) {
+	} else if ($("#draggable5").position().top == 0 && $("#draggable5").position().left == 0 || $("#draggable5").position().top == -50 && $("#draggable5").position().left == 0 || $("#draggable5").position().top == 8 && $("#draggable5").position().left == 8) {
 		var nId = "draggable5";
 	}
 
 	if ($('#' + nId).css("visibility") == "hidden") {
 		$('#' + nId).css("visibility", "visible");
 	};
+	if ($('#' + nId).css("display") == "none") {
+		$('#' + nId).css("display", "");
+	}
 	$('#' + nId).find("embed").attr("src", widgetOptions.image(clickedId));
 	$('#' + nId).attr("name", clickedId);
 	$('#' + nId).css("background-color", widgetOptions.color(clickedId));
@@ -251,6 +257,11 @@ function addWidget(clickedId) {
 
 	utils.appendToWidgetAttivi(clickedId);
 	utils.addBadgeValue();
+
+	for (var i = 0; i < storageType().length; i++) {
+		var item = storageType().getItem(storageType().key(i));
+		console.log(item);
+	};
 };
 
 $(function() {
@@ -289,8 +300,8 @@ $(function() {
 					Annulla : function() {
 						localStorage.setItem("session", "s");
 						$('[id^=draggable]').css("visibility", "hidden");
-						$('#widget-attivi').find('.badge2').attr("data-badge2", "0x");
-						$('#wrap-icons').find('.badge2').attr("data-badge2", "0x");
+						$('.widget-attivi').find('.badge2').attr("data-badge2", "0x");
+						$('.wrap-icons').find('.badge2').attr("data-badge2", "0x");
 						sessionStorage.clear();
 						$(this).dialog("close");
 					}
@@ -346,6 +357,7 @@ $(function() {
 		drop : function(event, ui) {
 			switch (draggableClass) {
 			case "cwidg":
+				//add a new widget by drag & drop
 				addWidget(ui.draggable.context.id);
 				break;
 			case "block":
@@ -412,11 +424,12 @@ $(function() {
 });
 
 $(function() {
+	//add a new widget by click
 	$('.cwidg').click(function() {
 		addWidget($(this).attr('id'));
 	});
 
-	$('#user-press-login').click(function() {
+	$('.user-press-login').click(function() {
 		if (window.location.href.indexOf("code") > -1) {
 			localStorage.setItem("session", "s");
 			//window.location.href = "http://localhost/sp7-geogate-client";
