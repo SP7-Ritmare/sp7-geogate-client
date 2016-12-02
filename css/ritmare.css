@@ -231,10 +231,10 @@ body {
 
 }
 .block.fullscreen {
-	z-index: 9999;
-	width: 100%;
-	height: 100%;
-	position: fixed;
+	z-index: 9999 !important;
+	width: 100% !important;
+	height: 100% !important;
+	position: fixed !important;
 	top: 0;
 	left: 0;
 }
