@@ -257,11 +257,6 @@ function addWidget(clickedId) {
 
 	utils.appendToWidgetAttivi(clickedId);
 	utils.addBadgeValue();
-
-	for (var i = 0; i < storageType().length; i++) {
-		var item = storageType().getItem(storageType().key(i));
-		console.log(item);
-	};
 };
 
 $(function() {

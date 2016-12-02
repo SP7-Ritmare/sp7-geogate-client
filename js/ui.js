@@ -75,16 +75,6 @@ var browser = get_browser_info();
 var vh = window.innerHeight;
 var vw = window.innerWidth;
 
-if (vw < 800) {
-	var i = 0;
-	while (i < 5) {
-		i++;
-		if ($('#draggable' + i).css("visibility") == "hidden") {
-			$('#draggable' + i).css("display", "none");
-		};
-	};
-};
-
 if (browser.name == "Safari" && browser.version < 9 && vw > 800) {
 	var b1w = (vw - 50) * 0.618181818181818;
 
@@ -116,24 +106,6 @@ if (browser.name == "Safari" && browser.version < 9 && vw > 800) {
 $(window).on('resize', function() {
 	var vh = window.innerHeight;
 	var vw = window.innerWidth;
-
-	if (vw < 800) {
-		var i = 0;
-		while (i < 5) {
-			i++;
-			if ($('#draggable' + i).css("visibility") == "hidden") {
-				$('#draggable' + i).css("display", "none");
-			};
-		};
-	} else if (vw >= 800) {
-		var i = 0;
-		while (i < 5) {
-			i++;
-			if ($('#draggable' + i).css("display") == "none") {
-				$('#draggable' + i).css("display", "");
-			}
-		};
-	}
 
 	if (browser.name == "Safari" && browser.version < 9 && vw >= 800) {
 
