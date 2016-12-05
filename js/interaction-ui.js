@@ -160,7 +160,7 @@ var storage = {
 var utils = {
 	appendToWidgetAttivi : function(str) {
 		if ($('.widget-attivi .icon-title').text() != str && $('.widget-attivi .icon-title').text().indexOf(str) < 0) {
-			$('.widget-attivi').append('<a href="#"> <span class="badge" data-badge="0"></span> <span class="badge2" data-badge2="' + storage.countWidgetsByName(str) + 'x"></span> <span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span> </a>');
+			$('.widget-attivi').append('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
 		}
 	},
 	removeFromWidgetAttivi : function() {
