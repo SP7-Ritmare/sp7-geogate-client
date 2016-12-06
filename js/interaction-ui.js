@@ -158,26 +158,19 @@ var storage = {
 };
 
 var utils = {
-	appendToWidgetAttivi : function(str) {
-		if ($('.widget-attivi .icon-title').text() != str && $('.widget-attivi .icon-title').text().indexOf(str) < 0) {
-			$('.widget-attivi').append('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
-		}
-	},
 	removeFromWidgetAttivi : function() {
-		$('.widget-attivi').find('.badge2').each(function() {
-			if ($(this).attr("data-badge2") == "0x") {
-				$(this).parent().remove();
-			}
-		});
+		$('.widget-attivi a:eq(1)').remove();
+	},
+	appendToWidgetAttivi : function(str) {
+		if ($('.widget-attivi a').length > 10) {
+			utils.removeFromWidgetAttivi();
+		}
+		$('.widget-attivi').append('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
 	},
 	addBadgeValue : function() {
-		$('.widget-attivi').find('.badge2').each(function() {
-			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".awidg").attr("id")) + "x");
-		});
 		$('.wrap-icons').find('.badge2').each(function() {
 			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".cwidg").attr("id")) + "x");
 		});
-		utils.removeFromWidgetAttivi();
 	},
 	findMissingId : function() {
 		var ids = ["draggable1", "draggable2", "draggable3", "draggable4", "draggable5"];
@@ -334,10 +327,10 @@ $(function() {
 			case "block":
 				$("#" + ui.draggable.context.id).css("zIndex", 999);
 				draggedElement = ui.draggable.context.id.substring(9) - 1;
-				bloccoPos = new Array();
-				bloccoWidth = new Array();
-				bloccoHeight = new Array();
-				ifbHeight = new Array();
+				bloccoPos = [];
+				bloccoWidth = [];
+				bloccoHeight = [];
+				ifbHeight = [];
 				var i = 0;
 				while (i < 5) {
 					i++;
