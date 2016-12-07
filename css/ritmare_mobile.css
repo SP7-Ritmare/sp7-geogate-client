@@ -153,7 +153,7 @@ body {
 #wrap-icons-top {
 	position: absolute;
 	left: 10px;
-	top: 245px;
+	top: 165px;
 	width: calc(100% - 40px);
 	display: block;
 }
