@@ -159,13 +159,13 @@ var storage = {
 
 var utils = {
 	removeFromWidgetAttivi : function() {
-		$('.widget-attivi a:eq(1)').remove();
+		$('.widget-attivi a:eq(5)').remove();
 	},
 	appendToWidgetAttivi : function(str) {
 		if ($('.widget-attivi a').length > 10) {
 			utils.removeFromWidgetAttivi();
 		}
-		$('.widget-attivi').append('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
+		$('.widget-attivi a:first-child').after('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
 	},
 	addBadgeValue : function() {
 		$('.wrap-icons').find('.badge2').each(function() {
