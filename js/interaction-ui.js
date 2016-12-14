@@ -271,9 +271,9 @@ $(function() {
 			method : "POST",
 			dataType : 'json',
 			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
-			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://155.253.20.62/client"
+			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
 		}).done(function(msg) {
-			console.log("ORCID: " + msg.orcid);
+			sparql(msg.orcid);
 		});
 
 		if (localStorage.getItem("session") == "s") {
@@ -299,10 +299,10 @@ $(function() {
 				hide : "explode"
 			});
 		};
-		$("#user-login").removeClass("fa fa-user").addClass("fa fa-sign-out");
+		//	$("#user-login").removeClass("fa fa-user").addClass("fa fa-sign-out");
 		$("#user-title").text("Logout");
 	} else {
-		$("#user-login").removeClass("fa fa-sign-out").addClass("fa fa-user");
+		//	$("#user-login").removeClass("fa fa-sign-out").addClass("fa fa-user");
 		$("#user-title").text("Login");
 	};
 
@@ -421,7 +421,7 @@ $(function() {
 		if (window.location.href.indexOf("code") > -1) {
 			localStorage.setItem("session", "s");
 			//window.location.href = "http://localhost/sp7-geogate-client";
-			window.location.href = "http://155.253.20.62/client";
+			window.location.href = "http://geogate.sp7.irea.cnr.it/client";
 		} else {
 			$("#user_login").dialog({
 				modal : true,
@@ -486,6 +486,6 @@ $(function() {
 
 function openORCID() {
 	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
-	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://155.253.20.62/client&show_login=true';
+	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
 	$("#user_login").dialog("close");
 };
