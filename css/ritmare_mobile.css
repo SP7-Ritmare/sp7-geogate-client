@@ -150,10 +150,15 @@ body {
 	z-index: 999;
 }
 
+#widget-attivi-top svg {
+	position: relative;
+	top : -7px;
+}
+
 #wrap-icons-top {
 	position: absolute;
 	left: 10px;
-	top: 165px;
+	top: 140px;
 	width: calc(100% - 40px);
 	display: block;
 }
