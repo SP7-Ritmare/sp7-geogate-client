@@ -36,13 +36,13 @@ var widgetOptions = {
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/map-28bc6852-6871-11e4-80d1-005056bd48e7-thumb.png";
 			break;
 		case "Mappa":
-			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/002788ceb5d5a5be6ecba8a0f2a4fe82.png";
+			return "http://cigno.ve.ismar.cnr.it/maps/1247/embed";
 			break;
 		case "Mydata":
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/004fb0a385a834aa31b03351f4eb1e1b.png";
 			break;
 		case "News":
-			return "http://cigno.ve.ismar.cnr.it/maps/1247/embed";
+			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/002788ceb5d5a5be6ecba8a0f2a4fe82.png";
 			break;
 		default:
 			return "";
@@ -180,6 +180,23 @@ var utils = {
 				return ids[i];
 			}
 		};
+	},
+	getWidgetData : function() {
+		bloccoPos = [];
+		bloccoWidth = [];
+		bloccoHeight = [];
+		ifbHeight = [];
+		data = [];
+		var i = 0;
+		while (i < 5) {
+			i++;
+			bloccoPos.push($('#draggable' + i).position());
+			bloccoWidth.push($('#draggable' + i).width());
+			bloccoHeight.push($('#draggable' + i).height());
+			ifbHeight.push($('#draggable' + i).find('.ifb').height());
+		};
+		data = [bloccoPos, bloccoWidth, bloccoHeight, ifbHeight];
+		return data;
 	}
 };
 
@@ -313,6 +330,12 @@ $(function() {
 	}, function() {
 		$('.widget-overlay', this).hide();
 	});
+
+	$(".widget-overlay span").tooltip({
+		position : {
+			my : "right-15 bottom+35"
+		}
+	});
 });
 
 $(function() {
@@ -327,18 +350,7 @@ $(function() {
 			case "block":
 				$("#" + ui.draggable.context.id).css("zIndex", 999);
 				draggedElement = ui.draggable.context.id.substring(9) - 1;
-				bloccoPos = [];
-				bloccoWidth = [];
-				bloccoHeight = [];
-				ifbHeight = [];
-				var i = 0;
-				while (i < 5) {
-					i++;
-					bloccoPos.push($('#draggable' + i).position());
-					bloccoWidth.push($('#draggable' + i).width());
-					bloccoHeight.push($('#draggable' + i).height());
-					ifbHeight.push($('#draggable' + i).find('.ifb').height());
-				};
+				widgetData = utils.getWidgetData();
 				break;
 			};
 		},
@@ -359,14 +371,14 @@ $(function() {
 					var draggedPosition = storage.getWidgetById(draggedId).position;
 					var targetXy = storage.getWidgetById(targetId).xy;
 					var draggedXy = storage.getWidgetById(draggedId).xy;
-					$("#" + draggedId).animate(bloccoPos[targetElement]).css("position", "absolute");
-					$("#" + targetId).animate(bloccoPos[draggedElement]);
-					$("#" + draggedId).width(bloccoWidth[targetElement]);
-					$("#" + draggedId).height(bloccoHeight[targetElement]);
-					$("#" + targetId).width(bloccoWidth[draggedElement]);
-					$("#" + targetId).height(bloccoHeight[draggedElement]);
-					$("#" + draggedId).find('.ifb').height(ifbHeight[targetElement]);
-					$("#" + targetId).find('.ifb').height(ifbHeight[draggedElement]);
+					$("#" + draggedId).animate(widgetData[0][targetElement]).css("position", "absolute");
+					$("#" + targetId).animate(widgetData[0][draggedElement]);
+					$("#" + draggedId).width(widgetData[1][targetElement]);
+					$("#" + draggedId).height(widgetData[2][targetElement]);
+					$("#" + targetId).width(widgetData[1][draggedElement]);
+					$("#" + targetId).height(widgetData[2][draggedElement]);
+					$("#" + draggedId).find('.ifb').height(widgetData[3][targetElement]);
+					$("#" + targetId).find('.ifb').height(widgetData[3][draggedElement]);
 					if (targetPosition == 1) {
 						$('#bar').prependTo("#" + draggedId + " .content");
 						$('.head-b1 span').first().text(ui.draggable.attr('name'));
@@ -384,9 +396,9 @@ $(function() {
 						if (i - 1 == draggedElement || i - 1 == targetElement) {
 							continue;
 						};
-						$('#draggable' + i).animate(bloccoPos[i - 1]).css("position", "absolute");
-						$('#draggable' + i).width(bloccoWidth[i - 1]);
-						$('#draggable' + i).height(bloccoHeight[i - 1]);
+						$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
+						$('#draggable' + i).width(widgetData[1][i - 1]);
+						$('#draggable' + i).height(widgetData[2][i - 1]);
 					};
 					break;
 				} else {
@@ -481,6 +493,48 @@ $(function() {
 			storageType().setItem(storage.countWidgets(), JSON.stringify(value));
 		};
 		utils.addBadgeValue();
+	});
+
+	$(".widget-overlay span").click(function() {
+		var mainWidgetId = storage.getWidgetByPosition(1).id;
+		var mainWidgetName = storage.getWidgetByPosition(1).name;
+		var mainElement = mainWidgetId.substring(9) - 1;
+		var clickedWidgetId = $(this).parents(".block").attr("id");
+		var clickedWidgetName = $(this).parents(".block").attr("name");
+		var clickedElement = clickedWidgetId.substring(9) - 1;
+		var widgetData = utils.getWidgetData();
+
+		if (storage.getWidgetById(mainWidgetId) !== undefined) {
+			$("#" + clickedWidgetId).draggable("option", "revert", false);
+			var clickedPosition = storage.getWidgetById(clickedWidgetId).position;
+			var clickedXy = storage.getWidgetById(clickedWidgetId).xy;
+			$("#" + clickedWidgetId).animate(widgetData[0][mainElement]).css("position", "absolute");
+			$("#" + mainWidgetId).animate(widgetData[0][clickedElement]);
+			$("#" + clickedWidgetId).width(widgetData[1][mainElement]);
+			$("#" + clickedWidgetId).height(widgetData[2][mainElement]);
+			$("#" + mainWidgetId).width(widgetData[1][clickedElement]);
+			$("#" + mainWidgetId).height(widgetData[2][clickedElement]);
+			$("#" + clickedWidgetId).find('.ifb').height(ifbHeight[mainElement]);
+			$("#" + mainWidgetId).find('.ifb').height(ifbHeight[clickedElement]);
+			$('#bar').prependTo("#" + clickedWidgetId + " .content");
+			$('.head-b1 span').first().text(clickedWidgetName);
+			$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
+			storage.storeWidget(1, clickedWidgetId, "{top:0, left:0}", clickedWidgetName);
+			storage.storeWidget(clickedPosition, mainWidgetId, clickedXy, mainWidgetName);
+
+			var i = 0;
+			while (i < 6) {
+				i++;
+				if (i - 1 == clickedElement || i - 1 == mainElement) {
+					continue;
+				};
+				$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
+				$('#draggable' + i).width(widgetData[1][i - 1]);
+				$('#draggable' + i).height(widgetData[2][i - 1]);
+			};
+		} else {
+			$("#" + clickedWidgetId).draggable("option", "revert", true);
+		};
 	});
 });
 
