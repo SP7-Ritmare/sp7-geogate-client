@@ -351,6 +351,7 @@ $(function() {
 				$("#" + ui.draggable.context.id).css("zIndex", 999);
 				draggedElement = ui.draggable.context.id.substring(9) - 1;
 				widgetData = utils.getWidgetData();
+				$('.widget-invisible-overlay', '#' + event.target.id).show();
 				break;
 			};
 		},
@@ -408,6 +409,7 @@ $(function() {
 		},
 		deactivate : function(event, ui) {
 			$("#" + ui.draggable.context.id).css("zIndex", 99);
+			$('.widget-invisible-overlay', '#' + event.target.id).hide();
 		}
 	});
 

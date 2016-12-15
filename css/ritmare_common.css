@@ -169,6 +169,18 @@ a {
 	float: left;
 }
 
+.widget-invisible-overlay {
+	display: none;
+	opacity: 0;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	float: left;
+}
+
 .widget-overlay {
 	display: none;
 	/* Fall-back for browsers that don't
@@ -187,6 +199,7 @@ a {
 .widget-overlay span {
 	padding: 5px;
 	border-radius: 5px;
+	background-color: #333333;
 	color: #a1a1a1;
 	background-color: #fff;
 	position: relative;
