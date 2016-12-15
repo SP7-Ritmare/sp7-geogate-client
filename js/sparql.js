@@ -24,8 +24,6 @@ if ($("#user-title").text() == "Login") {
 };
 
 function sparql(orcid) {
-	console.log("ORCID: " + orcid);
-
 	var endpoint = "http://geogate.sp7.irea.cnr.it/fuseki/portal/query";
 
 	var query_userid = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?userid WHERE { ?userid foaf:account/foaf:accountName ?orcid . FILTER(?orcid = '" + orcid + "') }";
