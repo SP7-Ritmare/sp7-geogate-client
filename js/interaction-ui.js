@@ -17,7 +17,7 @@ var widgetOptions = {
 		case "Discovery":
 			return "#d4ac0d";
 			break;
-		case "Mappa":
+		case "Map":
 			return "#e74c3c";
 			break;
 		case "Mydata":
@@ -25,6 +25,9 @@ var widgetOptions = {
 			break;
 		case "News":
 			return "#2980b9";
+			break;
+		case "Metadata":
+			return "#27ae60";
 			break;
 		default:
 			return "#ffffff";
@@ -35,7 +38,7 @@ var widgetOptions = {
 		case "Discovery":
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/map-28bc6852-6871-11e4-80d1-005056bd48e7-thumb.png";
 			break;
-		case "Mappa":
+		case "Map":
 			return "http://cigno.ve.ismar.cnr.it/maps/1247/embed";
 			break;
 		case "Mydata":
@@ -43,6 +46,9 @@ var widgetOptions = {
 			break;
 		case "News":
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/002788ceb5d5a5be6ecba8a0f2a4fe82.png";
+			break;
+		case "Metadata":
+			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/08feea64443cb014d95cdc2a87cbbdae.png";
 			break;
 		default:
 			return "";
@@ -53,14 +59,17 @@ var widgetOptions = {
 		case "Discovery":
 			return "fa fa-search text-img";
 			break;
-		case "Mappa":
-			return "imoon imoon-map text-img";
+		case "Map":
+			return "fa fa-map text-img";
 			break;
 		case "Mydata":
 			return "fa fa-bookmark text-img";
 			break;
 		case "News":
 			return "fa fa-rss-square text-img";
+			break;
+		case "Metadata":
+			return "fa fa-file-text text-img";
 			break;
 		default:
 			return "";
