@@ -302,29 +302,30 @@ $(function() {
 			sparql(msg.orcid);
 		});
 
-		if (localStorage.getItem("session") == "s") {
-			$("#reload_session").dialog({
-				closeOnEscape : false,
-				buttons : {
-					OK : function() {
-						localStorage.setItem("session", "l");
-						$(this).dialog("close");
-						storage.reloadWidgets();
-					},
-					Annulla : function() {
-						localStorage.setItem("session", "s");
-						$('[id^=draggable]').css("visibility", "hidden");
-						$('.widget-attivi').find('.badge2').attr("data-badge2", "0x");
-						$('.wrap-icons').find('.badge2').attr("data-badge2", "0x");
-						sessionStorage.clear();
-						$(this).dialog("close");
-					}
-				},
-				modal : true,
-				show : "blind",
-				hide : "explode"
-			});
-		};
+		localStorage.setItem("session", "l");
+		/*	if (localStorage.getItem("session") == "s") {
+		$("#reload_session").dialog({
+		closeOnEscape : false,
+		buttons : {
+		OK : function() {
+		localStorage.setItem("session", "l");
+		$(this).dialog("close");
+		storage.reloadWidgets();
+		},
+		Annulla : function() {
+		localStorage.setItem("session", "s");
+		$('[id^=draggable]').css("visibility", "hidden");
+		$('.widget-attivi').find('.badge2').attr("data-badge2", "0x");
+		$('.wrap-icons').find('.badge2').attr("data-badge2", "0x");
+		sessionStorage.clear();
+		$(this).dialog("close");
+		}
+		},
+		modal : true,
+		show : "blind",
+		hide : "explode"
+		});
+		}; */
 		//	$("#user-login").removeClass("fa fa-user").addClass("fa fa-sign-out");
 		$("#user-title").text("Logout");
 	} else {

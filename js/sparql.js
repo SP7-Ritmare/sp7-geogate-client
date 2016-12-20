@@ -1,3 +1,15 @@
+function startWidgetInfo(widgetTypes) {
+	$("#widgetInfo").dialog({
+		modal : true,
+		buttons : {
+			"Ok" : function() {
+				$(this).dialog("close");
+				console.log(widgetTypes);
+			}
+		}
+	});
+};
+
 if ($("#user-title").text() == "Login") {
 	var endpoint = "http://geogate.sp7.irea.cnr.it/fuseki/portal/query";
 
@@ -51,13 +63,16 @@ function sparql(orcid) {
 								format : "json"
 							},
 							success : function(result) {
+								var widgetTypes = [];
 								$.each(result, function(index, element) {
 									$.each(element.bindings, function(i, el) {
 										if (i == 0) {
 											$("#user-login image").attr("xlink:href", el.picture.value);
 										}
+										widgetTypes.push(el.item.value.substr(el.item.value.lastIndexOf("#") + 1));
 									});
 								});
+								startWidgetInfo(widgetTypes);
 							}
 						});
 					}
