@@ -111,6 +111,18 @@ var storage = {
 		};
 		return length;
 	},
+	countWidgetsWithout0 : function() {
+		var length = 0;
+		for (var i in storageType()) {
+			val = storageType().getItem(i);
+			if (val != null && $.isNumeric(i)) {
+				if (JSON.parse(val).name != 0) {
+					length = length + 1;
+				};
+			};
+		};
+		return length;
+	},
 	countWidgetsByName : function(name) {
 		var count = 0;
 		for (var i in storageType()) {
@@ -167,12 +179,17 @@ var storage = {
 };
 
 var utils = {
-	removeFromWidgetAttivi : function() {
-		$('.widget-attivi a:eq(5)').remove();
+	removeFromWidgetAttivi : function(str) {
+		if (str == "beforeAppending") {
+			$('.widget-attivi a:eq(5)').remove();
+		} else {
+			var cw = storage.countWidgetsWithout0() + 1;
+			$('.widget-attivi a:eq(' + cw + ')').remove();
+		}
 	},
 	appendToWidgetAttivi : function(str) {
 		if ($('.widget-attivi a').length > 10) {
-			utils.removeFromWidgetAttivi();
+			utils.removeFromWidgetAttivi("beforeAppending");
 		}
 		$('.widget-attivi a:first-child').after('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
 	},
@@ -279,76 +296,6 @@ function addWidget(clickedId) {
 };
 
 $(function() {
-	storage.check();
-	sessionStorage.clear();
-	if (localStorage.getItem("session") == null) {
-		localStorage.setItem("session", "s");
-	};
-	if (localStorage.getItem("session") == "l") {
-		storage.reloadWidgets();
-	};
-	// localStorage.clear();
-	if (window.location.href.indexOf("code") > -1) {
-		$.ajax({
-			headers : {
-				'Accept' : 'application/json',
-				'Content-Type' : 'application/x-www-form-urlencoded'
-			},
-			method : "POST",
-			dataType : 'json',
-			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
-			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
-		}).done(function(msg) {
-			sparql(msg.orcid);
-		});
-
-		localStorage.setItem("session", "l");
-		/*	if (localStorage.getItem("session") == "s") {
-		$("#reload_session").dialog({
-		closeOnEscape : false,
-		buttons : {
-		OK : function() {
-		localStorage.setItem("session", "l");
-		$(this).dialog("close");
-		storage.reloadWidgets();
-		},
-		Annulla : function() {
-		localStorage.setItem("session", "s");
-		$('[id^=draggable]').css("visibility", "hidden");
-		$('.widget-attivi').find('.badge2').attr("data-badge2", "0x");
-		$('.wrap-icons').find('.badge2').attr("data-badge2", "0x");
-		sessionStorage.clear();
-		$(this).dialog("close");
-		}
-		},
-		modal : true,
-		show : "blind",
-		hide : "explode"
-		});
-		}; */
-		//	$("#user-login").removeClass("fa fa-user").addClass("fa fa-sign-out");
-		$("#user-title").text("Logout");
-	} else {
-		//	$("#user-login").removeClass("fa fa-sign-out").addClass("fa fa-user");
-		$("#user-title").text("Login");
-	};
-
-	$('.block').hover(function() {
-		if (storage.getWidgetById(this.id) != undefined && storage.getWidgetById(this.id).position != "1") {
-			$('.widget-overlay', this).show();
-		}
-	}, function() {
-		$('.widget-overlay', this).hide();
-	});
-
-	$(".widget-overlay span").tooltip({
-		position : {
-			my : "right-15 bottom+35"
-		}
-	});
-});
-
-$(function() {
 	$('[id^=draggable]').droppable({
 		tolerance : "pointer",
 		activate : function(event, ui) {
@@ -436,6 +383,24 @@ $(function() {
 });
 
 $(function() {
+	storage.check();
+	sessionStorage.clear();
+	// localStorage.clear();
+
+	$('.block').hover(function() {
+		if (storage.getWidgetById(this.id) != undefined && storage.getWidgetById(this.id).position != "1") {
+			$('.widget-overlay', this).show();
+		}
+	}, function() {
+		$('.widget-overlay', this).hide();
+	});
+
+	$(".widget-overlay span").tooltip({
+		position : {
+			my : "right-15 bottom+35"
+		}
+	});
+
 	//add a new widget by click
 	$('.cwidg').click(function() {
 		addWidget($(this).attr('id'));
@@ -446,6 +411,8 @@ $(function() {
 			localStorage.setItem("session", "s");
 			//window.location.href = "http://localhost/sp7-geogate-client";
 			window.location.href = "http://geogate.sp7.irea.cnr.it/client";
+			localStorage.removeItem("userPicture");
+			$("#user-title").text("Login");
 		} else {
 			$("#user_login").dialog({
 				modal : true,
@@ -505,6 +472,7 @@ $(function() {
 			storageType().setItem(storage.countWidgets(), JSON.stringify(value));
 		};
 		utils.addBadgeValue();
+		utils.removeFromWidgetAttivi("onClosing");
 	});
 
 	$(".widget-overlay span").click(function() {
