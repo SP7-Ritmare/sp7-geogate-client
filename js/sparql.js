@@ -15,6 +15,9 @@ function getWidgetName(w) {
 	case "widgetMetadati":
 		return "Metadata";
 		break;
+	case "widgetInfo":
+		return "About";
+		break;
 	}
 };
 
@@ -95,15 +98,14 @@ if (window.location.href.indexOf("code") > -1) {
 			},
 			method : "POST",
 			dataType : 'json',
-			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
-			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
+			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
+			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
 		}).done(function(msg) {
 			localStorage.setItem("session", "l");
 			sparql(msg.orcid);
 			$("#user-title").text("Logout");
 		});
-	} 
-	else {
+	} else {
 		$("#user-login image").attr("xlink:href", localStorage.getItem("userPicture"));
 		$("#user-title").text("Logout");
 	}
@@ -128,9 +130,7 @@ if (window.location.href.indexOf("code") > -1) {
 					if (i == 0) {
 						$("#user-login image").attr("xlink:href", el.picture.value);
 					}
-					if (el.item.value.substr(el.item.value.lastIndexOf("#") + 1) != "widgetInfo") {
-						widgetTypes.push(el.item.value.substr(el.item.value.lastIndexOf("#") + 1));
-					}
+					widgetTypes.push(el.item.value.substr(el.item.value.lastIndexOf("#") + 1));
 				});
 			});
 			loadWidgets(widgetTypes);
