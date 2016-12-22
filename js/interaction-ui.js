@@ -20,17 +20,20 @@ var widgetOptions = {
 		case "Map":
 			return "#e74c3c";
 			break;
-		case "Mydata":
+		case "My data":
 			return "#8e44ad";
 			break;
-		case "News":
+		case "Feeds":
 			return "#2980b9";
 			break;
 		case "Metadata":
 			return "#27ae60";
 			break;
+		case "About":
+			return "#27ae60";
+			break;
 		default:
-			return "#ffffff";
+			return "#7f8c8d";
 		}
 	},
 	image : function(string) {
@@ -41,14 +44,17 @@ var widgetOptions = {
 		case "Map":
 			return "http://cigno.ve.ismar.cnr.it/maps/1247/embed";
 			break;
-		case "Mydata":
+		case "My data":
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/004fb0a385a834aa31b03351f4eb1e1b.png";
 			break;
-		case "News":
+		case "Feeds":
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/002788ceb5d5a5be6ecba8a0f2a4fe82.png";
 			break;
 		case "Metadata":
 			return "http://cigno.ve.ismar.cnr.it/uploaded/thumbs/08feea64443cb014d95cdc2a87cbbdae.png";
+			break;
+		case "About":
+			return "http://sp7.irea.cnr.it/wiki/index.php/Portal_development_-_widget_autenticazione/gestione_profilo";
 			break;
 		default:
 			return "";
@@ -62,14 +68,17 @@ var widgetOptions = {
 		case "Map":
 			return "fa fa-map text-img";
 			break;
-		case "Mydata":
+		case "My data":
 			return "fa fa-bookmark text-img";
 			break;
-		case "News":
+		case "Feeds":
 			return "fa fa-rss-square text-img";
 			break;
 		case "Metadata":
 			return "fa fa-file-text text-img";
+			break;
+		case "About":
+			return "fa fa-info text-img";
 			break;
 		default:
 			return "";
@@ -409,8 +418,8 @@ $(function() {
 	$('.user-press-login').click(function() {
 		if (window.location.href.indexOf("code") > -1) {
 			localStorage.setItem("session", "s");
-			//window.location.href = "http://localhost/sp7-geogate-client";
-			window.location.href = "http://geogate.sp7.irea.cnr.it/client";
+			window.location.href = "http://localhost/sp7-geogate-client";
+			//window.location.href = "http://geogate.sp7.irea.cnr.it/client";
 			localStorage.removeItem("userPicture");
 			$("#user-title").text("Login");
 		} else {
@@ -519,7 +528,7 @@ $(function() {
 });
 
 function openORCID() {
-	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
-	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
+	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
+	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
 	$("#user_login").dialog("close");
 };

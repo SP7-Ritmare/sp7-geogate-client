@@ -7,10 +7,10 @@ function getWidgetName(w) {
 		return "Map";
 		break;
 	case "widgetMydata":
-		return "Mydata";
+		return "My data";
 		break;
 	case "widgetNews":
-		return "News";
+		return "Feeds";
 		break;
 	case "widgetMetadati":
 		return "Metadata";
@@ -31,30 +31,6 @@ function loadWidgets(widgetTypes) {
 		$('#draggable' + (i + 1)).css("visibility", "visible");
 		utils.appendToWidgetAttivi(widgetName);
 		$('#' + widgetName).prev().attr("data-badge2", storage.countWidgetsByName(widgetName) + "x");
-	}
-};
-
-function startWidgetInfo(widgetTypes, userType) {
-	if (userType == "default") {
-		$("#widgetInfoDefault").dialog({
-			modal : true,
-			buttons : {
-				"Ok" : function() {
-					$(this).dialog("close");
-					loadWidgets(widgetTypes);
-				}
-			}
-		});
-	} else {
-		$("#widgetInfoAuthenticated").dialog({
-			modal : true,
-			buttons : {
-				"Ok" : function() {
-					$(this).dialog("close");
-					loadWidgets(widgetTypes);
-				}
-			}
-		});
 	}
 };
 
@@ -100,7 +76,7 @@ function sparql(orcid) {
 										widgetTypes.push(el.item.value.substr(el.item.value.lastIndexOf("#") + 1));
 									});
 								});
-								startWidgetInfo(widgetTypes, "authenticated");
+								loadWidgets(widgetTypes);
 							}
 						});
 					}
@@ -119,8 +95,8 @@ if (window.location.href.indexOf("code") > -1) {
 			},
 			method : "POST",
 			dataType : 'json',
-			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
-			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
+			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
+			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
 		}).done(function(msg) {
 			localStorage.setItem("session", "l");
 			sparql(msg.orcid);
@@ -157,7 +133,7 @@ if (window.location.href.indexOf("code") > -1) {
 					}
 				});
 			});
-			startWidgetInfo(widgetTypes, "default");
+			loadWidgets(widgetTypes);
 		}
 	});
 };
