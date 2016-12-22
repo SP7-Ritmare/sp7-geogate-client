@@ -30,10 +30,10 @@ var widgetOptions = {
 			return "#27ae60";
 			break;
 		case "About":
-			return "#27ae60";
+			return "#7f8c8d";
 			break;
 		default:
-			return "#7f8c8d";
+			return "#ffffff";
 		}
 	},
 	image : function(string) {
