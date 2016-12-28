@@ -262,7 +262,7 @@ function addWidget(clickedId) {
 			if ($('#' + id).css("visibility") == "hidden") {
 				$('#' + id).css("visibility", "visible");
 			};
-			if (formerWidget.name == 0) {
+			if (actualWidget != null && formerWidget.name == 0) {
 				$('#' + actualWidget.id).css("visibility", "hidden");
 			};
 			if ($('#' + id).css("display") == "none") {
@@ -480,6 +480,7 @@ $(function() {
 			};
 			storageType().setItem(storage.countWidgets(), JSON.stringify(value));
 		};
+
 		utils.addBadgeValue();
 		utils.removeFromWidgetAttivi("onClosing");
 	});

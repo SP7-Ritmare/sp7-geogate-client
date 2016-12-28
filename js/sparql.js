@@ -1,3 +1,8 @@
+/**
+ * @author Diego Migliavacca (https://github.com/diegomigliavacca)
+ * @copyright SP7 Ritmare (http://www.ritmare.it)
+ */
+
 function getWidgetName(w) {
 	switch (w) {
 	case "widgetDiscovery":
@@ -22,6 +27,7 @@ function getWidgetName(w) {
 };
 
 function loadWidgets(widgetTypes) {
+	var widgetData = utils.getWidgetData();
 	for (var i = 0; i < widgetTypes.length; i++) {
 		var widgetName = getWidgetName(widgetTypes[i]);
 		if (i == 0) {
@@ -34,6 +40,7 @@ function loadWidgets(widgetTypes) {
 		$('#draggable' + (i + 1)).css("visibility", "visible");
 		utils.appendToWidgetAttivi(widgetName);
 		$('#' + widgetName).prev().attr("data-badge2", storage.countWidgetsByName(widgetName) + "x");
+		storage.storeWidget(i + 1, 'draggable' + (i + 1), widgetData[0][i], widgetName);
 	}
 };
 
