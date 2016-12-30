@@ -101,11 +101,10 @@ var storage = {
 			});
 		}
 	},
-	storeWidget : function(position, id, xy, name) {
+	storeWidget : function(position, id, name) {
 		var widget = {
 			position : position,
 			id : id,
-			xy : xy,
 			name : name
 		};
 		var record = JSON.stringify(widget);
@@ -211,10 +210,21 @@ var utils = {
 		var ids = ["draggable1", "draggable2", "draggable3", "draggable4", "draggable5"];
 		for (var i = 0; i < ids.length; i++) {
 			var widget = storage.getWidgetById(ids[i]);
-			if (widget == null || widget.name == 0) {
+			if (widget == null) {
 				return ids[i];
 			}
 		};
+		/*	var pos = ["1", "2", "3", "4", "5"];
+		 for (var i = 0; i < pos.length; i++) {
+		 var widget = storage.getWidgetByPosition(pos[i]);
+		 console.log(pos[i]);
+		 if (widget != null && widget.name == 0) {
+		 var id = storage.getWidgetByPosition(pos[i]).id;
+		 console.log(id);
+		 return id;
+		 }
+		 }; */
+
 	},
 	getWidgetData : function() {
 		bloccoPos = [];
@@ -258,7 +268,7 @@ function addWidget(clickedId) {
 			$('#' + id).find("embed").attr("src", widgetOptions.image(formerWidget.name));
 			$('#' + id).attr("name", formerWidget.name);
 			$('#' + id).css("background-color", widgetOptions.color(formerWidget.name));
-			storage.storeWidget(i, id, $("#" + id).position(), formerWidget.name);
+			storage.storeWidget(i, id, formerWidget.name);
 			if ($('#' + id).css("visibility") == "hidden") {
 				$('#' + id).css("visibility", "visible");
 			};
@@ -295,237 +305,226 @@ function addWidget(clickedId) {
 	$('#' + nId).find("embed").attr("src", widgetOptions.image(clickedId));
 	$('#' + nId).attr("name", clickedId);
 	$('#' + nId).css("background-color", widgetOptions.color(clickedId));
-	storage.storeWidget(1, nId, {
-		"top" : 0,
-		"left" : 0
-	}, clickedId);
+	storage.storeWidget(1, nId, clickedId);
 
 	utils.appendToWidgetAttivi(clickedId);
 	utils.addBadgeValue();
 };
 
-$(function() {
-	$('[id^=draggable]').droppable({
-		tolerance : "pointer",
-		activate : function(event, ui) {
-			draggableClass = ui.draggable.attr('class').substring(0, 5);
-			switch (draggableClass) {
-			case "cwidg":
-				$("#" + ui.helper.context.id).css("zIndex", 999);
-				break;
-			case "block":
-				$("#" + ui.draggable.context.id).css("zIndex", 999);
-				draggedElement = ui.draggable.context.id.substring(9) - 1;
-				widgetData = utils.getWidgetData();
-				$('.widget-invisible-overlay', '#' + event.target.id).show();
-				break;
-			};
-		},
-		drop : function(event, ui) {
-			switch (draggableClass) {
-			case "cwidg":
-				//add a new widget by drag & drop
-				addWidget(ui.draggable.context.id);
-				break;
-			case "block":
-				//change the widget position by drag & drop
-				var targetElement = event.target.id.substring(9) - 1;
-				var targetId = event.target.id;
-				var draggedId = ui.draggable.context.id;
-				if (storage.getWidgetById(targetId) !== undefined) {
-					$("#" + draggedId).draggable("option", "revert", false);
-					var targetPosition = storage.getWidgetById(targetId).position;
-					var draggedPosition = storage.getWidgetById(draggedId).position;
-					var targetXy = storage.getWidgetById(targetId).xy;
-					var draggedXy = storage.getWidgetById(draggedId).xy;
-					$("#" + draggedId).animate(widgetData[0][targetElement]).css("position", "absolute");
-					$("#" + targetId).animate(widgetData[0][draggedElement]);
-					$("#" + draggedId).width(widgetData[1][targetElement]);
-					$("#" + draggedId).height(widgetData[2][targetElement]);
-					$("#" + targetId).width(widgetData[1][draggedElement]);
-					$("#" + targetId).height(widgetData[2][draggedElement]);
-					$("#" + draggedId).find('.ifb').height(widgetData[3][targetElement]);
-					$("#" + targetId).find('.ifb').height(widgetData[3][draggedElement]);
-					if (targetPosition == 1) {
-						$('#bar').prependTo("#" + draggedId + " .content");
-						$('.head-b1 span').first().text(ui.draggable.attr('name'));
-						$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(ui.draggable.attr('name')));
-					} else if (draggedPosition == 1) {
-						$('#bar').prependTo("#" + targetId + " .content");
-						$('.head-b1 span').first().text($(event.target).attr('name'));
-						$('.menu-f1 span').removeClass().addClass(widgetOptions.icon($(event.target).attr('name')));
-					}
-					storage.storeWidget(targetPosition, draggedId, targetXy, ui.draggable.attr('name'));
-					storage.storeWidget(draggedPosition, targetId, draggedXy, $(event.target).attr('name'));
-					var i = 0;
-					while (i < 6) {
-						i++;
-						if (i - 1 == draggedElement || i - 1 == targetElement) {
-							continue;
-						};
-						$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
-						$('#draggable' + i).width(widgetData[1][i - 1]);
-						$('#draggable' + i).height(widgetData[2][i - 1]);
-					};
-					break;
-				} else {
-					$("#" + draggedId).draggable("option", "revert", true);
+$('[id^=draggable]').droppable({
+	tolerance : "pointer",
+	activate : function(event, ui) {
+		draggableClass = ui.draggable.attr('class').substring(0, 5);
+		switch (draggableClass) {
+		case "cwidg":
+			$("#" + ui.helper.context.id).css("zIndex", 999);
+			break;
+		case "block":
+			$("#" + ui.draggable.context.id).css("zIndex", 999);
+			draggedElement = ui.draggable.context.id.substring(9) - 1;
+			widgetData = utils.getWidgetData();
+			$('.widget-invisible-overlay', '#' + event.target.id).show();
+			break;
+		};
+	},
+	drop : function(event, ui) {
+		switch (draggableClass) {
+		case "cwidg":
+			//add a new widget by drag & drop
+			addWidget(ui.draggable.context.id);
+			break;
+		case "block":
+			//change the widget position by drag & drop
+			var targetElement = event.target.id.substring(9) - 1;
+			var targetId = event.target.id;
+			var draggedId = ui.draggable.context.id;
+			if (storage.getWidgetById(targetId) !== undefined) {
+				$("#" + draggedId).draggable("option", "revert", false);
+				var targetPosition = storage.getWidgetById(targetId).position;
+				var draggedPosition = storage.getWidgetById(draggedId).position;
+				$("#" + draggedId).animate(widgetData[0][targetElement]).css("position", "absolute");
+				$("#" + targetId).animate(widgetData[0][draggedElement]);
+				$("#" + draggedId).width(widgetData[1][targetElement]);
+				$("#" + draggedId).height(widgetData[2][targetElement]);
+				$("#" + targetId).width(widgetData[1][draggedElement]);
+				$("#" + targetId).height(widgetData[2][draggedElement]);
+				$("#" + draggedId).find('.ifb').height(widgetData[3][targetElement]);
+				$("#" + targetId).find('.ifb').height(widgetData[3][draggedElement]);
+				if (targetPosition == 1) {
+					$('#bar').prependTo("#" + draggedId + " .content");
+					$('.head-b1 span').first().text(ui.draggable.attr('name'));
+					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(ui.draggable.attr('name')));
+				} else if (draggedPosition == 1) {
+					$('#bar').prependTo("#" + targetId + " .content");
+					$('.head-b1 span').first().text($(event.target).attr('name'));
+					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon($(event.target).attr('name')));
 				}
+				storage.storeWidget(targetPosition, draggedId, ui.draggable.attr('name'));
+				storage.storeWidget(draggedPosition, targetId, $(event.target).attr('name'));
+				var i = 0;
+				while (i < 6) {
+					i++;
+					if (i - 1 == draggedElement || i - 1 == targetElement) {
+						continue;
+					};
+					$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
+					$('#draggable' + i).width(widgetData[1][i - 1]);
+					$('#draggable' + i).height(widgetData[2][i - 1]);
+				};
+				break;
+			} else {
+				$("#" + draggedId).draggable("option", "revert", true);
 			}
-		},
-		deactivate : function(event, ui) {
-			$("#" + ui.draggable.context.id).css("zIndex", 99);
-			$('.widget-invisible-overlay', '#' + event.target.id).hide();
 		}
-	});
-
-	$('.cwidg').draggable({
-		cursor : "crosshair",
-		helper : "clone",
-		revert : "invalid"
-	});
-
-	$('.block').draggable({
-		cursor : "move",
-		revert : "invalid"
-	});
+	},
+	deactivate : function(event, ui) {
+		$("#" + ui.draggable.context.id).css("zIndex", 99);
+		$('.widget-invisible-overlay', '#' + event.target.id).hide();
+	}
 });
 
-$(function() {
-	storage.check();
-	sessionStorage.clear();
-	// localStorage.clear();
+$('.cwidg').draggable({
+	cursor : "crosshair",
+	helper : "clone",
+	revert : "invalid"
+});
 
-	$('.block').hover(function() {
-		if (storage.getWidgetById(this.id) != undefined && storage.getWidgetById(this.id).position != "1") {
-			$('.widget-overlay', this).show();
-		}
-	}, function() {
-		$('.widget-overlay', this).hide();
-	});
+$('.block').draggable({
+	cursor : "move",
+	revert : "invalid"
+});
 
-	$(".widget-overlay span").tooltip({
-		position : {
-			my : "right-15 bottom+35"
-		}
-	});
+storage.check();
+sessionStorage.clear();
+// localStorage.clear();
 
-	//add a new widget by click
-	$('.cwidg').click(function() {
-		addWidget($(this).attr('id'));
-	});
+$('.block').hover(function() {
+	if (storage.getWidgetById(this.id) != undefined && storage.getWidgetById(this.id).position != "1") {
+		$('.widget-overlay', this).show();
+	}
+}, function() {
+	$('.widget-overlay', this).hide();
+});
 
-	$('.user-press-login').click(function() {
-		if (window.location.href.indexOf("code") > -1) {
-			localStorage.setItem("session", "s");
-			//window.location.href = "http://localhost/sp7-geogate-client";
-			window.location.href = "http://geogate.sp7.irea.cnr.it/client";
-			localStorage.removeItem("userPicture");
-			$("#user-title").text("Login");
-		} else {
-			$("#user_login").dialog({
-				modal : true,
-				show : "blind",
-				hide : "explode"
-			});
-		}
-	});
+$(".widget-overlay span").tooltip({
+	position : {
+		my : "right-15 bottom+35"
+	}
+});
 
-	$('.full-f1').click(function() {
-		$(this).closest('.block').toggleClass('fullscreen');
-	});
+//add a new widget by click
+$('.cwidg').click(function() {
+	addWidget($(this).attr('id'));
+});
 
-	$('.close-f1').click(function() {
-		var widget = storage.getWidgetByPosition(1);
-		storageType().removeItem("1");
-		utils.addBadgeValue();
-		var i = 0;
-		while (i < 5) {
-			i++;
-			var nextWidget = storage.getWidgetByPosition(i + 1);
-			if (nextWidget != null) {
-				if (i != 1) {
-					widget = storage.getWidgetByPosition(i);
-				} else {
-					if (nextWidget.name == 0) {
-						$('.head-b1 span').first().text("");
-					} else {
-						$('.head-b1 span').first().text(nextWidget.name);
-					}
-					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nextWidget.name));
-				}
-				$('#' + widget.id).find("embed").attr("src", widgetOptions.image(nextWidget.name));
-				$('#' + widget.id).attr("name", nextWidget.name);
-				$('#' + widget.id).css("background-color", widgetOptions.color(nextWidget.name));
-				storage.storeWidget(i, widget.id, widget.xy, nextWidget.name);
-				if (nextWidget.name == 0) {
-					$('#' + widget.id).css("visibility", "hidden");
-				}
+$('.user-press-login').click(function() {
+	if (window.location.href.indexOf("code") > -1) {
+		localStorage.setItem("session", "s");
+		//window.location.href = "http://localhost/sp7-geogate-client";
+		window.location.href = "http://geogate.sp7.irea.cnr.it/client";
+		localStorage.removeItem("userPicture");
+		$("#user-title").text("Login");
+	} else {
+		$("#user_login").dialog({
+			modal : true,
+			show : "blind",
+			hide : "explode"
+		});
+	}
+});
+
+$('.full-f1').click(function() {
+	$(this).closest('.block').toggleClass('fullscreen');
+});
+
+$('.close-f1').click(function() {
+	var widget = storage.getWidgetByPosition(1);
+	storageType().removeItem("1");
+	utils.addBadgeValue();
+	var i = 0;
+	while (i < 5) {
+		i++;
+		var nextWidget = storage.getWidgetByPosition(i + 1);
+		if (nextWidget != null) {
+			if (i != 1) {
+				widget = storage.getWidgetByPosition(i);
 			} else {
-				if (i == 1) {
+				if (nextWidget.name == 0) {
 					$('.head-b1 span').first().text("");
-					$('#' + widget.id).css("visibility", "hidden");
+				} else {
+					$('.head-b1 span').first().text(nextWidget.name);
 				}
-			};
-		};
-		if (storage.countWidgets() > 0) {
-			$('#' + storage.getWidgetByPosition(storage.countWidgets()).id).css("visibility", "hidden");
-			var position = storage.getWidgetByPosition(storage.countWidgets()).position;
-			var id = storage.getWidgetByPosition(storage.countWidgets()).id;
-			var value = {
-				position : position,
-				id : id,
-				xy : 0,
-				name : 0
-			};
-			storageType().setItem(storage.countWidgets(), JSON.stringify(value));
-		};
-
-		utils.addBadgeValue();
-		utils.removeFromWidgetAttivi("onClosing");
-	});
-
-	$(".widget-overlay span").click(function() {
-		var mainWidgetId = storage.getWidgetByPosition(1).id;
-		var mainWidgetName = storage.getWidgetByPosition(1).name;
-		var mainElement = mainWidgetId.substring(9) - 1;
-		var clickedWidgetId = $(this).parents(".block").attr("id");
-		var clickedWidgetName = $(this).parents(".block").attr("name");
-		var clickedElement = clickedWidgetId.substring(9) - 1;
-		var widgetData = utils.getWidgetData();
-
-		if (storage.getWidgetById(mainWidgetId) !== undefined) {
-			$("#" + clickedWidgetId).draggable("option", "revert", false);
-			var clickedPosition = storage.getWidgetById(clickedWidgetId).position;
-			var clickedXy = storage.getWidgetById(clickedWidgetId).xy;
-			$("#" + clickedWidgetId).animate(widgetData[0][mainElement]).css("position", "absolute");
-			$("#" + mainWidgetId).animate(widgetData[0][clickedElement]);
-			$("#" + clickedWidgetId).width(widgetData[1][mainElement]);
-			$("#" + clickedWidgetId).height(widgetData[2][mainElement]);
-			$("#" + mainWidgetId).width(widgetData[1][clickedElement]);
-			$("#" + mainWidgetId).height(widgetData[2][clickedElement]);
-			$("#" + clickedWidgetId).find('.ifb').height(ifbHeight[mainElement]);
-			$("#" + mainWidgetId).find('.ifb').height(ifbHeight[clickedElement]);
-			$('#bar').prependTo("#" + clickedWidgetId + " .content");
-			$('.head-b1 span').first().text(clickedWidgetName);
-			$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
-			storage.storeWidget(1, clickedWidgetId, "{top:0, left:0}", clickedWidgetName);
-			storage.storeWidget(clickedPosition, mainWidgetId, clickedXy, mainWidgetName);
-
-			var i = 0;
-			while (i < 6) {
-				i++;
-				if (i - 1 == clickedElement || i - 1 == mainElement) {
-					continue;
-				};
-				$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
-				$('#draggable' + i).width(widgetData[1][i - 1]);
-				$('#draggable' + i).height(widgetData[2][i - 1]);
-			};
+				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nextWidget.name));
+			}
+			$('#' + widget.id).find("embed").attr("src", widgetOptions.image(nextWidget.name));
+			$('#' + widget.id).attr("name", nextWidget.name);
+			$('#' + widget.id).css("background-color", widgetOptions.color(nextWidget.name));
+			storage.storeWidget(i, widget.id, nextWidget.name);
+			if (nextWidget.name == 0) {
+				$('#' + widget.id).css("visibility", "hidden");
+			}
 		} else {
-			$("#" + clickedWidgetId).draggable("option", "revert", true);
+			if (i == 1) {
+				$('.head-b1 span').first().text("");
+				//	$('#' + widget.id).css("visibility", "hidden");
+			}
 		};
-	});
+	};
+	if (storage.countWidgets() > 0) {
+		$('#' + storage.getWidgetByPosition(storage.countWidgets()).id).css("visibility", "hidden");
+		var position = storage.getWidgetByPosition(storage.countWidgets()).position;
+		var id = storage.getWidgetByPosition(storage.countWidgets()).id;
+		var value = {
+			position : position,
+			id : id,
+			name : 0
+		};
+		storageType().setItem(storage.countWidgets(), JSON.stringify(value));
+	};
+
+	utils.addBadgeValue();
+	utils.removeFromWidgetAttivi("onClosing");
+});
+
+$(".widget-overlay span").click(function() {
+	var mainWidgetId = storage.getWidgetByPosition(1).id;
+	var mainWidgetName = storage.getWidgetByPosition(1).name;
+	var mainElement = mainWidgetId.substring(9) - 1;
+	var clickedWidgetId = $(this).parents(".block").attr("id");
+	var clickedWidgetName = $(this).parents(".block").attr("name");
+	var clickedElement = clickedWidgetId.substring(9) - 1;
+	var widgetData = utils.getWidgetData();
+
+	if (storage.getWidgetById(mainWidgetId) !== undefined) {
+		$("#" + clickedWidgetId).draggable("option", "revert", false);
+		var clickedPosition = storage.getWidgetById(clickedWidgetId).position;
+		$("#" + clickedWidgetId).animate(widgetData[0][mainElement]).css("position", "absolute");
+		$("#" + mainWidgetId).animate(widgetData[0][clickedElement]);
+		$("#" + clickedWidgetId).width(widgetData[1][mainElement]);
+		$("#" + clickedWidgetId).height(widgetData[2][mainElement]);
+		$("#" + mainWidgetId).width(widgetData[1][clickedElement]);
+		$("#" + mainWidgetId).height(widgetData[2][clickedElement]);
+		$("#" + clickedWidgetId).find('.ifb').height(ifbHeight[mainElement]);
+		$("#" + mainWidgetId).find('.ifb').height(ifbHeight[clickedElement]);
+		$('#bar').prependTo("#" + clickedWidgetId + " .content");
+		$('.head-b1 span').first().text(clickedWidgetName);
+		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
+		storage.storeWidget(1, clickedWidgetId, clickedWidgetName);
+		storage.storeWidget(clickedPosition, mainWidgetId, mainWidgetName);
+
+		var i = 0;
+		while (i < 6) {
+			i++;
+			if (i - 1 == clickedElement || i - 1 == mainElement) {
+				continue;
+			};
+			$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
+			$('#draggable' + i).width(widgetData[1][i - 1]);
+			$('#draggable' + i).height(widgetData[2][i - 1]);
+		};
+	} else {
+		$("#" + clickedWidgetId).draggable("option", "revert", true);
+	};
 });
 
 function openORCID() {

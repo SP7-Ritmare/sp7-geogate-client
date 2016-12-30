@@ -27,7 +27,6 @@ function getWidgetName(w) {
 };
 
 function loadWidgets(widgetTypes) {
-	var widgetData = utils.getWidgetData();
 	for (var i = 0; i < widgetTypes.length; i++) {
 		var widgetName = getWidgetName(widgetTypes[i]);
 		if (i == 0) {
@@ -38,9 +37,15 @@ function loadWidgets(widgetTypes) {
 		$('#draggable' + (i + 1)).find("embed").attr("src", widgetOptions.image(widgetName));
 		$('#draggable' + (i + 1)).css("background-color", widgetOptions.color(widgetName));
 		$('#draggable' + (i + 1)).css("visibility", "visible");
-		utils.appendToWidgetAttivi(widgetName);
 		$('#' + widgetName).prev().attr("data-badge2", storage.countWidgetsByName(widgetName) + "x");
-		storage.storeWidget(i + 1, 'draggable' + (i + 1), widgetData[0][i], widgetName);
+		localStorage.clear();
+		storage.storeWidget(i + 1, 'draggable' + (i + 1), widgetName);
+	};
+	var i = widgetTypes.length;
+	while (i--) {
+		var widgetName = getWidgetName(widgetTypes[i]);
+		utils.appendToWidgetAttivi(widgetName);
+		utils.addBadgeValue();
 	}
 };
 
