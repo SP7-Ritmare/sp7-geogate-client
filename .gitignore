@@ -1,5 +1,5 @@
 #################
-## Eclipse
+## Eclipse/Aptana
 #################
 
 *.pydevproject
@@ -14,3 +14,17 @@ tmp/
 local.properties
 .classpath
 .settings/
+
+
+#################
+## Intellij/WebStorm
+#################
+.idea/
+*.iml
+*.iws
+
+
+#################
+## Mac
+#################
+.DS_Store
