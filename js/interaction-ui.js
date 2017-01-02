@@ -159,8 +159,9 @@ var storage = {
 		};
 	},
 	reloadWidgets : function() {
-		/*	for (var i = 0; i < storageType().length; i++) {
-		 var item = storageType().getItem(storageType().key(i));
+		/* var st = storageType();
+		 for (var i = 0; i < st.length; i++) {
+		 var item = st.getItem(st.key(i));
 		 console.log(item);
 		 }; */
 
@@ -168,19 +169,21 @@ var storage = {
 		while (i < storage.countWidgets()) {
 			i++;
 			var widget = storage.getWidgetByPosition(i);
+			var wId = $('#draggable' + i);
 			if (widget != null && widget.name != 0) {
+				var wName = widget.name;
 				if (widget.position == 1) {
-					$('.head-b1 span').first().text(widget.name);
-					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(widget.name));
+					$('.head-b1 span').first().text(wName);
+					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(wName));
 				};
-				$('#draggable' + i).attr("name", widget.name);
-				$('#draggable' + i).find("embed").attr("src", widgetOptions.image(widget.name));
-				$('#draggable' + i).css("background-color", widgetOptions.color(widget.name));
-				$('#draggable' + i).css("visibility", "visible");
-				utils.appendToWidgetAttivi(widget.name);
-				$('#' + widget.name).prev().attr("data-badge2", storage.countWidgetsByName(widget.name) + "x");
+				wId.attr("name", wName);
+				wId.find("embed").attr("src", widgetOptions.image(wName));
+				wId.css("background-color", widgetOptions.color(wName));
+				wId.css("visibility", "visible");
+				utils.appendToWidgetAttivi(wName);
+				$('#' + wName).prev().attr("data-badge2", storage.countWidgetsByName(wName) + "x");
 			} else {
-				$('#draggable' + i).css("visibility", "hidden");
+				wId.css("visibility", "hidden");
 			};
 		};
 	}
@@ -235,13 +238,17 @@ var utils = {
 		var i = 0;
 		while (i < 5) {
 			i++;
-			bloccoPos.push($('#draggable' + i).position());
-			bloccoWidth.push($('#draggable' + i).width());
-			bloccoHeight.push($('#draggable' + i).height());
-			ifbHeight.push($('#draggable' + i).find('.ifb').height());
+			var wId = $('#draggable' + i);
+			bloccoPos.push(wId.position());
+			bloccoWidth.push(wId.width());
+			bloccoHeight.push(wId.height());
+			ifbHeight.push(wId.find('.ifb').height());
 		};
 		data = [bloccoPos, bloccoWidth, bloccoHeight, ifbHeight];
 		return data;
+	},
+	endpoint : function() {
+		return "http://geogate.sp7.irea.cnr.it/fuseki/portal/query";
 	}
 };
 
@@ -265,18 +272,20 @@ function addWidget(clickedId) {
 			} else {
 				id = actualWidget.id;
 			};
-			$('#' + id).find("embed").attr("src", widgetOptions.image(formerWidget.name));
-			$('#' + id).attr("name", formerWidget.name);
-			$('#' + id).css("background-color", widgetOptions.color(formerWidget.name));
-			storage.storeWidget(i, id, formerWidget.name);
-			if ($('#' + id).css("visibility") == "hidden") {
-				$('#' + id).css("visibility", "visible");
+			var wId = $('#' + id);
+			var fwName = formerWidget.name;
+			wId.find("embed").attr("src", widgetOptions.image(fwName));
+			wId.attr("name", formerWidget.name);
+			wId.css("background-color", widgetOptions.color(fwName));
+			storage.storeWidget(i, id, fwName);
+			if (wId.css("visibility") == "hidden") {
+				wId.css("visibility", "visible");
 			};
-			if (actualWidget != null && formerWidget.name == 0) {
+			if (actualWidget != null && fwName == 0) {
 				$('#' + actualWidget.id).css("visibility", "hidden");
 			};
-			if ($('#' + id).css("display") == "none") {
-				$('#' + id).css("display", "");
+			if (wId.css("display") == "none") {
+				wId.css("display", "");
 			}
 		};
 	};
@@ -284,7 +293,8 @@ function addWidget(clickedId) {
 	$('.head-b1 span').first().text(clickedId);
 	$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedId));
 
-	if ($("#draggable1").position().top == 0 && $("#draggable1").position().left == 0 || $("#draggable1").position().top == -50 && $("#draggable1").position().left == 0 || $("#draggable1").position().top == 8 && $("#draggable1").position().left == 8) {
+	var d1Pos = $("#draggable1").position();
+	if (d1Pos.top == 0 && d1Pos.left == 0 || d1Pos.top == -50 && d1Pos.left == 0 || d1Pos.top == 8 && d1Pos.left == 8) {
 		var nId = "draggable1";
 	} else if ($("#draggable2").position().top == 0 && $("#draggable2").position().left == 0 || $("#draggable2").position().top == -50 && $("#draggable2").position().left == 0 || $("#draggable2").position().top == 8 && $("#draggable2").position().left == 8) {
 		var nId = "draggable2";
@@ -296,15 +306,16 @@ function addWidget(clickedId) {
 		var nId = "draggable5";
 	}
 
-	if ($('#' + nId).css("visibility") == "hidden") {
-		$('#' + nId).css("visibility", "visible");
+	var wnId = $('#' + nId);
+	if (wnId.css("visibility") == "hidden") {
+		wnId.css("visibility", "visible");
 	};
-	if ($('#' + nId).css("display") == "none") {
-		$('#' + nId).css("display", "");
+	if (wnId.css("display") == "none") {
+		wnId.css("display", "");
 	}
-	$('#' + nId).find("embed").attr("src", widgetOptions.image(clickedId));
-	$('#' + nId).attr("name", clickedId);
-	$('#' + nId).css("background-color", widgetOptions.color(clickedId));
+	wnId.find("embed").attr("src", widgetOptions.image(clickedId));
+	wnId.attr("name", clickedId);
+	wnId.css("background-color", widgetOptions.color(clickedId));
 	storage.storeWidget(1, nId, clickedId);
 
 	utils.appendToWidgetAttivi(clickedId);
@@ -320,8 +331,9 @@ $('[id^=draggable]').droppable({
 			$("#" + ui.helper.context.id).css("zIndex", 999);
 			break;
 		case "block":
-			$("#" + ui.draggable.context.id).css("zIndex", 999);
-			draggedElement = ui.draggable.context.id.substring(9) - 1;
+			var dId = ui.draggable.context.id;
+			$("#" + dId).css("zIndex", 999);
+			draggedElement = dId.substring(9) - 1;
 			widgetData = utils.getWidgetData();
 			$('.widget-invisible-overlay', '#' + event.target.id).show();
 			break;
@@ -335,45 +347,50 @@ $('[id^=draggable]').droppable({
 			break;
 		case "block":
 			//change the widget position by drag & drop
-			var targetElement = event.target.id.substring(9) - 1;
 			var targetId = event.target.id;
+			var targetElement = targetId.substring(9) - 1;
 			var draggedId = ui.draggable.context.id;
+			var wdrId = $("#" + draggedId);
+			var wtaId = $("#" + targetId);
 			if (storage.getWidgetById(targetId) !== undefined) {
-				$("#" + draggedId).draggable("option", "revert", false);
+				wdrId.draggable("option", "revert", false);
 				var targetPosition = storage.getWidgetById(targetId).position;
 				var draggedPosition = storage.getWidgetById(draggedId).position;
-				$("#" + draggedId).animate(widgetData[0][targetElement]).css("position", "absolute");
-				$("#" + targetId).animate(widgetData[0][draggedElement]);
-				$("#" + draggedId).width(widgetData[1][targetElement]);
-				$("#" + draggedId).height(widgetData[2][targetElement]);
-				$("#" + targetId).width(widgetData[1][draggedElement]);
-				$("#" + targetId).height(widgetData[2][draggedElement]);
-				$("#" + draggedId).find('.ifb').height(widgetData[3][targetElement]);
-				$("#" + targetId).find('.ifb').height(widgetData[3][draggedElement]);
+				wdrId.animate(widgetData[0][targetElement]).css("position", "absolute");
+				wtaId.animate(widgetData[0][draggedElement]);
+				wdrId.width(widgetData[1][targetElement]);
+				wdrId.height(widgetData[2][targetElement]);
+				wtaId.width(widgetData[1][draggedElement]);
+				wtaId.height(widgetData[2][draggedElement]);
+				wdrId.find('.ifb').height(widgetData[3][targetElement]);
+				wtaId.find('.ifb').height(widgetData[3][draggedElement]);
+				var draggedName = ui.draggable.attr('name');
+				var targetName = $(event.target).attr('name');
 				if (targetPosition == 1) {
 					$('#bar').prependTo("#" + draggedId + " .content");
-					$('.head-b1 span').first().text(ui.draggable.attr('name'));
-					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(ui.draggable.attr('name')));
+					$('.head-b1 span').first().text(draggedName);
+					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(draggedName));
 				} else if (draggedPosition == 1) {
 					$('#bar').prependTo("#" + targetId + " .content");
-					$('.head-b1 span').first().text($(event.target).attr('name'));
-					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon($(event.target).attr('name')));
+					$('.head-b1 span').first().text(targetName);
+					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(targetName));
 				}
-				storage.storeWidget(targetPosition, draggedId, ui.draggable.attr('name'));
-				storage.storeWidget(draggedPosition, targetId, $(event.target).attr('name'));
+				storage.storeWidget(targetPosition, draggedId, draggedName);
+				storage.storeWidget(draggedPosition, targetId, targetName);
 				var i = 0;
 				while (i < 6) {
 					i++;
 					if (i - 1 == draggedElement || i - 1 == targetElement) {
 						continue;
 					};
-					$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
-					$('#draggable' + i).width(widgetData[1][i - 1]);
-					$('#draggable' + i).height(widgetData[2][i - 1]);
+					var drId = $('#draggable' + i);
+					drId.animate(widgetData[0][i - 1]).css("position", "absolute");
+					drId.width(widgetData[1][i - 1]);
+					drId.height(widgetData[2][i - 1]);
 				};
 				break;
 			} else {
-				$("#" + draggedId).draggable("option", "revert", true);
+				wdrId.draggable("option", "revert", true);
 			}
 		}
 	},
@@ -393,10 +410,6 @@ $('.block').draggable({
 	cursor : "move",
 	revert : "invalid"
 });
-
-storage.check();
-sessionStorage.clear();
-// localStorage.clear();
 
 $('.block').hover(function() {
 	if (storage.getWidgetById(this.id) != undefined && storage.getWidgetById(this.id).position != "1") {
@@ -446,21 +459,22 @@ $('.close-f1').click(function() {
 		i++;
 		var nextWidget = storage.getWidgetByPosition(i + 1);
 		if (nextWidget != null) {
+			var nwName = nextWidget.name;
 			if (i != 1) {
 				widget = storage.getWidgetByPosition(i);
 			} else {
 				if (nextWidget.name == 0) {
 					$('.head-b1 span').first().text("");
 				} else {
-					$('.head-b1 span').first().text(nextWidget.name);
+					$('.head-b1 span').first().text(nwName);
 				}
-				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nextWidget.name));
+				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nwName));
 			}
-			$('#' + widget.id).find("embed").attr("src", widgetOptions.image(nextWidget.name));
-			$('#' + widget.id).attr("name", nextWidget.name);
-			$('#' + widget.id).css("background-color", widgetOptions.color(nextWidget.name));
-			storage.storeWidget(i, widget.id, nextWidget.name);
-			if (nextWidget.name == 0) {
+			$('#' + widget.id).find("embed").attr("src", widgetOptions.image(nwName));
+			$('#' + widget.id).attr("name", nwName);
+			$('#' + widget.id).css("background-color", widgetOptions.color(nwName));
+			storage.storeWidget(i, widget.id, nwName);
+			if (nwName == 0) {
 				$('#' + widget.id).css("visibility", "hidden");
 			}
 		} else {
@@ -470,16 +484,17 @@ $('.close-f1').click(function() {
 			}
 		};
 	};
-	if (storage.countWidgets() > 0) {
-		$('#' + storage.getWidgetByPosition(storage.countWidgets()).id).css("visibility", "hidden");
-		var position = storage.getWidgetByPosition(storage.countWidgets()).position;
-		var id = storage.getWidgetByPosition(storage.countWidgets()).id;
+	var stcW = storage.countWidgets();
+	if (stcW > 0) {
+		$('#' + storage.getWidgetByPosition(stcW).id).css("visibility", "hidden");
+		var position = storage.getWidgetByPosition(stcW).position;
+		var id = storage.getWidgetByPosition(stcW).id;
 		var value = {
 			position : position,
 			id : id,
 			name : 0
 		};
-		storageType().setItem(storage.countWidgets(), JSON.stringify(value));
+		storageType().setItem(stcW, JSON.stringify(value));
 	};
 
 	utils.addBadgeValue();
@@ -487,25 +502,29 @@ $('.close-f1').click(function() {
 });
 
 $(".widget-overlay span").click(function() {
-	var mainWidgetId = storage.getWidgetByPosition(1).id;
-	var mainWidgetName = storage.getWidgetByPosition(1).name;
+	var widget1 = storage.getWidgetByPosition(1);
+	var mainWidgetId = widget1.id;
+	var mainWidgetName = widget1.name;
 	var mainElement = mainWidgetId.substring(9) - 1;
-	var clickedWidgetId = $(this).parents(".block").attr("id");
-	var clickedWidgetName = $(this).parents(".block").attr("name");
+	var blockElement = $(this).parents(".block");
+	var clickedWidgetId = blockElement.attr("id");
+	var clickedWidgetName = blockElement.attr("name");
 	var clickedElement = clickedWidgetId.substring(9) - 1;
 	var widgetData = utils.getWidgetData();
+	var cwId = $("#" + clickedWidgetId);
+	var mwId = $("#" + mainWidgetId);
 
 	if (storage.getWidgetById(mainWidgetId) !== undefined) {
 		$("#" + clickedWidgetId).draggable("option", "revert", false);
 		var clickedPosition = storage.getWidgetById(clickedWidgetId).position;
-		$("#" + clickedWidgetId).animate(widgetData[0][mainElement]).css("position", "absolute");
-		$("#" + mainWidgetId).animate(widgetData[0][clickedElement]);
-		$("#" + clickedWidgetId).width(widgetData[1][mainElement]);
-		$("#" + clickedWidgetId).height(widgetData[2][mainElement]);
-		$("#" + mainWidgetId).width(widgetData[1][clickedElement]);
-		$("#" + mainWidgetId).height(widgetData[2][clickedElement]);
-		$("#" + clickedWidgetId).find('.ifb').height(ifbHeight[mainElement]);
-		$("#" + mainWidgetId).find('.ifb').height(ifbHeight[clickedElement]);
+		cwId.animate(widgetData[0][mainElement]).css("position", "absolute");
+		mwId.animate(widgetData[0][clickedElement]);
+		cwId.width(widgetData[1][mainElement]);
+		cwId.height(widgetData[2][mainElement]);
+		mwId.width(widgetData[1][clickedElement]);
+		mwId.height(widgetData[2][clickedElement]);
+		cwId.find('.ifb').height(ifbHeight[mainElement]);
+		mwId.find('.ifb').height(ifbHeight[clickedElement]);
 		$('#bar').prependTo("#" + clickedWidgetId + " .content");
 		$('.head-b1 span').first().text(clickedWidgetName);
 		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
@@ -518,12 +537,13 @@ $(".widget-overlay span").click(function() {
 			if (i - 1 == clickedElement || i - 1 == mainElement) {
 				continue;
 			};
-			$('#draggable' + i).animate(widgetData[0][i - 1]).css("position", "absolute");
-			$('#draggable' + i).width(widgetData[1][i - 1]);
-			$('#draggable' + i).height(widgetData[2][i - 1]);
+			var dId = $('#draggable' + i);
+			dId.animate(widgetData[0][i - 1]).css("position", "absolute");
+			dId.width(widgetData[1][i - 1]);
+			dId.height(widgetData[2][i - 1]);
 		};
 	} else {
-		$("#" + clickedWidgetId).draggable("option", "revert", true);
+		cwId.draggable("option", "revert", true);
 	};
 });
 
@@ -532,3 +552,12 @@ function openORCID() {
 	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
 	$("#user_login").dialog("close");
 };
+
+storage.check();
+sessionStorage.clear();
+// localStorage.clear();
+if (localStorage.getItem("session") == null) {
+	localStorage.setItem("session", "s");
+} else if (localStorage.getItem("session") == "l" && localStorage.getItem("sessionName") != null) {
+	storage.reloadWidgets();
+}

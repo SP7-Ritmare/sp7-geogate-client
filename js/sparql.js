@@ -33,12 +33,12 @@ function loadWidgets(widgetTypes) {
 			$('.head-b1 span').first().text(widgetName);
 			$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(widgetName));
 		};
-		$('#draggable' + (i + 1)).attr("name", widgetName);
-		$('#draggable' + (i + 1)).find("embed").attr("src", widgetOptions.image(widgetName));
-		$('#draggable' + (i + 1)).css("background-color", widgetOptions.color(widgetName));
-		$('#draggable' + (i + 1)).css("visibility", "visible");
+		var wId = $('#draggable' + (i + 1));
+		wId.attr("name", widgetName);
+		wId.find("embed").attr("src", widgetOptions.image(widgetName));
+		wId.css("background-color", widgetOptions.color(widgetName));
+		wId.css("visibility", "visible");
 		$('#' + widgetName).prev().attr("data-badge2", storage.countWidgetsByName(widgetName) + "x");
-		localStorage.clear();
 		storage.storeWidget(i + 1, 'draggable' + (i + 1), widgetName);
 	};
 	var i = widgetTypes.length;
@@ -49,17 +49,10 @@ function loadWidgets(widgetTypes) {
 	}
 };
 
-if (localStorage.getItem("session") == null) {
-	localStorage.setItem("session", "s");
-};
-
 function sparql(orcid) {
-	var endpoint = "http://geogate.sp7.irea.cnr.it/fuseki/portal/query";
-
 	var query_userid = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?userid WHERE { ?userid foaf:account/foaf:accountName ?orcid . FILTER(?orcid = '" + orcid + "') }";
-
 	$.ajax({
-		url : endpoint,
+		url : utils.endpoint(),
 		dataType : "json",
 		type : "POST",
 		data : {
@@ -70,10 +63,11 @@ function sparql(orcid) {
 			$.each(result, function(index, element) {
 				$.each(element.bindings, function(i, el) {
 					if (i == 0) {
-						var query_listwidgets = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category WHERE { " + 'sp7:' + el.userid.value.substring(el.userid.value.lastIndexOf('/') + 1) + " foaf:img	?picture ; ^foaf:member	?category . ?profile def:owner ?category ; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
+						var userIdVal = el.userid.value;
+						var query_listwidgets = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category WHERE { " + 'sp7:' + userIdVal.substring(userIdVal.lastIndexOf('/') + 1) + " foaf:img	?picture ; ^foaf:member	?category . ?profile def:owner ?category ; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
 
 						$.ajax({
-							url : endpoint,
+							url : utils.endpoint(),
 							dataType : "json",
 							type : "POST",
 							data : {
@@ -85,10 +79,12 @@ function sparql(orcid) {
 								$.each(result, function(index, element) {
 									$.each(element.bindings, function(i, el) {
 										if (i == 0) {
-											$("#user-login image").attr("xlink:href", el.picture.value);
-											localStorage.setItem("userPicture", el.picture.value);
-										}
-										widgetTypes.push(el.item.value.substr(el.item.value.lastIndexOf("#") + 1));
+											var pVal = el.picture.value;
+											$("#user-login image").attr("xlink:href", pVal);
+											localStorage.setItem("userPicture", pVal);
+										};
+										var itemVal = el.item.value;
+										widgetTypes.push(itemVal.substr(itemVal.lastIndexOf("#") + 1));
 									});
 								});
 								loadWidgets(widgetTypes);
@@ -121,14 +117,10 @@ if (window.location.href.indexOf("code") > -1) {
 		$("#user-login image").attr("xlink:href", localStorage.getItem("userPicture"));
 		$("#user-title").text("Logout");
 	}
-
 } else {
-	var endpoint = "http://geogate.sp7.irea.cnr.it/fuseki/portal/query";
-
 	var query = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category WHERE { def:defaultUser foaf:img	?picture; ^foaf:member ?category . ?profile def:owner ?category; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
-
 	$.ajax({
-		url : endpoint,
+		url : utils.endpoint(),
 		dataType : "json",
 		type : "POST",
 		data : {
@@ -141,15 +133,12 @@ if (window.location.href.indexOf("code") > -1) {
 				$.each(element.bindings, function(i, el) {
 					if (i == 0) {
 						$("#user-login image").attr("xlink:href", el.picture.value);
-					}
-					widgetTypes.push(el.item.value.substr(el.item.value.lastIndexOf("#") + 1));
+					};
+					var itemVal = el.item.value;
+					widgetTypes.push(itemVal.substr(itemVal.lastIndexOf("#") + 1));
 				});
 			});
 			loadWidgets(widgetTypes);
 		}
 	});
-};
-
-if (localStorage.getItem("session") == "l" && localStorage.getItem("sessionName") != null) {
-	storage.reloadWidgets();
 };
