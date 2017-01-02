@@ -112,6 +112,7 @@ if (window.location.href.indexOf("code") > -1) {
 			localStorage.setItem("session", "l");
 			sparql(msg.orcid);
 			$("#user-title").text("Logout");
+			$("#menulist").css("visibility", "visible");
 		});
 	} else {
 		$("#user-login image").attr("xlink:href", localStorage.getItem("userPicture"));
