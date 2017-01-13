@@ -199,10 +199,18 @@ var utils = {
 		}
 	},
 	appendToWidgetAttivi : function(str) {
-		if ($('.widget-attivi a').length > 10) {
+		if ($('#widget-attivi.widget-attivi a').length > 5 || $('#widget-attivi-top.widget-attivi a').length > 5) {
 			utils.removeFromWidgetAttivi("beforeAppending");
 		}
 		$('.widget-attivi a:first-child').after('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
+	},
+	reloadWidgetAttivi : function() {
+		$('.widget-attivi a:gt(0)').remove();
+		var i = storage.countWidgets() + 1;
+		while (--i) {
+			var str = storage.getWidgetByPosition(i).name;
+			$('.widget-attivi a:first-child').after('<a href="#"><span class="badge" data-badge="0"></span><span id="' + str + '" class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
+		}
 	},
 	addBadgeValue : function() {
 		$('.wrap-icons').find('.badge2').each(function() {
@@ -247,9 +255,7 @@ var utils = {
 		data = [bloccoPos, bloccoWidth, bloccoHeight, ifbHeight];
 		return data;
 	},
-	endpoint : function() {
-		return "http://geogate.sp7.irea.cnr.it/fuseki/portal/query";
-	}
+	endpoint : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query"
 };
 
 function getUrlVars() {
@@ -388,6 +394,7 @@ $('[id^=draggable]').droppable({
 					drId.width(widgetData[1][i - 1]);
 					drId.height(widgetData[2][i - 1]);
 				};
+				utils.reloadWidgetAttivi();
 				break;
 			} else {
 				wdrId.draggable("option", "revert", true);
@@ -545,6 +552,7 @@ $(".widget-overlay span").click(function() {
 	} else {
 		cwId.draggable("option", "revert", true);
 	};
+	utils.reloadWidgetAttivi();
 });
 
 function openORCID() {
