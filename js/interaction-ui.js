@@ -35,6 +35,7 @@ function addWidget(clickedId) {
 
 	$('.head-b1 span').first().text(clickedId);
 	$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedId));
+	utils.loadMenu(clickedId);
 
 	var d1Pos = $("#draggable1").position();
 	if (d1Pos.top == 0 && d1Pos.left == 0 || d1Pos.top == -50 && d1Pos.left == 0 || d1Pos.top == 8 && d1Pos.left == 8) {
@@ -113,10 +114,12 @@ $('[id^=draggable]').droppable({
 					$('#bar').prependTo("#" + draggedId + " .content");
 					$('.head-b1 span').first().text(draggedName);
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(draggedName));
+					utils.loadMenu(draggedName);
 				} else if (draggedPosition == 1) {
 					$('#bar').prependTo("#" + targetId + " .content");
 					$('.head-b1 span').first().text(targetName);
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(targetName));
+					utils.loadMenu(targetName);
 				}
 				storage.storeWidget(targetPosition, draggedId, draggedName);
 				storage.storeWidget(draggedPosition, targetId, targetName);
@@ -169,6 +172,12 @@ $(".widget-overlay span").tooltip({
 	}
 });
 
+$(".cwidg").tooltip({
+	content : function() {
+		return widgetOptions.tooltip(this.id);
+	}
+});
+
 //add a new widget by click
 $('.cwidg').click(function() {
 	addWidget($(this).attr('id'));
@@ -207,12 +216,11 @@ $('.close-f1').click(function() {
 			if (i != 1) {
 				widget = storage.getWidgetByPosition(i);
 			} else {
-				if (nextWidget.name == 0) {
-					$('.head-b1 span').first().text("");
-				} else {
+				if (nextWidget.name != 0) {
 					$('.head-b1 span').first().text(nwName);
+					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nwName));
+					utils.loadMenu(nwName);
 				}
-				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nwName));
 			}
 			$('#' + widget.id).find("embed").attr("src", widgetOptions.image(nwName));
 			$('#' + widget.id).attr("name", nwName);
@@ -272,6 +280,7 @@ $(".widget-overlay span").click(function() {
 		$('#bar').prependTo("#" + clickedWidgetId + " .content");
 		$('.head-b1 span').first().text(clickedWidgetName);
 		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
+		utils.loadMenu(clickedWidgetName);
 		storage.storeWidget(1, clickedWidgetId, clickedWidgetName);
 		storage.storeWidget(clickedPosition, mainWidgetId, mainWidgetName);
 

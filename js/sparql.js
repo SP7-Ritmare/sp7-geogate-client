@@ -12,6 +12,41 @@ if (localStorage.getItem("session") == null) {
 	storage.reloadWidgets();
 }
 
+var query_widgetoptions = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?widget ?itemLabel ?isVisible ?itemTooltip ?icon ?label ?color ?address WHERE { ?widget rdf:type def:Widget . { ?widget def:icon ?icon; rdfs:label ?label; def:color ?color; def:address ?address; def:tooltip ?itemTooltip . } OPTIONAL { ?widget def:apiList/rdf:rest*/rdf:first ?item . ?item def:itemLabel ?itemLabel; def:isVisible ?isVisible . } }";
+$.ajax({
+	url : utils.endpoint,
+	dataType : "json",
+	type : "POST",
+	data : {
+		query : query_widgetoptions,
+		format : "json"
+	},
+	success : function(result) {
+		$.each(result, function(index, element) {
+			$.each(element.bindings, function(i, el) {
+				if (el.itemTooltip != undefined && el.icon != undefined && el.label != undefined && el.color != undefined && el.address != undefined) {
+					var itemVal = el.widget.value;
+					var widget = {
+						widget : itemVal.substr(itemVal.lastIndexOf("#") + 1),
+						itemTooltip : el.itemTooltip.value,
+						icon : el.icon.value,
+						color : el.color.value,
+						address : el.address.value
+					};
+					if (el.itemLabel != undefined && el.isVisible != undefined && el.isVisible.value == "true") {
+						widget["itemLabel"] = el.itemLabel.value;
+						widget["isVisible"] = el.isVisible.value;
+					};
+				};
+				if (jQuery.isEmptyObject(widget) == false) {
+					var record = JSON.stringify(widget);
+					sessionStorage.setItem(el.label.value + i, record);
+				};
+			});
+		});
+	}
+});
+
 function loadWidgets(widgetTypes) {
 	for (var i = 0; i < widgetTypes.length; i++) {
 		var query_widgetdetails = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?varLabel ?var ?itemLabel ?itemAddress ?isVisible ?inHistory ?undoCmd ?item ?itemTooltip ?icon ?label ?color ?address WHERE { { def:" + widgetTypes[i] + " def:icon ?icon; rdfs:label ?label; def:color ?color; def:address ?address; def:tooltip ?itemTooltip . } UNION { OPTIONAL { def:" + widgetTypes[i] + " def:apiList/rdf:rest*/rdf:first ?item . ?item def:itemLabel ?itemLabel; def:itemAddress ?itemAddress; def:isVisible ?isVisible; def:inHistory ?inHistory; def:undoCmd ?undoCmd . } } UNION { OPTIONAL { def:" + widgetTypes[i] + " def:varList/rdf:rest*/rdf:first ?var . ?var def:varLabel ?varLabel . } } } LIMIT 40";
@@ -35,6 +70,7 @@ function loadWidgets(widgetTypes) {
 						if (i == 0) {
 							$('.head-b1 span').first().text(lVal);
 							$('.menu-f1 span').removeClass().addClass(iVal);
+							utils.loadMenu(lVal);
 						}
 						wId.attr("name", lVal);
 						wId.find("embed").attr("src", aVal);
