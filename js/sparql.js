@@ -3,28 +3,14 @@
  * @copyright SP7 Ritmare (http://www.ritmare.it)
  */
 
-function getWidgetName(w) {
-	switch (w) {
-	case "widgetDiscovery":
-		return "Discovery";
-		break;
-	case "widgetMappa":
-		return "Map";
-		break;
-	case "widgetMydata":
-		return "My data";
-		break;
-	case "widgetNews":
-		return "Feeds";
-		break;
-	case "widgetMetadati":
-		return "Metadata";
-		break;
-	case "widgetInfo":
-		return "About";
-		break;
-	}
-};
+storage.check();
+sessionStorage.clear();
+// localStorage.clear();
+if (localStorage.getItem("session") == null) {
+	localStorage.setItem("session", "s");
+} else if (localStorage.getItem("session") == "l" && localStorage.getItem("sessionName") != null) {
+	storage.reloadWidgets();
+}
 
 function loadWidgets(widgetTypes) {
 	for (var i = 0; i < widgetTypes.length; i++) {
@@ -63,7 +49,7 @@ function loadWidgets(widgetTypes) {
 	};
 	var i = widgetTypes.length;
 	while (i--) {
-		var widgetName = getWidgetName(widgetTypes[i]);
+		var widgetName = utils.getWidgetName(widgetTypes[i]);
 		utils.appendToWidgetAttivi(widgetName);
 	}
 };
