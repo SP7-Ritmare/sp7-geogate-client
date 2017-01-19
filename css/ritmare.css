@@ -83,7 +83,7 @@ body {
 	position: absolute;
 	width: 225px;
 	right: 0;
-	top: 140px;
+	top: 40px;
 	height: calc(100% - 180px);
 	/*overflow-y: auto;*/
 }
@@ -380,7 +380,7 @@ body {
 	font-size: 1.5em;
 }
 #widget-attivi a .icon-title {
-	font-size: .7em;
+	font-size: .55em;
 }
 #widget-attivi a .badge {
 	position: absolute;

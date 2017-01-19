@@ -124,14 +124,14 @@ a {
 .forward-f1 {
 	color: #333;
 	position: absolute;
-	right: 70px;
+	left: 70px;
 	top: 5px;
 }
 
 .back-f1 {
 	color: #333;
 	position: absolute;
-	right: 100px;
+	left: 40px;
 	top: 5px;
 }
 

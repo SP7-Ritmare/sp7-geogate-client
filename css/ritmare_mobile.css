@@ -98,7 +98,7 @@ body {
 	font-size: 1.3em;
 }
 #widget-attivi-top a .icon-title {
-	font-size: .7em;
+	font-size: .55em;
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -158,7 +158,7 @@ body {
 #wrap-icons-top {
 	position: absolute;
 	left: 10px;
-	top: 140px;
+	top: 40px;
 	width: calc(100% - 40px);
 	display: block;
 }
