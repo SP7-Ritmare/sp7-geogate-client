@@ -69,16 +69,15 @@ function addWidget(clickedId) {
 $('[id^=draggable]').droppable({
 	tolerance : "pointer",
 	activate : function(event, ui) {
+		var dId = ui.helper.context.id;
+		$("#" + dId).css("zIndex", 999);
 		draggableClass = ui.draggable.attr('class').substring(0, 5);
 		switch (draggableClass) {
 		case "cwidg":
-			$("#" + ui.helper.context.id).css("zIndex", 999);
 			break;
 		case "block":
-			var dId = ui.draggable.context.id;
-			$("#" + dId).css("zIndex", 999);
+			$("#" + ui.draggable.context.id).css("visibility", "hidden");
 			draggedElement = dId.substring(9) - 1;
-			widgetData = utils.getWidgetData();
 			$('.widget-invisible-overlay', '#' + event.target.id).show();
 			break;
 		};
@@ -100,40 +99,25 @@ $('[id^=draggable]').droppable({
 				wdrId.draggable("option", "revert", false);
 				var targetPosition = storage.getWidgetById(targetId).position;
 				var draggedPosition = storage.getWidgetById(draggedId).position;
-				wdrId.animate(widgetData[0][targetElement]).css("position", "absolute");
-				wtaId.animate(widgetData[0][draggedElement]);
-				wdrId.width(widgetData[1][targetElement]);
-				wdrId.height(widgetData[2][targetElement]);
-				wtaId.width(widgetData[1][draggedElement]);
-				wtaId.height(widgetData[2][draggedElement]);
-				wdrId.find('.ifb').height(widgetData[3][targetElement]);
-				wtaId.find('.ifb').height(widgetData[3][draggedElement]);
 				var draggedName = ui.draggable.attr('name');
 				var targetName = $(event.target).attr('name');
 				if (targetPosition == 1) {
-					$('#bar').prependTo("#" + draggedId + " .content");
 					$('.head-b1 span').first().text(draggedName);
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(draggedName));
 					utils.loadMenu(draggedName);
 				} else if (draggedPosition == 1) {
-					$('#bar').prependTo("#" + targetId + " .content");
 					$('.head-b1 span').first().text(targetName);
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(targetName));
 					utils.loadMenu(targetName);
 				}
-				storage.storeWidget(targetPosition, draggedId, draggedName);
-				storage.storeWidget(draggedPosition, targetId, targetName);
-				var i = 0;
-				while (i < 6) {
-					i++;
-					if (i - 1 == draggedElement || i - 1 == targetElement) {
-						continue;
-					};
-					var drId = $('#draggable' + i);
-					drId.animate(widgetData[0][i - 1]).css("position", "absolute");
-					drId.width(widgetData[1][i - 1]);
-					drId.height(widgetData[2][i - 1]);
-				};
+				wdrId.attr("name", targetName);
+				wdrId.find("embed").attr("src", widgetOptions.image(targetName));
+				wdrId.css("background-color", widgetOptions.color(targetName));
+				wtaId.attr("name", draggedName);
+				wtaId.find("embed").attr("src", widgetOptions.image(draggedName));
+				wtaId.css("background-color", widgetOptions.color(draggedName));
+				storage.storeWidget(targetPosition, targetId, draggedName);
+				storage.storeWidget(draggedPosition, draggedId, targetName);
 				utils.reloadWidgetAttivi();
 				break;
 			} else {
@@ -142,20 +126,34 @@ $('[id^=draggable]').droppable({
 		}
 	},
 	deactivate : function(event, ui) {
-		$("#" + ui.draggable.context.id).css("zIndex", 99);
+		$("#" + ui.draggable.context.id).css("visibility", "visible");
+		$("#" + ui.helper.context.id).css("zIndex", 99);
 		$('.widget-invisible-overlay', '#' + event.target.id).hide();
 	}
 });
 
 $('.cwidg').draggable({
-	cursor : "crosshair",
+	cursor : "pointer",
 	helper : "clone",
 	revert : "invalid"
 });
 
 $('.block').draggable({
 	cursor : "move",
+	helper : "clone",
+	cursorAt : {
+		top : 5,
+		left : 5
+	},
 	revert : "invalid"
+});
+
+$(".block").on("drag", function(event, ui) {
+	ui.helper.css("width", "56px");
+	ui.helper.css("height", "56px");
+	if (ui.helper.context.id == "draggable1") {
+		ui.helper.find("#bar").css("display", "none");
+	};
 });
 
 $('.block').hover(function() {
@@ -232,7 +230,6 @@ $('.close-f1').click(function() {
 		} else {
 			if (i == 1) {
 				$('.head-b1 span').first().text("");
-				//	$('#' + widget.id).css("visibility", "hidden");
 			}
 		};
 	};
@@ -262,39 +259,23 @@ $(".widget-overlay span").click(function() {
 	var clickedWidgetId = blockElement.attr("id");
 	var clickedWidgetName = blockElement.attr("name");
 	var clickedElement = clickedWidgetId.substring(9) - 1;
-	var widgetData = utils.getWidgetData();
 	var cwId = $("#" + clickedWidgetId);
 	var mwId = $("#" + mainWidgetId);
 
 	if (storage.getWidgetById(mainWidgetId) !== undefined) {
 		$("#" + clickedWidgetId).draggable("option", "revert", false);
 		var clickedPosition = storage.getWidgetById(clickedWidgetId).position;
-		cwId.animate(widgetData[0][mainElement]).css("position", "absolute");
-		mwId.animate(widgetData[0][clickedElement]);
-		cwId.width(widgetData[1][mainElement]);
-		cwId.height(widgetData[2][mainElement]);
-		mwId.width(widgetData[1][clickedElement]);
-		mwId.height(widgetData[2][clickedElement]);
-		cwId.find('.ifb').height(ifbHeight[mainElement]);
-		mwId.find('.ifb').height(ifbHeight[clickedElement]);
-		$('#bar').prependTo("#" + clickedWidgetId + " .content");
+		cwId.attr("name", mainWidgetName);
+		cwId.find("embed").attr("src", widgetOptions.image(mainWidgetName));
+		cwId.css("background-color", widgetOptions.color(mainWidgetName));
+		mwId.attr("name", clickedWidgetName);
+		mwId.find("embed").attr("src", widgetOptions.image(clickedWidgetName));
+		mwId.css("background-color", widgetOptions.color(clickedWidgetName));
 		$('.head-b1 span').first().text(clickedWidgetName);
 		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
 		utils.loadMenu(clickedWidgetName);
-		storage.storeWidget(1, clickedWidgetId, clickedWidgetName);
-		storage.storeWidget(clickedPosition, mainWidgetId, mainWidgetName);
-
-		var i = 0;
-		while (i < 6) {
-			i++;
-			if (i - 1 == clickedElement || i - 1 == mainElement) {
-				continue;
-			};
-			var dId = $('#draggable' + i);
-			dId.animate(widgetData[0][i - 1]).css("position", "absolute");
-			dId.width(widgetData[1][i - 1]);
-			dId.height(widgetData[2][i - 1]);
-		};
+		storage.storeWidget(1, mainWidgetId, clickedWidgetName);
+		storage.storeWidget(clickedPosition, clickedWidgetId, mainWidgetName);
 	} else {
 		cwId.draggable("option", "revert", true);
 	};

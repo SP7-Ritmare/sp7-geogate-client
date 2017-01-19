@@ -115,9 +115,9 @@ var storage = {
 	},
 	getWidgetById : function(id) {
 		var i = 0;
-		while (i < storage.countWidgets()) {
+		while (i < this.countWidgets()) {
 			i++;
-			var widget = storage.getWidgetByPosition(i);
+			var widget = this.getWidgetByPosition(i);
 			if (widget != null) {
 				if (widget.id == id) {
 					return widget;
@@ -133,9 +133,9 @@ var storage = {
 		 }; */
 
 		var i = 0;
-		while (i < storage.countWidgets()) {
+		while (i < this.countWidgets()) {
 			i++;
-			var widget = storage.getWidgetByPosition(i);
+			var widget = this.getWidgetByPosition(i);
 			var wId = $('#draggable' + i);
 			if (widget != null && widget.name != 0) {
 				var wName = widget.name;
@@ -148,7 +148,7 @@ var storage = {
 				wId.css("background-color", widgetOptions.color(wName));
 				wId.css("visibility", "visible");
 				utils.appendToWidgetAttivi(wName);
-				$('#' + wName).prev().attr("data-badge2", storage.countWidgetsByName(wName) + "x");
+				$('#' + wName).prev().attr("data-badge2", this.countWidgetsByName(wName) + "x");
 			} else {
 				wId.css("visibility", "hidden");
 			};
@@ -170,7 +170,7 @@ var utils = {
 	},
 	appendToWidgetAttivi : function(str) {
 		if ($('#widget-attivi.widget-attivi a').length > 5 || $('#widget-attivi-top.widget-attivi a').length > 5) {
-			utils.removeFromWidgetAttivi("beforeAppending");
+			this.removeFromWidgetAttivi("beforeAppending");
 		}
 		this.doAppend(str);
 	},
@@ -178,7 +178,9 @@ var utils = {
 		$('.widget-attivi a:gt(0)').remove();
 		var i = storage.countWidgets() + 1;
 		while (--i) {
-			this.doAppend(storage.getWidgetByPosition(i).name);
+			if (storage.getWidgetByPosition(i).name != 0) {
+				this.doAppend(storage.getWidgetByPosition(i).name);
+			}
 		}
 	},
 	addBadgeValue : function() {
@@ -194,17 +196,6 @@ var utils = {
 				return ids[i];
 			}
 		};
-		/*	var pos = ["1", "2", "3", "4", "5"];
-		 for (var i = 0; i < pos.length; i++) {
-		 var widget = storage.getWidgetByPosition(pos[i]);
-		 console.log(pos[i]);
-		 if (widget != null && widget.name == 0) {
-		 var id = storage.getWidgetByPosition(pos[i]).id;
-		 console.log(id);
-		 return id;
-		 }
-		 }; */
-
 	},
 	loadMenu : function(str) {
 		var arr = widgetOptions.menu(str);
@@ -215,46 +206,6 @@ var utils = {
 		} else {
 			$('div#blocco-menu-f1 ul').empty();
 		};
-	},
-	getWidgetName : function(w) {
-		switch (w) {
-		case "widgetDiscovery":
-			return "Discovery";
-			break;
-		case "widgetMappa":
-			return "Map";
-			break;
-		case "widgetMydata":
-			return "My data";
-			break;
-		case "widgetNews":
-			return "Feeds";
-			break;
-		case "widgetMetadati":
-			return "Metadata";
-			break;
-		case "widgetInfo":
-			return "About";
-			break;
-		}
-	},
-	getWidgetData : function() {
-		bloccoPos = [];
-		bloccoWidth = [];
-		bloccoHeight = [];
-		ifbHeight = [];
-		data = [];
-		var i = 0;
-		while (i < 5) {
-			i++;
-			var wId = $('#draggable' + i);
-			bloccoPos.push(wId.position());
-			bloccoWidth.push(wId.width());
-			bloccoHeight.push(wId.height());
-			ifbHeight.push(wId.find('.ifb').height());
-		};
-		data = [bloccoPos, bloccoWidth, bloccoHeight, ifbHeight];
-		return data;
 	},
 	endpoint : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query"
 };

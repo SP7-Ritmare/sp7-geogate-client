@@ -1,296 +1,294 @@
 <!DOCTYPE html>
-<head>
-	<meta charset="utf-8">
-	<title>Ritmare</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Ritmare</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="fonts/glyphicons/glyphicons.css">
-	<!-- Icomoon CSS(font) -->
-	<link rel="stylesheet" type="text/css" href="fonts/icomoon/icomoon.css">
-	<!-- Iconsweets CSS(font) -->
-	<link rel="stylesheet" type="text/css" href="fonts/iconsweets/iconsweets.css">
-	<!-- Octicons CSS(font) -->
-	<link rel="stylesheet" type="text/css" href="fonts/octicons/octicons.css">
-	<!-- Stateface CSS(font) -->
-	<link rel="stylesheet" type="text/css" href="fonts/stateface/stateface.css">
-	<script src="js/mobile-detect.min.js"></script>
-	<script>
-		var md = new MobileDetect(window.navigator.userAgent);
-		if (md.phone() != null) {
-			var cssId = 'mobile_css';
-			if (!document.getElementById(cssId)) {
-				var head = document.getElementsByTagName('head')[0];
-				var link = document.createElement('link');
-				link.id = cssId;
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = 'css/ritmare_mobile.css';
-				link.media = 'screen';
-				head.appendChild(link);
-			}
-		} else {
-			var cssId = 'desktop_tablet_css';
-			if (!document.getElementById(cssId)) {
-				var head = document.getElementsByTagName('head')[0];
-				var link = document.createElement('link');
-				link.id = cssId;
-				link.rel = 'stylesheet';
-				link.type = 'text/css';
-				link.href = 'css/ritmare.css';
-				link.media = 'all';
-				head.appendChild(link);
-			}
-		};
-	</script>
-	<link rel="stylesheet" media="all" href="css/ritmare_common.css">
-	<script src="http://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
-	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-</head>
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="fonts/font-awesome/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="fonts/glyphicons/glyphicons.css">
+		<!-- Icomoon CSS(font) -->
+		<link rel="stylesheet" type="text/css" href="fonts/icomoon/icomoon.css">
+		<!-- Iconsweets CSS(font) -->
+		<link rel="stylesheet" type="text/css" href="fonts/iconsweets/iconsweets.css">
+		<!-- Octicons CSS(font) -->
+		<link rel="stylesheet" type="text/css" href="fonts/octicons/octicons.css">
+		<!-- Stateface CSS(font) -->
+		<link rel="stylesheet" type="text/css" href="fonts/stateface/stateface.css">
+		<script src="js/mobile-detect.min.js"></script>
+		<script>
+			var md = new MobileDetect(window.navigator.userAgent);
+			if (md.phone() != null) {
+				var cssId = 'mobile_css';
+				if (!document.getElementById(cssId)) {
+					var head = document.getElementsByTagName('head')[0];
+					var link = document.createElement('link');
+					link.id = cssId;
+					link.rel = 'stylesheet';
+					link.type = 'text/css';
+					link.href = 'css/ritmare_mobile.css';
+					link.media = 'screen';
+					head.appendChild(link);
+				}
+			} else {
+				var cssId = 'desktop_tablet_css';
+				if (!document.getElementById(cssId)) {
+					var head = document.getElementsByTagName('head')[0];
+					var link = document.createElement('link');
+					link.id = cssId;
+					link.rel = 'stylesheet';
+					link.type = 'text/css';
+					link.href = 'css/ritmare.css';
+					link.media = 'all';
+					head.appendChild(link);
+				}
+			};
+		</script>
+		<link rel="stylesheet" media="all" href="css/ritmare_common.css">
+		<script src="http://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	</head>
 
-<body>
-	<div id="menudx">
-		<img src="img/logo-menu.png" alt="Ritmare" height="50" id="logomenu" />
-		<ul id="menulist" style="visibility:hidden;">
-			<li>
-				<a id="clearworkspace" href="#">clear workspace</a>
-			</li>
-			<li>
-				<a id="menuopen" href="#">open session</a>
-			</li>
-			<li>
-				<a id="menusave" href="#">save session</a>
-			</li>
-		</ul>
-		<div id="wrap-icons" class="wrap-icons">
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Discovery" class="cwidg fa fa-search text-img" title = ""></span>
-				<br />
-				<span class="icon-title">discovery</span>
+	<body>
+		<div id="menudx">
+			<img src="img/logo-menu.png" alt="Ritmare" height="50" id="logomenu" />
+			<ul id="menulist" style="visibility:hidden;">
+				<li>
+					<a id="clearworkspace" href="#">clear workspace</a>
+				</li>
+				<li>
+					<a id="menuopen" href="#">open session</a>
+				</li>
+				<li>
+					<a id="menusave" href="#">save session</a>
+				</li>
+			</ul>
+			<div id="wrap-icons" class="wrap-icons">
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Discovery" class="cwidg fa fa-search text-img" title = ""></span>
+					<br />
+					<span class="icon-title">discovery</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Map" class="cwidg fa fa-map text-img" title = ""></span>
+					<br />
+					<span class="icon-title">map</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="My data" class="cwidg fa fa-bookmark text-img" title = ""></span>
+					<br />
+					<span class="icon-title">my data</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Feeds" class="cwidg fa fa-rss-square text-img" title = ""></span>
+					<br />
+					<span class="icon-title">feeds</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Metadata" class="cwidg fa fa-file-text text-img" title = ""></span>
+					<br />
+					<span class="icon-title">metadata</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="About" class="cwidg fa fa-info text-img" title = ""></span>
+					<br />
+					<span class="icon-title">about</span>
+				</div>
 			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Map" class="cwidg fa fa-map text-img" title = ""></span>
-				<br />
-				<span class="icon-title">map</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="My data" class="cwidg fa fa-bookmark text-img" title = ""></span>
-				<br />
-				<span class="icon-title">my data</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Feeds" class="cwidg fa fa-rss-square text-img" title = ""></span>
-				<br />
-				<span class="icon-title">feeds</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Metadata" class="cwidg fa fa-file-text text-img" title = ""></span>
-				<br />
-				<span class="icon-title">metadata</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="About" class="cwidg fa fa-info text-img" title = ""></span>
-				<br />
-				<span class="icon-title">about</span>
-			</div>
-		</div>
-		<div id="wrap-puls-sx">
-			<div id="widget-attivi" class="widget-attivi">
-				<a id="user-press-login" class="user-press-login" href="#"> <!-- <span id="user-login" class="fa fa-user"></span> --> <span id="user-login">
-					<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-						<clipPath id="clipCircle">
-							<circle r="25" cx="25" cy="25"/>
-						</clipPath>
-						<image xlink:href="" width="50" height="50" border="0" clip-path="url(#clipCircle)"/>
-					</svg></span>
-				<br />
-				<span id="user-title" class="icon-title">Login</span> </a>
-				<br />
-				<br />
-			</div>
+			<div id="wrap-puls-sx">
+				<div id="widget-attivi" class="widget-attivi">
+					<a id="user-press-login" class="user-press-login" href="#"> <!-- <span id="user-login" class="fa fa-user"></span> --> <span id="user-login">
+						<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+							<clipPath id="clipCircle">
+								<circle r="25" cx="25" cy="25"/>
+							</clipPath>
+							<image xlink:href="" width="50" height="50" border="0" clip-path="url(#clipCircle)"/>
+						</svg></span>
+					<br />
+					<span id="user-title" class="icon-title">Login</span> </a>
+					<br />
+					<br />
+				</div>
 
-			<div id="pulsanti-wrkspaces">
-				<div id="arrow-menu">
-					<a href="#" class="actmenu"><img src="img/btn-arrow-menu.jpg" class="imgopen" alt="Arrow Menu"><img src="img/btn-arrow-menu-close.jpg" alt="Arrow Menu" class="imgclose"></a>
+				<div id="pulsanti-wrkspaces">
+					<div id="arrow-menu">
+						<a href="#" class="actmenu"><img src="img/btn-arrow-menu.jpg" class="imgopen" alt="Arrow Menu"><img src="img/btn-arrow-menu-close.jpg" alt="Arrow Menu" class="imgclose"></a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<img src="img/logo-menu-top.png" alt="Ritmare" height="50" id="logomenu-top" />
-	<div id="widget-attivi-top" class="widget-attivi">
-		<a id="user-press-login-top" class="user-press-login" href="#"> <!-- <span id="user-login" class="fa fa-user"></span> --> <span id="user-login">
-			<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
-				<clipPath id="clipCircle">
-					<circle r="25" cx="25" cy="25"/>
-				</clipPath>
-				<image xlink:href="" width="50" height="50" border="0"  clip-path="url(#clipCircle)"/>
-			</svg></span>
-		<br />
-		<span id="user-title" class="icon-title">Login</span> </a>
-	</div>
-	<div id="menutop">
-		<ul id="menulist" style="visibility:hidden;">
-			<li>
-				<a id="clearworkspace" href="#">clear workspace</a>
-			</li>
-			<li>
-				<a id="menuopen" href="#">open session</a>
-			</li>
-			<li>
-				<a id="menusave" href="#">save session</a>
-			</li>
-		</ul>
-		<div id="wrap-icons-top" class="wrap-icons">
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Discovery" class="cwidg fa fa-search text-img" title = ""></span>
-				<br />
-				<span class="icon-title">discovery</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Map" class="cwidg imoon imoon-map text-img" title = ""></span>
-				<br />
-				<span class="icon-title">map</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="My data" class="cwidg fa fa-bookmark text-img" title = ""></span>
-				<br />
-				<span class="icon-title">my data</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Feeds" class="cwidg fa fa-rss-square text-img" title = ""></span>
-				<br />
-				<span class="icon-title">feeds</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="Metadata" class="cwidg fa fa-file-text text-img" title = ""></span>
-				<br />
-				<span class="icon-title">metadata</span>
-			</div>
-			<div>
-				<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
-				<span id="About" class="cwidg fa fa-info text-img" title = ""></span>
-				<br />
-				<span class="icon-title">about</span>
-			</div>
+		<img src="img/logo-menu-top.png" alt="Ritmare" height="50" id="logomenu-top" />
+		<div id="widget-attivi-top" class="widget-attivi">
+			<a id="user-press-login-top" class="user-press-login" href="#"> <!-- <span id="user-login" class="fa fa-user"></span> --> <span id="user-login">
+				<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50">
+					<clipPath id="clipCircle">
+						<circle r="25" cx="25" cy="25"/>
+					</clipPath>
+					<image xlink:href="" width="50" height="50" border="0"  clip-path="url(#clipCircle)"/>
+				</svg></span>
+			<br />
+			<span id="user-title" class="icon-title">Login</span> </a>
 		</div>
-
-		<div id="pulsanti-wrkspaces-top">
-			<div id="arrow-menu-top">
-				<a href="#" class="actmenu-top"><img src="img/btn-arrow-top.jpg" class="imgopen-top" alt="Arrow Menu"><img src="img/btn-arrow-top-close.jpg" alt="Arrow Menu" class="imgclose-top"></a>
-			</div>
-		</div>
-	</div>
-
-	<div id="draggable1" class="block blocco-1" rel="b1" style="visibility:hidden;">
-		<div class="content">
-			<div id="bar">
-				<div id="blocco-menu-f1">
-					<ul></ul>
+		<div id="menutop">
+			<ul id="menulist" style="visibility:hidden;">
+				<li>
+					<a id="clearworkspace" href="#">clear workspace</a>
+				</li>
+				<li>
+					<a id="menuopen" href="#">open session</a>
+				</li>
+				<li>
+					<a id="menusave" href="#">save session</a>
+				</li>
+			</ul>
+			<div id="wrap-icons-top" class="wrap-icons">
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Discovery" class="cwidg fa fa-search text-img" title = ""></span>
+					<br />
+					<span class="icon-title">discovery</span>
 				</div>
-				<div class="head-b1">
-					<span></span><a href="#" class="menu-f1"><span></span></a><a href="#" class="forward-f1"><span class="fa fa-arrow-circle-o-right fa-lg"></span></a><a href="#" class="back-f1"><span class="fa fa-arrow-circle-o-left fa-lg"></span></a><a href="#" class="close-f1"><span class="metro-icon glyphicon glyphicon-remove"></span></a><a href="#" class="full-f1"><span class="metro-icon glyphicon glyphicon-fullscreen"></span></a>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Map" class="cwidg imoon imoon-map text-img" title = ""></span>
+					<br />
+					<span class="icon-title">map</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="My data" class="cwidg fa fa-bookmark text-img" title = ""></span>
+					<br />
+					<span class="icon-title">my data</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Feeds" class="cwidg fa fa-rss-square text-img" title = ""></span>
+					<br />
+					<span class="icon-title">feeds</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="Metadata" class="cwidg fa fa-file-text text-img" title = ""></span>
+					<br />
+					<span class="icon-title">metadata</span>
+				</div>
+				<div>
+					<!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span>
+					<span id="About" class="cwidg fa fa-info text-img" title = ""></span>
+					<br />
+					<span class="icon-title">about</span>
 				</div>
 			</div>
-			<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
+
+			<div id="pulsanti-wrkspaces-top">
+				<div id="arrow-menu-top">
+					<a href="#" class="actmenu-top"><img src="img/btn-arrow-top.jpg" class="imgopen-top" alt="Arrow Menu"><img src="img/btn-arrow-top-close.jpg" alt="Arrow Menu" class="imgclose-top"></a>
+				</div>
+			</div>
 		</div>
-		<div class="widget-invisible-overlay"></div>
-		<div class="widget-overlay">
-			<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
-		</div>
-	</div>
-	<div class="container container--column">
-		<div id="draggable2" class="block blocco-2" rel="b2" style="visibility:hidden;">
+
+		<div id="draggable1" class="block blocco-1" rel="b1" style="visibility:hidden;">
 			<div class="content">
+				<div id="bar">
+					<div id="blocco-menu-f1">
+						<ul></ul>
+					</div>
+					<div class="head-b1">
+						<span></span><a href="#" class="menu-f1"><span></span></a><a href="#" class="forward-f1" title="forward"><span class="fa fa-chevron-right"></span></a><a href="#" class="back-f1" title="back"><span class="fa fa-chevron-left"></span></a><a href="#" class="close-f1"><span class="metro-icon glyphicon glyphicon-remove"></span></a><a href="#" class="full-f1"><span class="metro-icon glyphicon glyphicon-fullscreen"></span></a>
+					</div>
+				</div>
 				<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
-			</div>
-			<div class="widget-invisible-overlay"></div>
-			<div class="widget-overlay">
-				<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
+				<div class="widget-invisible-overlay"></div>
 			</div>
 		</div>
-
-		<div class="container container--row barramenu">
-			<div class="container container--column">
-				<div class="container container--row">
-					<div id="draggable5" class="block blocco-5" rel="b5" style="visibility:hidden;">
-						<div class="content">
-							<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
-						</div>
-						<div class="widget-invisible-overlay"></div>
-						<div class="widget-overlay">
-							<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
-						</div>
-					</div>
-					<!--		<div id="draggable6" class="container container--column colonna-vuota">
-					<svg version="1.1" id="logo_r" class="b1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-					width="19.45px" height="65.803px" viewBox="0 0 19.45 65.803" enable-background="new 0 0 19.45 65.803" xml:space="preserve">
-					<g>
-					<path d="M3.066,19.983h4.258v4.734c1.27-1.865,2.609-3.26,4.019-4.183c1.409-0.923,2.878-1.384,4.406-1.384
-					c1.151,0,2.382,0.368,3.692,1.102l-2.173,3.513c-0.874-0.377-1.608-0.565-2.203-0.565c-1.39,0-2.729,0.571-4.02,1.712
-					c-1.291,1.142-2.273,2.913-2.947,5.314c-0.517,1.846-0.774,5.578-0.774,11.195v10.956H3.066V19.983z"/>
-					</g>
-					</svg>
-					</div> -->
-				</div>
-				<div id="draggable4" class="block blocco-4" rel="b4" style="visibility:hidden;">
-					<div class="content">
-						<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
-					</div>
+		<div class="container container--column">
+			<div id="draggable2" class="block blocco-2" rel="b2" style="visibility:hidden;">
+				<div class="content">
+					<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
 					<div class="widget-invisible-overlay"></div>
 					<div class="widget-overlay">
 						<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
 					</div>
 				</div>
 			</div>
-			<div id="draggable3" class="block blocco-3" rel="b3" style="visibility:hidden;">
-				<div class="content">
-					<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
+
+			<div class="container container--row barramenu">
+				<div class="container container--column">
+					<div class="container container--row">
+						<div id="draggable5" class="block blocco-5" rel="b5" style="visibility:hidden;">
+							<div class="content">
+								<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
+								<div class="widget-invisible-overlay"></div>
+								<div class="widget-overlay">
+									<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
+								</div>
+							</div>
+						</div>
+						<!--		<div id="draggable6" class="container container--column colonna-vuota">
+						<svg version="1.1" id="logo_r" class="b1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						width="19.45px" height="65.803px" viewBox="0 0 19.45 65.803" enable-background="new 0 0 19.45 65.803" xml:space="preserve">
+						<g>
+						<path d="M3.066,19.983h4.258v4.734c1.27-1.865,2.609-3.26,4.019-4.183c1.409-0.923,2.878-1.384,4.406-1.384
+						c1.151,0,2.382,0.368,3.692,1.102l-2.173,3.513c-0.874-0.377-1.608-0.565-2.203-0.565c-1.39,0-2.729,0.571-4.02,1.712
+						c-1.291,1.142-2.273,2.913-2.947,5.314c-0.517,1.846-0.774,5.578-0.774,11.195v10.956H3.066V19.983z"/>
+						</g>
+						</svg>
+						</div> -->
+					</div>
+					<div id="draggable4" class="block blocco-4" rel="b4" style="visibility:hidden;">
+						<div class="content">
+							<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
+							<div class="widget-invisible-overlay"></div>
+							<div class="widget-overlay">
+								<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
+							</div>
+						</div>
+					</div>
 				</div>
-				<div class="widget-invisible-overlay"></div>
-				<div class="widget-overlay">
-					<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
+				<div id="draggable3" class="block blocco-3" rel="b3" style="visibility:hidden;">
+					<div class="content">
+						<embed class="ifb" src="blank.html" width="100%" height="100%"> </embed>
+						<div class="widget-invisible-overlay"></div>
+						<div class="widget-overlay">
+							<span class="fa fa-hand-o-left" title="Click to move the widget to the main position"></span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div id="browser_not_supported" title="Browser non supportato" style="display:none;">
+		<div id="browser_not_supported" title="Browser non supportato" style="display:none;">
+			<p>
+				La versione del tuo browser non è supportata. Alcune funzionalità del portale potrebbero non funzionare correttamente.
+			</p>
+		</div>
+
+		<!--	<div id="reload_session" title="Ricarica sessione" style="display:none;">
 		<p>
-			La versione del tuo browser non è supportata. Alcune funzionalità del portale potrebbero non funzionare correttamente.
+		Vuoi ricaricare la sessione precedente?
 		</p>
-	</div>
+		</div> -->
 
-	<!--	<div id="reload_session" title="Ricarica sessione" style="display:none;">
-	<p>
-	Vuoi ricaricare la sessione precedente?
-	</p>
-	</div> -->
+		<div id="user_login" title="ORCID login" style="display:none;">
+			<br>
+			<button id="connect-orcid-button" onclick="openORCID()"><img id="orcid-id-logo" src="img/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>Create or Connect your ORCID iD
+			</button>
+		</div>
 
-	<div id="user_login" title="ORCID login" style="display:none;">
-		<br>
-		<button id="connect-orcid-button" onclick="openORCID()"><img id="orcid-id-logo" src="img/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>Create or Connect your ORCID iD
-		</button>
-	</div>
-
-	<script type="text/javascript" src="js/ui.js"></script>
-	<script type="text/javascript" src="js/loadData.js"></script>
-	<script type="text/javascript" src="js/utils.js"></script>
-	<script type="text/javascript" src="js/sparql.js"></script>
-	<script type="text/javascript" src="js/interaction-ui.js"></script>
-</body>
+		<script type="text/javascript" src="js/ui.js"></script>
+		<script type="text/javascript" src="js/utils.js"></script>
+		<script type="text/javascript" src="js/loadData.js"></script>
+		<script type="text/javascript" src="js/sparql.js"></script>
+		<script type="text/javascript" src="js/interaction-ui.js"></script>
+	</body>
 </html>
