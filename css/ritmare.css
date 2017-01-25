@@ -243,25 +243,25 @@ body {
 	height: initial;
 	width: calc((100vw - 50px) * 0.618181818181818);
 	position: relative;
-	z-index: 901;
+	z-index: 99;
 }
 .blocco-2 {
 	background-color: #ffffff;
 	width: calc(100% - 50px);
 	height: calc(100vh * 0.617647058823529);
 	position: relative;
-	z-index: 901;
+	z-index: 99;
 }
 .colonna-vuota {
 	background: #fff;
-	z-index: 901;
+	z-index: 99;
 }
 .blocco-3 {
 	background-color: #ffffff;
 	height: initial;
 	width: calc(100vw * 0.236363636363636);
 	position: relative;
-	z-index: 901;
+	z-index: 99;
 }
 
 .blocco-4 {
@@ -269,14 +269,14 @@ body {
 	width: 100%;
 	height: calc(100vh * 0.235294117647059);
 	position: relative;
-	z-index: 901;
+	z-index: 99;
 }
 .blocco-5 {
 	background-color: #ffffff;
 	height: initial;
 	width: calc(100vw * 0.090909090909091);
 	position: relative;
-	z-index: 901;
+	z-index: 99;
 }
 .block--3x3 {
 	background-color: #c1709c;

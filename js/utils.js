@@ -68,10 +68,9 @@ var storage = {
 			});
 		}
 	},
-	storeWidget : function(position, id, name) {
+	storeWidget : function(position, name) {
 		var widget = {
 			position : position,
-			id : id,
 			name : name
 		};
 		var record = JSON.stringify(widget);
@@ -82,18 +81,6 @@ var storage = {
 		for (var i in storageType()) {
 			if ($.isNumeric(i)) {
 				length = length + 1;
-			};
-		};
-		return length;
-	},
-	countWidgetsWithout0 : function() {
-		var length = 0;
-		for (var i in storageType()) {
-			val = storageType().getItem(i);
-			if (val != null && $.isNumeric(i)) {
-				if (JSON.parse(val).name != 0) {
-					length = length + 1;
-				};
 			};
 		};
 		return length;
@@ -113,13 +100,13 @@ var storage = {
 	getWidgetByPosition : function(pos) {
 		return JSON.parse(storageType().getItem(pos));
 	},
-	getWidgetById : function(id) {
+	getWidgetByName : function(name) {
 		var i = 0;
 		while (i < this.countWidgets()) {
 			i++;
 			var widget = this.getWidgetByPosition(i);
 			if (widget != null) {
-				if (widget.id == id) {
+				if (widget.name == name) {
 					return widget;
 				};
 			};
@@ -137,7 +124,7 @@ var storage = {
 			i++;
 			var widget = this.getWidgetByPosition(i);
 			var wId = $('#draggable' + i);
-			if (widget != null && widget.name != 0) {
+			if (widget != null) {
 				var wName = widget.name;
 				if (widget.position == 1) {
 					$('.head-b1 span').first().text(wName);
@@ -164,8 +151,7 @@ var utils = {
 		if (str == "beforeAppending") {
 			$('.widget-attivi a:eq(5)').remove();
 		} else {
-			var cw = storage.countWidgetsWithout0() + 1;
-			$('.widget-attivi a:eq(' + cw + ')').remove();
+			$('.widget-attivi a:eq(1)').remove();
 		}
 	},
 	appendToWidgetAttivi : function(str) {
@@ -178,24 +164,13 @@ var utils = {
 		$('.widget-attivi a:gt(0)').remove();
 		var i = storage.countWidgets() + 1;
 		while (--i) {
-			if (storage.getWidgetByPosition(i).name != 0) {
-				this.doAppend(storage.getWidgetByPosition(i).name);
-			}
+			this.doAppend(storage.getWidgetByPosition(i).name);
 		}
 	},
 	addBadgeValue : function() {
 		$('.wrap-icons').find('.badge2').each(function() {
 			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".cwidg").attr("id")) + "x");
 		});
-	},
-	findMissingId : function() {
-		var ids = ["draggable1", "draggable2", "draggable3", "draggable4", "draggable5"];
-		for (var i = 0; i < ids.length; i++) {
-			var widget = storage.getWidgetById(ids[i]);
-			if (widget == null) {
-				return ids[i];
-			}
-		};
 	},
 	loadMenu : function(str) {
 		var arr = widgetOptions.menu(str);
