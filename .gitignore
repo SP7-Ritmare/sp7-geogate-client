@@ -16,11 +16,24 @@ local.properties
 
 
 #################
-## Intellij/WebStorm
+## IntelliJ/WebStorm
 #################
 .idea/
 *.iml
 *.iws
+
+
+#################
+## NodeJs files
+#################
+*.pid
+*.seed
+*.log
+pids
+logs
+results
+build
+node_modules
 
 
 #################
