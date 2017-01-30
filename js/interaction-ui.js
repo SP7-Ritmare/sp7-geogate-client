@@ -109,7 +109,7 @@ $('[id^=draggable]').droppable({
 });
 
 $('.cwidg').draggable({
-	cursor : "pointer",
+	cursor : "move",
 	helper : "clone",
 	revert : "invalid"
 });

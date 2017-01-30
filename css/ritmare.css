@@ -227,8 +227,8 @@ body {
 	display: -ms-flexbox;
 	display: box;
 	display: flex;
+	cursor: move;
 	/*    border: 1px solid #000;*/
-
 }
 .block.fullscreen {
 	z-index: 9999 !important;
