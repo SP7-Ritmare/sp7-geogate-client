@@ -112,6 +112,8 @@ function sparql() {
 		} else {
 			$("#user-login image").attr("xlink:href", localStorage.getItem("userPicture"));
 			$("#user-title").text("Logout");
+			$("#menulist").css("visibility", "visible");
+			$(".wrap-icons").css("top", "140px");
 		}
 	} else {
 		var query = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category WHERE { def:defaultUser foaf:img	?picture; ^foaf:member ?category . ?profile def:owner ?category; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
