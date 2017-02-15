@@ -3,19 +3,21 @@ node_js:
   - "4.4"
 branches:
   only: master
-install: npm install
-before_script:
-  - npm install -g selenium-webdriver@2.53.3
-  - npm install -g geckodriver
-  - npm install -g chai
+addons:
+  firefox: "45.7"
+before_install:
+  - npm install --save selenium-webdriver@2.53.3
+  - npm install --save geckodriver
+  - npm install --save chai
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
-script:
-  - "node tests/functional-testing.js"
+install: npm install
 cache:
   directories:
     - node_modules
+script:
+  - "node tests/functional-testing.js"
 env:
   global:
     - secure: "qvG8lNnr1vhsfINtaKZKxBcQprHnijhG+MP75q2eTb4GzMudMsUNmUEh6bzSwy+sY27uHqy1fy+1HU5ikyWCDJYK7hLJmBR64DIjagdQ+tIbFGxCesEpvAU6QPjqWDxQPJZ9qiUNmhCCeTAhxSmrqHvzSYOOwSYvPrSfxPBBjkV+vLs9tVFcQ2YCEr4a7NVJF2OuuNEf+eL7wA+rR7lP7FmiMdNPg7cWZB34iKR/FDHiv2N+5pWmAEamUcVkgzR8omOd3Jb/Nzr8+PVkqx/JCybfcNxJqUCdN/SLFdHIpVTee92IAbfSFozPkwGicowPiI6fnGLSKwnw8wB9y6Ca0EKURUqEQaJ4PjJDznLJqliJrZpoedHoCVPYOzHzBrD+w4CKS/SMqXMSn9be44QRSMAL6tc0bA7dxG+GBgYTfWg9zaNY9nHcBsvfeIb4QebYCYTsN8C+VGY/zX45v/qPCE9uakWKJySNI+kEViwaC59p2yNp/tCfNL3vHnn3tayQDXlL/2eq9md2j83n1Oa/HtKVll46RCFpiip5r/FdawuoBuV3sGXmtCVgGs1K5hOqw1kVi11wW3PB8Qtl8dpbroEwZXN1x6/o9scSD5wzgrrhE5HpJUt4Bb0kH68OEvUHRx06FNeCCmvtRD3t4fe0KwuNWWLs6mXdPRZKdI0ezXg="
