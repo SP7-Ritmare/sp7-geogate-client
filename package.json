@@ -1,0 +1,27 @@
+{
+  "name": "sp7-geogate-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node tests/functional-testing.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SP7-Ritmare/sp7-geogate-client.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SP7-Ritmare/sp7-geogate-client/issues"
+  },
+  "homepage": "https://github.com/SP7-Ritmare/sp7-geogate-client#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "geckodriver": "^1.4.0",
+    "selenium-webdriver": "^2.53.3"
+  }
+}
