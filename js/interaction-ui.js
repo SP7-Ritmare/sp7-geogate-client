@@ -235,6 +235,21 @@ $(".widget-overlay span").click(function() {
 	utils.reloadWidgetAttivi();
 });
 
+$("#menusave").click(function() {
+	if ($("#save_session_div").is(":visible")) {
+		$("#save_session_div").fadeOut(1000);
+		$(".wrap-icons").animate({
+			"top" : "140px"
+		}, "slow", "linear");
+	} else {
+		$("#save_session_div").fadeIn(1000);
+		$(".wrap-icons").animate({
+			"top" : "170px"
+		}, "slow", "linear");
+	}
+	$("#save_session_div input").val('');
+});
+
 function openORCID() {
 	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
 	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';

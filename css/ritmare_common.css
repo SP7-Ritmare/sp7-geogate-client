@@ -211,3 +211,18 @@ a {
 	font-family: Calibri;
 	text-align: center;
 }
+
+#save_session_div {
+	display: none;
+	margin: 3px 0 0 15px;
+}
+
+#save_session_div input {
+	height: 25px;
+	vertical-align: top;
+	font-size: 0.9em;
+}
+
+#save_session_div button {
+	height: 25px;
+}
