@@ -108,12 +108,6 @@ $('[id^=draggable]').droppable({
 	}
 });
 
-$('.cwidg').draggable({
-	cursor : "move",
-	helper : "clone",
-	revert : "invalid"
-});
-
 $('.block').draggable({
 	cursor : "move",
 	helper : "clone",
@@ -146,14 +140,8 @@ $(".widget-overlay span").tooltip({
 	}
 });
 
-$(".cwidg").tooltip({
-	content : function() {
-		return widgetOptions.tooltip(this.id);
-	}
-});
-
 //add a new widget by click
-$('.cwidg').click(function() {
+$(document).on('click', '.cwidg', function() {
 	addWidget(this.id);
 });
 

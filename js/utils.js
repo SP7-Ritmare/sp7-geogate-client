@@ -145,7 +145,7 @@ var storage = {
 
 var utils = {
 	doAppend : function(str) {
-		$('.widget-attivi a:first-child').after('<a href="#"><span class="badge" data-badge="0"></span><span class="awidg ' + widgetOptions.icon(str) + '"></span><br /><span class="icon-title">' + str + '</span></a>');
+		$('.widget-attivi a:first-child').after('<a href="#"><!--<span class="badge" data-badge="0">--></span><span class="awidg ' + widgetOptions.icon(str) + '" style="color:' + widgetOptions.color(str) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(str) + '">' + str + '</span></a>');
 	},
 	removeFromWidgetAttivi : function(str) {
 		if (str == "beforeAppending") {
@@ -164,7 +164,9 @@ var utils = {
 		$('.widget-attivi a:gt(0)').remove();
 		var i = storage.countWidgets() + 1;
 		while (--i) {
-			this.doAppend(storage.getWidgetByPosition(i).name);
+			if (storage.getWidgetByPosition(i) !== null) {
+				this.doAppend(storage.getWidgetByPosition(i).name);
+			}
 		}
 	},
 	addBadgeValue : function() {
@@ -173,13 +175,13 @@ var utils = {
 		});
 	},
 	loadMenu : function(str) {
+		$('#dropdown-menu').empty();
 		var arr = widgetOptions.menu(str);
 		if ( typeof arr !== 'undefined' && arr.length > 0) {
-			for (var i = 0; i < arr.length; i++) {
-				$('div#blocco-menu-f1 ul').html("<li><a href='#'>" + arr[i] + "</a></li>");
+			var i = arr.length;
+			while (i--) {
+				$('#dropdown-menu').append("<li><a href='#'>" + arr[i] + "</a></li>");
 			};
-		} else {
-			$('div#blocco-menu-f1 ul').empty();
 		};
 	},
 	endpoint : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query"
