@@ -12,7 +12,7 @@ function addWidget(clickedId) {
 			var fwName = formerWidget.name;
 			storage.storeWidget(i, fwName);
 			var wId = $('#draggable' + i);
-			wId.find("embed").attr("src", widgetOptions.image(fwName));
+			wId.find("iframe").attr("src", widgetOptions.image(fwName));
 			wId.attr("name", fwName);
 			wId.css("background-color", widgetOptions.color(fwName));
 			if (wId.css("visibility") == "hidden") {
@@ -35,7 +35,7 @@ function addWidget(clickedId) {
 	$('.head-b1 span').first().text(clickedId);
 	$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedId));
 	utils.loadMenu(clickedId);
-	wnId.find("embed").attr("src", widgetOptions.image(clickedId));
+	wnId.find("iframe").attr("src", widgetOptions.image(clickedId));
 	wnId.attr("name", clickedId);
 	wnId.css("background-color", widgetOptions.color(clickedId));
 
@@ -89,10 +89,10 @@ $('[id^=draggable]').droppable({
 					utils.loadMenu(targetName);
 				}
 				wdrId.attr("name", targetName);
-				wdrId.find("embed").attr("src", widgetOptions.image(targetName));
+				wdrId.find("iframe").attr("src", widgetOptions.image(targetName));
 				wdrId.css("background-color", widgetOptions.color(targetName));
 				wtaId.attr("name", draggedName);
-				wtaId.find("embed").attr("src", widgetOptions.image(draggedName));
+				wtaId.find("iframe").attr("src", widgetOptions.image(draggedName));
 				wtaId.css("background-color", widgetOptions.color(draggedName));
 				utils.reloadWidgetAttivi();
 				break;
@@ -181,7 +181,7 @@ $('.close-f1').click(function() {
 				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nwName));
 				utils.loadMenu(nwName);
 			}
-			$('#draggable' + i).find("embed").attr("src", widgetOptions.image(nwName));
+			$('#draggable' + i).find("iframe").attr("src", widgetOptions.image(nwName));
 			$('#draggable' + i).attr("name", nwName);
 			$('#draggable' + i).css("background-color", widgetOptions.color(nwName));
 			$('#draggable' + i).css("visibility", "visible");
@@ -209,10 +209,10 @@ $(".widget-overlay span").click(function() {
 		storage.storeWidget(1, clickedWidgetName);
 		storage.storeWidget(clickedPosition, mainWidgetName);
 		cwId.attr("name", mainWidgetName);
-		cwId.find("embed").attr("src", widgetOptions.image(mainWidgetName));
+		cwId.find("iframe").attr("src", widgetOptions.image(mainWidgetName));
 		cwId.css("background-color", widgetOptions.color(mainWidgetName));
 		mwId.attr("name", clickedWidgetName);
-		mwId.find("embed").attr("src", widgetOptions.image(clickedWidgetName));
+		mwId.find("iframe").attr("src", widgetOptions.image(clickedWidgetName));
 		mwId.css("background-color", widgetOptions.color(clickedWidgetName));
 		$('.head-b1 span').first().text(clickedWidgetName);
 		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));

@@ -131,7 +131,7 @@ var storage = {
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(wName));
 				};
 				wId.attr("name", wName);
-				wId.find("embed").attr("src", widgetOptions.image(wName));
+				wId.find("iframe").attr("src", widgetOptions.image(wName));
 				wId.css("background-color", widgetOptions.color(wName));
 				wId.css("visibility", "visible");
 				utils.appendToWidgetAttivi(wName);

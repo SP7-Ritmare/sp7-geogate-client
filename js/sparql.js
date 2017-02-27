@@ -31,7 +31,7 @@ function loadWidgets(widgetTypes) {
 								utils.loadMenu(lVal);
 							}
 							wId.attr("name", lVal);
-							wId.find("embed").attr("src", aVal);
+							wId.find("iframe").attr("src", aVal);
 							wId.css("background-color", cVal);
 							wId.css("visibility", "visible");
 						}
