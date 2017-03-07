@@ -7,7 +7,7 @@ function loadWidgets(widgetTypes) {
 	for (var i = 0; i < widgetTypes.length; i++) {
 		var query_widgetdetails = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?varLabel ?var ?itemLabel ?itemAddress ?isVisible ?inHistory ?undoCmd ?item ?itemTooltip ?icon ?label ?color ?address FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { { def:" + widgetTypes[i] + " def:icon ?icon; rdfs:label ?label; def:color ?color; def:address ?address; def:tooltip ?itemTooltip . } UNION { OPTIONAL { def:" + widgetTypes[i] + " def:apiList/rdf:rest*/rdf:first ?item . ?item def:itemLabel ?itemLabel; def:itemAddress ?itemAddress; def:isVisible ?isVisible; def:inHistory ?inHistory; def:undoCmd ?undoCmd . } } UNION { OPTIONAL { def:" + widgetTypes[i] + " def:varList/rdf:rest*/rdf:first ?var . ?var def:varLabel ?varLabel . } } } LIMIT 40";
 		$.ajax({
-			url : utils.endpoint,
+			url : utils.endpoint_query,
 			dataType : "json",
 			type : "POST",
 			data : {
@@ -47,7 +47,7 @@ function loadWidgets(widgetTypes) {
 function userQuery(orcid) {
 	var query_userid = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?userid FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { ?userid foaf:account/foaf:accountName ?orcid . FILTER(?orcid = '" + orcid + "') }";
 	$.ajax({
-		url : utils.endpoint,
+		url : utils.endpoint_query,
 		dataType : "json",
 		type : "POST",
 		data : {
@@ -59,9 +59,10 @@ function userQuery(orcid) {
 				$.each(element.bindings, function(i, el) {
 					if (i == 0) {
 						var userIdVal = el.userid.value;
+						localStorage.setItem("sessionOwner", userIdVal);
 						var query_listwidgets = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { " + 'sp7:' + userIdVal.substring(userIdVal.lastIndexOf('/') + 1) + " foaf:img	?picture ; ^foaf:member	?category . ?profile def:owner ?category ; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
 						$.ajax({
-							url : utils.endpoint,
+							url : utils.endpoint_query,
 							dataType : "json",
 							type : "POST",
 							data : {
@@ -105,6 +106,9 @@ function sparql() {
 				url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
 			}).done(function(msg) {
 				localStorage.setItem("session", "l");
+				if (localStorage.getItem("widgetTest_message") != null) {
+					localStorage.removeItem("widgetTest_message");
+				}
 				userQuery(msg.orcid);
 				$("#user-title").text("Logout");
 				$("#menulist").css("visibility", "visible");
@@ -119,7 +123,7 @@ function sparql() {
 	} else {
 		var query = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { def:defaultUser foaf:img	?picture; ^foaf:member ?category . ?profile def:owner ?category; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
 		$.ajax({
-			url : utils.endpoint,
+			url : utils.endpoint_query,
 			dataType : "json",
 			type : "POST",
 			data : {

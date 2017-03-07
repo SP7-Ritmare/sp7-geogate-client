@@ -145,6 +145,7 @@ $(document).on('click', '.cwidg', function() {
 	addWidget(this.id);
 });
 
+//logout + login dialog
 $('.user-press-login').click(function() {
 	if (window.location.href.indexOf("code") > -1) {
 		localStorage.setItem("session", "s");
@@ -152,6 +153,7 @@ $('.user-press-login').click(function() {
 		window.location.href = "http://geogate.sp7.irea.cnr.it/client";
 		localStorage.removeItem("userPicture");
 		$("#user-title").text("Login");
+		localStorage.removeItem("sessionOwner");
 	} else {
 		$("#user_login").dialog({
 			modal : true,
@@ -221,21 +223,6 @@ $(".widget-overlay span").click(function() {
 		cwId.draggable("option", "revert", true);
 	};
 	utils.reloadWidgetAttivi();
-});
-
-$("#menusave").click(function() {
-	if ($("#save_session_div").is(":visible")) {
-		$("#save_session_div").fadeOut(1000);
-		$(".wrap-icons").animate({
-			"top" : "140px"
-		}, "slow", "linear");
-	} else {
-		$("#save_session_div").fadeIn(1000);
-		$(".wrap-icons").animate({
-			"top" : "170px"
-		}, "slow", "linear");
-	}
-	$("#save_session_div input").val('');
 });
 
 function openORCID() {

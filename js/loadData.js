@@ -23,13 +23,11 @@ function loadData() {
 	// localStorage.clear();
 	if (localStorage.getItem("session") == null) {
 		localStorage.setItem("session", "s");
-	} else if (localStorage.getItem("session") == "l" && localStorage.getItem("sessionName") != null) {
-		storage.reloadWidgets();
 	}
 
-	var query_widgetoptions = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?widget ?itemLabel ?isVisible ?itemTooltip ?icon ?label ?color ?address FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { ?widget rdf:type def:Widget . { ?widget def:icon ?icon; rdfs:label ?label; def:color ?color; def:address ?address; def:tooltip ?itemTooltip . } OPTIONAL { ?widget def:apiList/rdf:rest*/rdf:first ?item . ?item def:itemLabel ?itemLabel; def:isVisible ?isVisible . } }";
+	var query_widgetoptions = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?widget ?varLabel ?itemLabel ?isVisible ?itemTooltip ?icon ?label ?color ?address FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { ?widget rdf:type def:Widget . { ?widget def:icon ?icon; rdfs:label ?label; def:color ?color; def:address ?address; def:tooltip ?itemTooltip . } OPTIONAL { ?widget def:apiList/rdf:rest*/rdf:first ?item . ?item def:itemLabel ?itemLabel; def:isVisible ?isVisible . } OPTIONAL { ?widget	def:varList/rdf:rest*/rdf:first	?var . ?var	def:varLabel ?varLabel . } }";
 	$.ajax({
-		url : utils.endpoint,
+		url : utils.endpoint_query,
 		dataType : "json",
 		type : "POST",
 		data : {
@@ -52,6 +50,9 @@ function loadData() {
 						if (el.itemLabel != undefined && el.isVisible != undefined && el.isVisible.value == "true") {
 							widget["itemLabel"] = el.itemLabel.value;
 							widget["isVisible"] = el.isVisible.value;
+						};
+						if (el.varLabel != undefined) {
+							widget["varLabel"] = el.varLabel.value;
 						};
 					};
 					if (jQuery.isEmptyObject(widget) == false) {

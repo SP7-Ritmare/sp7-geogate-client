@@ -50,6 +50,20 @@ var widgetOptions = {
 				return JSON.parse(sessionStorage.getItem(key)).itemTooltip;
 			}
 		}
+	},
+	varlabel : function(widget) {
+		var arrLabels = [];
+		for (var key in sessionStorage) {
+			if (key.startsWith(widget)) {
+				if (JSON.parse(sessionStorage.getItem(key)).widget == "widget" + widget) {
+					var varLabel = (JSON.parse(sessionStorage.getItem(key)).varLabel).slice(0, -2);
+					if ($.inArray(varLabel, arrLabels) < 0) {
+						arrLabels.push(varLabel);
+					}
+				}
+			}
+		}
+		return arrLabels;
 	}
 };
 
@@ -111,6 +125,18 @@ var storage = {
 				};
 			};
 		};
+	},
+	getWidgetNames : function() {
+		var namesArr = [];
+		var i = 0;
+		while (i < this.countWidgets()) {
+			i++;
+			var widget = this.getWidgetByPosition(i);
+			if (widget != null) {
+				namesArr.push(widget.name);
+			};
+		};
+		return namesArr;
 	},
 	reloadWidgets : function() {
 		/* var st = storageType();
@@ -184,7 +210,8 @@ var utils = {
 			};
 		};
 	},
-	endpoint : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query"
+	endpoint_query : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query",
+	endpoint_update : "http://geogate.sp7.irea.cnr.it/fuseki/portal/update"
 };
 
 function getUrlVars() {
