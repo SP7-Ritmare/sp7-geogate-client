@@ -127,7 +127,7 @@ $(".block").on("drag", function(event, ui) {
 });
 
 $('.block').hover(function() {
-	if (storage.getWidgetByName($(this).attr('name')) != undefined && storage.getWidgetByName($(this).attr('name')).position != "1") {
+	if ($(this).attr('id') != "draggable1") {
 		$('.widget-overlay', this).show();
 	}
 }, function() {
