@@ -18,6 +18,20 @@ $("#menusave").click(function() {
 	$("#save-session-input").val('');
 });
 
+$("#menuopen").click(function() {
+	if ($("#open-session-div").is(":visible")) {
+		$("#open-session-div").fadeOut(100);
+		$(".wrap-icons").animate({
+			"top" : "140px"
+		}, "fast", "linear");
+	} else {
+		$("#open-session-div").fadeIn(100);
+		$(".wrap-icons").animate({
+			"top" : "225px"
+		}, "fast", "linear");
+	}
+});
+
 function getVarValue(widget, variable) {
 	if (widget == "Test") {
 		if (localStorage.getItem("widgetTest_message") == null || variable != "message") {
@@ -72,6 +86,25 @@ $('#save-session-btn').click(function() {
 		},
 		success : function(result) {
 			alert("session saved");
+		}
+	});
+});
+
+$('#open-session-a').click(function() {
+	var sessionName = $(this).text();
+	var query_list = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd:	<http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName ?varLabel ?varValue ?varType FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName ?sessionName; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName; def:stateVars/rdf:rest*/rdf:first ?variable . ?variable def:varLabel ?varLabel; def:varValue ?varValue; def:varType ?varType . }";
+	$.ajax({
+		url : utils.endpoint_query,
+		type : "POST",
+		headers : {
+			Accept : "application/sparql-results+json"
+		},
+		data : {
+			query : query_insert,
+			format : "json"
+		},
+		success : function(result) {
+			console.log(result);
 		}
 	});
 });

@@ -226,3 +226,17 @@ a {
 #save-session-div button {
 	height: 25px;
 }
+
+#open-session-div {
+	display: none;
+	margin: 3px 0 0 15px;
+	height: 85px;
+	overflow: auto;
+}
+
+#open-session-div a, #open-session-div span {
+	height: 25px;
+	vertical-align: top;
+	font-size: 0.9em;
+	color: white;
+}
