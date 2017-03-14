@@ -210,8 +210,8 @@ var utils = {
 				$('#dropdown-menu').append("<li><a href='#'>" + arr[i] + "</a></li>");
 			};
 		};
-		$('#dropdown-menu').append("<li><a href='#'>Toggle fullscreen</a></li>");
-		$('#dropdown-menu').append("<li><a href='#'>Close widget</a></li>");
+		$('#dropdown-menu').append("<li><a href='#' onclick='toggleWidget(this)'>Toggle fullscreen</a></li>");
+		$('#dropdown-menu').append("<li><a href='#' onclick='closeWidget()'>Close widget</a></li>");
 	},
 	endpoint_query : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query",
 	endpoint_update : "http://geogate.sp7.irea.cnr.it/fuseki/portal/update"

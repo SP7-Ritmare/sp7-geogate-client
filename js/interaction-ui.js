@@ -163,11 +163,15 @@ $('.user-press-login').click(function() {
 	}
 });
 
+function toggleWidget(ths) {
+	$(ths).closest('.block').toggleClass('fullscreen');
+};
+
 $('.full-f1').click(function() {
-	$(this).closest('.block').toggleClass('fullscreen');
+	toggleWidget(this);
 });
 
-$('.close-f1').click(function() {
+function closeWidget() {
 	var i = 0;
 	while (i < storage.countWidgets()) {
 		i++;
@@ -198,6 +202,10 @@ $('.close-f1').click(function() {
 
 	utils.addBadgeValue();
 	utils.removeFromWidgetAttivi("onClosing");
+};
+
+$('.close-f1').click(function() {
+	closeWidget();
 });
 
 function switchWidgets(clickedWidgetName) {
