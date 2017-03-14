@@ -39,7 +39,7 @@ function addWidget(clickedId) {
 	wnId.attr("name", clickedId);
 	wnId.css("background-color", widgetOptions.color(clickedId));
 
-	utils.appendToWidgetAttivi(clickedId);
+	utils.reloadWidgetAttivi();
 	utils.addBadgeValue();
 };
 
@@ -200,9 +200,8 @@ $('.close-f1').click(function() {
 	utils.removeFromWidgetAttivi("onClosing");
 });
 
-$(".widget-overlay span").click(function() {
+function switchWidgets(clickedWidgetName) {
 	var mainWidgetName = storage.getWidgetByPosition(1).name;
-	var clickedWidgetName = $(this).parents(".block").attr("name");
 	var clickedPosition = storage.getWidgetByName(clickedWidgetName).position;
 	var cwId = $("#draggable" + clickedPosition);
 	var mwId = $("#draggable1");
@@ -223,7 +222,19 @@ $(".widget-overlay span").click(function() {
 		cwId.draggable("option", "revert", true);
 	};
 	utils.reloadWidgetAttivi();
+};
+
+$(".widget-overlay span").click(function() {
+	var clickedWidgetName = $(this).parents(".block").attr("name");
+	switchWidgets(clickedWidgetName);
 });
+
+function clickSwitchWidgets(pos) {
+	if (pos != 1) {
+		var clickedWidgetName = storage.getWidgetByPosition(pos).name;
+		switchWidgets(clickedWidgetName);
+	}
+};
 
 function openORCID() {
 	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
