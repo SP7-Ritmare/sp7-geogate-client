@@ -37,7 +37,8 @@ var widgetOptions = {
 		var labels = [];
 		for (var key in sessionStorage) {
 			if (key.startsWith(string)) {
-				if (JSON.parse(sessionStorage.getItem(key)).itemLabel != undefined) {
+				var itemLabel = JSON.parse(sessionStorage.getItem(key)).itemLabel;
+				if (itemLabel != undefined && $.inArray(itemLabel, labels) < 0) {
 					labels.push(JSON.parse(sessionStorage.getItem(key)).itemLabel);
 				}
 			}
