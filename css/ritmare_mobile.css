@@ -28,7 +28,7 @@ body {
 #menutop {
 	width: 100%;
 	height: 375px;
-	background: #333333;
+	background: #333;
 	position: absolute;
 	left: 0;
 	display: block;
@@ -54,7 +54,7 @@ body {
 	position: absolute;
 	left: 0;
 	top: 0;
-	z-index: 999999;
+	z-index: 999;
 	border-right: 1px solid #6a6a6a;
 	display: block;
 }
@@ -74,7 +74,7 @@ body {
 	top: 7px;
 	left: 51px;
 	width: calc(100vw - 100px);
-	z-index: 999999;
+	z-index: 999;
 	display: block;
 }
 #widget-attivi-top a {
@@ -152,7 +152,7 @@ body {
 
 #widget-attivi-top svg {
 	position: relative;
-	top : -7px;
+	top: -7px;
 }
 
 #wrap-icons-top {

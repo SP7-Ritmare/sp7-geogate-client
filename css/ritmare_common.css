@@ -144,7 +144,7 @@ a {
 }
 
 #connect-orcid-button {
-	border: 1px solid #D3D3D3;
+	border: 1px solid #d3d3d3;
 	padding: .3em;
 	background-color: #fff;
 	border-radius: 8px;
@@ -199,7 +199,7 @@ a {
 .widget-overlay span {
 	padding: 5px;
 	border-radius: 5px;
-	background-color: #333333;
+	background-color: #333;
 	color: #a1a1a1;
 	position: relative;
 	top: 50%;
@@ -207,7 +207,7 @@ a {
 }
 
 .ui-tooltip {
-	background-color: #cccccc;
+	background-color: #ccc;
 }
 
 .ui-tooltip-content {

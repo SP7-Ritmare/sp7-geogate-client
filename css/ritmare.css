@@ -239,14 +239,14 @@ body {
 	left: 0;
 }
 .blocco-1 {
-	background-color: #ffffff;
+	background-color: #fff;
 	height: initial;
 	width: calc((100vw - 50px) * 0.618181818181818);
 	position: relative;
 	z-index: 99;
 }
 .blocco-2 {
-	background-color: #ffffff;
+	background-color: #fff;
 	width: calc(100% - 50px);
 	height: calc(100vh * 0.617647058823529);
 	position: relative;
@@ -257,7 +257,7 @@ body {
 	z-index: 99;
 }
 .blocco-3 {
-	background-color: #ffffff;
+	background-color: #fff;
 	height: initial;
 	width: calc(100vw * 0.236363636363636);
 	position: relative;
@@ -265,14 +265,14 @@ body {
 }
 
 .blocco-4 {
-	background-color: #ffffff;
+	background-color: #fff;
 	width: 100%;
 	height: calc(100vh * 0.235294117647059);
 	position: relative;
 	z-index: 99;
 }
 .blocco-5 {
-	background-color: #ffffff;
+	background-color: #fff;
 	height: initial;
 	width: calc(100vw * 0.090909090909091);
 	position: relative;
@@ -305,7 +305,7 @@ body {
 #menudx {
 	width: 275px;
 	height: 100%;
-	background: #333333;
+	background: #333;
 	position: fixed;
 	top: 0;
 	right: -225px;
@@ -316,7 +316,7 @@ body {
 	-moz-transition: 300ms ease-in-out;
 	-o-transition: 300ms ease-in-out;
 	transition: 300ms ease-in-out;
-	border-left: 1px solid #333333;
+	border-left: 1px solid #333;
 	z-index: 999;
 }
 #menudx.opened {
@@ -427,6 +427,7 @@ body {
 	border: 1px solid #fff;
 	z-index: 999;
 }
+
 #wrap-icons-top {
 	display: none;
 }
