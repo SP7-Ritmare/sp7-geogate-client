@@ -206,9 +206,13 @@ a {
 	cursor: pointer;
 }
 
+.ui-tooltip {
+	background-color: #cccccc;
+}
+
 .ui-tooltip-content {
-	font-size: 10pt;
-	font-family: Calibri;
+	font-size: 9pt;
+	font-family: Verdana, Geneva, sans-serif;
 	text-align: center;
 }
 
