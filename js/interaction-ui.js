@@ -3,8 +3,11 @@
  * @copyright SP7 Ritmare (http://www.ritmare.it)
  */
 
+//add a new widget by drag & drop or click
 function addWidget(clickedId) {
-	//add a new widget by drag & drop or click
+	var spinner = new Spinner().spin();
+	$("body")[0].appendChild(spinner.el);
+
 	var i = 6;
 	while (--i) {
 		var formerWidget = storage.getWidgetByPosition(i - 1);
@@ -41,6 +44,10 @@ function addWidget(clickedId) {
 
 	utils.reloadWidgetAttivi();
 	utils.addBadgeValue();
+
+	$('iframe').on("load", function() {
+		spinner.stop();
+	});
 };
 
 $('[id^=draggable]').droppable({
@@ -67,6 +74,12 @@ $('[id^=draggable]').droppable({
 			break;
 		case "block":
 			//change the widget position by drag & drop
+			var spinner = new Spinner().spin();
+			$("body")[0].appendChild(spinner.el);
+			$('iframe').on("load", function() {
+				spinner.stop();
+			});
+
 			var targetName = $(event.target).attr('name');
 			var draggedName = ui.draggable.attr('name');
 			var targetId = event.target.id;
@@ -172,6 +185,9 @@ $('.full-f1').click(function() {
 });
 
 function closeWidget() {
+	var spinner = new Spinner().spin();
+	$("body")[0].appendChild(spinner.el);
+
 	var i = 0;
 	while (i < storage.countWidgets()) {
 		i++;
@@ -202,6 +218,10 @@ function closeWidget() {
 
 	utils.addBadgeValue();
 	utils.removeFromWidgetAttivi("onClosing");
+
+	$('iframe').on("load", function() {
+		spinner.stop();
+	});
 };
 
 $('.close-f1').click(function() {
@@ -209,7 +229,9 @@ $('.close-f1').click(function() {
 });
 
 function switchWidgets(clickedPosition) {
-	console.log(clickedPosition);
+	var spinner = new Spinner().spin();
+	$("body")[0].appendChild(spinner.el);
+
 	var mainWidgetName = storage.getWidgetByPosition(1).name;
 	var clickedWidgetName = storage.getWidgetByPosition(clickedPosition).name;
 	var cwId = $("#draggable" + clickedPosition);
@@ -231,6 +253,10 @@ function switchWidgets(clickedPosition) {
 		cwId.draggable("option", "revert", true);
 	};
 	utils.reloadWidgetAttivi();
+
+	$('iframe').on("load", function() {
+		spinner.stop();
+	});
 };
 
 $(".widget-overlay span").click(function() {

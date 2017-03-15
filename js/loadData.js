@@ -23,7 +23,13 @@ function loadData() {
 	// localStorage.clear();
 	if (localStorage.getItem("session") == null) {
 		localStorage.setItem("session", "s");
-	}
+	};
+
+	var spinner = new Spinner().spin();
+	$("body")[0].appendChild(spinner.el);
+	$('iframe').on("load", function() {
+		spinner.stop();
+	});
 
 	var query_widgetoptions = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?widget ?varLabel ?itemLabel ?isVisible ?itemTooltip ?icon ?label ?color ?address FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { ?widget rdf:type def:Widget . { ?widget def:icon ?icon; rdfs:label ?label; def:color ?color; def:address ?address; def:tooltip ?itemTooltip . } OPTIONAL { ?widget def:apiList/rdf:rest*/rdf:first ?item . ?item def:itemLabel ?itemLabel; def:isVisible ?isVisible . } OPTIONAL { ?widget	def:varList/rdf:rest*/rdf:first	?var . ?var	def:varLabel ?varLabel . } }";
 	$.ajax({
