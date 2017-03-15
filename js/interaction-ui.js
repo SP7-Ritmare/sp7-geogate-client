@@ -71,12 +71,12 @@ $('[id^=draggable]').droppable({
 			var draggedName = ui.draggable.attr('name');
 			var targetId = event.target.id;
 			var draggedId = ui.draggable.context.id;
+			var targetPosition = targetId.replace('draggable', '');
+			var draggedPosition = draggedId.replace('draggable', '');
 			var wdrId = $("#" + draggedId);
 			var wtaId = $("#" + targetId);
-			if (storage.getWidgetByName(targetName) !== undefined) {
+			if (storage.getWidgetByPosition(targetPosition) !== undefined) {
 				wdrId.draggable("option", "revert", false);
-				var targetPosition = storage.getWidgetByName(targetName).position;
-				var draggedPosition = storage.getWidgetByName(draggedName).position;
 				storage.storeWidget(targetPosition, draggedName);
 				storage.storeWidget(draggedPosition, targetName);
 				if (targetPosition == 1) {
@@ -208,9 +208,10 @@ $('.close-f1').click(function() {
 	closeWidget();
 });
 
-function switchWidgets(clickedWidgetName) {
+function switchWidgets(clickedPosition) {
+	console.log(clickedPosition);
 	var mainWidgetName = storage.getWidgetByPosition(1).name;
-	var clickedPosition = storage.getWidgetByName(clickedWidgetName).position;
+	var clickedWidgetName = storage.getWidgetByPosition(clickedPosition).name;
 	var cwId = $("#draggable" + clickedPosition);
 	var mwId = $("#draggable1");
 	if (storage.getWidgetByPosition("1") !== undefined) {
@@ -233,14 +234,13 @@ function switchWidgets(clickedWidgetName) {
 };
 
 $(".widget-overlay span").click(function() {
-	var clickedWidgetName = $(this).parents(".block").attr("name");
-	switchWidgets(clickedWidgetName);
+	var clickedPosition = $(this).parents(".block").attr("id").replace('draggable', '');
+	switchWidgets(clickedPosition);
 });
 
 function clickSwitchWidgets(pos) {
 	if (pos != 1) {
-		var clickedWidgetName = storage.getWidgetByPosition(pos).name;
-		switchWidgets(clickedWidgetName);
+		switchWidgets(pos);
 	}
 };
 

@@ -115,18 +115,6 @@ var storage = {
 	getWidgetByPosition : function(pos) {
 		return JSON.parse(storageType().getItem(pos));
 	},
-	getWidgetByName : function(name) {
-		var i = 0;
-		while (i < this.countWidgets()) {
-			i++;
-			var widget = this.getWidgetByPosition(i);
-			if (widget != null) {
-				if (widget.name == name) {
-					return widget;
-				};
-			};
-		};
-	},
 	getWidgetNames : function() {
 		var namesArr = [];
 		var i = 0;
