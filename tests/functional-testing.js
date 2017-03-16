@@ -110,7 +110,7 @@ driver.findElement(By.xpath("//span[@id='Map']/preceding-sibling::span[@class='b
 	console.log("tested if the number of Map widgets in the sliding sidebar panel is 1");
 });
 driver.findElement(By.xpath("//span[@id='My data']/preceding-sibling::span[@class='badge2']")).getAttribute("data-badge2").then(function(value) {
-	expect(value).to.equal('0x');
+	expect(value).to.be.null;
 	console.log("tested if the number of My Data widgets in the sliding sidebar panel is 0");
 });
 driver.findElement(By.xpath("//span[@id='Feeds']/preceding-sibling::span[@class='badge2']")).getAttribute("data-badge2").then(function(value) {
@@ -122,7 +122,7 @@ driver.findElement(By.xpath("//span[@id='Metadata']/preceding-sibling::span[@cla
 	console.log("tested if the number of Metadata widgets in the sliding sidebar panel is 1");
 });
 driver.findElement(By.xpath("//span[@id='About']/preceding-sibling::span[@class='badge2']")).getAttribute("data-badge2").then(function(value) {
-	expect(value).to.equal('0x');
+	expect(value).to.be.null;
 	console.log("tested if the number of About widgets in the sliding sidebar panel is 0");
 });
 driver.actions().click(driver.findElement(By.className('close-f1'))).click(driver.findElement(By.className('close-f1'))).click(driver.findElement(By.className('close-f1'))).click(driver.findElement(By.className('close-f1'))).perform();
