@@ -5,30 +5,34 @@
 
 $("#menusave").click(function() {
 	if ($("#save-session-div").is(":visible")) {
-		$("#save-session-div").fadeOut(1000);
+		$("#save-session-div").fadeOut(400);
 		$(".wrap-icons").animate({
 			"top" : "140px"
 		}, "slow", "linear");
+		$("#open-session-div").fadeOut(150);
 	} else {
-		$("#save-session-div").fadeIn(1000);
+		$("#save-session-div").fadeIn(400);
 		$(".wrap-icons").animate({
 			"top" : "170px"
 		}, "slow", "linear");
+		$("#open-session-div").fadeOut(150);
 	}
 	$("#save-session-input").val('');
 });
 
 $("#menuopen").click(function() {
 	if ($("#open-session-div").is(":visible")) {
-		$("#open-session-div").fadeOut(100);
+		$("#open-session-div").fadeOut(150);
 		$(".wrap-icons").animate({
 			"top" : "140px"
 		}, "fast", "linear");
+		$("#save-session-div").fadeOut(400);
 	} else {
-		$("#open-session-div").fadeIn(100);
+		$("#open-session-div").fadeIn(150);
 		$(".wrap-icons").animate({
 			"top" : "225px"
 		}, "fast", "linear");
+		$("#save-session-div").fadeOut(400);
 	}
 });
 
@@ -107,4 +111,4 @@ $('#open-session-a').click(function() {
 			console.log(result);
 		}
 	});
-});
+}); 
