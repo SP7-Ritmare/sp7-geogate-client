@@ -150,7 +150,11 @@ var storage = {
 				wId.css("background-color", widgetOptions.color(wName));
 				wId.css("visibility", "visible");
 				utils.reloadWidgetAttivi();
-				$('#' + wName).prev().attr("data-badge2", this.countWidgetsByName(wName) + "x");
+				if (this.countWidgetsByName(wName) > 0) {
+					$('#' + wName).prev().attr("data-badge2", this.countWidgetsByName(wName) + "x");
+				} else {
+					$(this).removeAttr("data-badge2");
+				}
 			} else {
 				wId.css("visibility", "hidden");
 			};
@@ -186,7 +190,11 @@ var utils = {
 	},
 	addBadgeValue : function() {
 		$('.wrap-icons').find('.badge2').each(function() {
-			$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".cwidg").attr("id")) + "x");
+			if (storage.countWidgetsByName($(this).parent().find(".cwidg").attr("id")) > 0) {
+				$(this).attr("data-badge2", storage.countWidgetsByName($(this).parent().find(".cwidg").attr("id")) + "x");
+			} else {
+				$(this).removeAttr("data-badge2");
+			}
 		});
 	},
 	loadMenu : function(str) {

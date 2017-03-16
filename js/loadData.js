@@ -73,7 +73,7 @@ function loadData() {
 
 			var i = 0;
 			while (i < arrLabels.length) {
-				$('.wrap-icons').append('<div><!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2="0x"></span><span id="' + arrLabels[i] + '" class="cwidg ' + widgetOptions.icon(arrLabels[i]) + '" title = "" style="color:' + widgetOptions.color(arrLabels[i]) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(arrLabels[i]) + '">' + arrLabels[i].toLowerCase() + '</span></div>');
+				$('.wrap-icons').append('<div><!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2=""></span><span id="' + arrLabels[i] + '" class="cwidg ' + widgetOptions.icon(arrLabels[i]) + '" title = "" style="color:' + widgetOptions.color(arrLabels[i]) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(arrLabels[i]) + '">' + arrLabels[i].toLowerCase() + '</span></div>');
 				i++;
 			}
 			enableCwidg();
