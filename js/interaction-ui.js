@@ -161,12 +161,10 @@ $(document).on('click', '.cwidg', function() {
 //logout + login dialog
 $('.user-press-login').click(function() {
 	if (window.location.href.indexOf("code") > -1) {
-		localStorage.setItem("session", "s");
 		//window.location.href = "http://localhost/sp7-geogate-client";
 		window.location.href = "http://geogate.sp7.irea.cnr.it/client";
-		localStorage.removeItem("userPicture");
+		localStorage.clear();
 		$("#user-title").text("Login");
-		localStorage.removeItem("sessionOwner");
 	} else {
 		$("#user_login").dialog({
 			modal : true,

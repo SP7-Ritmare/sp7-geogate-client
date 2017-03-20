@@ -75,6 +75,29 @@ function getWidgetList() {
 	return str;
 };
 
+function openSession(sessionName) {
+	var query_sessionwidgetslist = "PREFIX def:	<http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName \"" + sessionName + "\"; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName . }";
+	$.ajax({
+		url : utils.endpoint_query,
+		type : "POST",
+		data : {
+			query : query_sessionwidgetslist,
+			format : "json"
+		},
+		success : function(result) {
+			var query_open = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName ?varLabel ?varValue ?varType FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName \"" + sessionName + "\"; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName; def:stateVars/rdf:rest*/rdf:first ?variable . ?variable def:varLabel ?varLabel; def:varValue ?varValue; def:varType ?varType . }";
+			var nameArr = [];
+			$.each(result.results, function(index, element) {
+				$.each(element, function(i, el) {
+					nameArr.push(el.widgetName.value);
+				});
+			});
+			console.log(nameArr);
+			localStorage.setItem("sessionName", sessionName);
+		}
+	});
+};
+
 $('#save-session-btn').click(function() {
 	var sessionName = $('#save-session-input').val();
 	var query_insert = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> PREFIX ses: <http://sp7.irea.cnr.it/rdfdata/sessionData/> INSERT DATA { GRAPH <http://sp7.irea.cnr.it/rdfdata/sessionData> { <http://sp7.irea.cnr.it/rdfdata/sessions/session_" + Math.random() + "> a def:Session; def:sessionName '" + sessionName + "'; def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:widgetList ( " + getWidgetList() + " ) } }";
@@ -89,26 +112,8 @@ $('#save-session-btn').click(function() {
 			format : "json"
 		},
 		success : function(result) {
-			alert("session saved");
-		}
-	});
-});
-
-$('#open-session-a').click(function() {
-	var sessionName = $(this).text();
-	var query_list = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd:	<http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName ?varLabel ?varValue ?varType FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName ?sessionName; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName; def:stateVars/rdf:rest*/rdf:first ?variable . ?variable def:varLabel ?varLabel; def:varValue ?varValue; def:varType ?varType . }";
-	$.ajax({
-		url : utils.endpoint_query,
-		type : "POST",
-		headers : {
-			Accept : "application/sparql-results+json"
-		},
-		data : {
-			query : query_insert,
-			format : "json"
-		},
-		success : function(result) {
-			console.log(result);
+			localStorage.setItem("sessionName", sessionName);
+			alert("session saved!");
 		}
 	});
 }); 

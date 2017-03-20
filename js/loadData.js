@@ -20,10 +20,10 @@ function enableCwidg() {
 function loadData() {
 	storage.check();
 	sessionStorage.clear();
-	// localStorage.clear();
-	if (localStorage.getItem("session") == null) {
-		localStorage.setItem("session", "s");
+	if (localStorage.getItem("sessionOwner") == null) {
+		localStorage.setItem("sessionOwner", "notlogged");
 	};
+	localStorage.removeItem("sessionName");
 
 	var spinner = new Spinner().spin();
 	$("body")[0].appendChild(spinner.el);
@@ -61,7 +61,7 @@ function loadData() {
 							widget["varLabel"] = el.varLabel.value;
 						};
 					};
-					if (jQuery.isEmptyObject(widget) == false) {
+					if ($.isEmptyObject(widget) == false) {
 						var record = JSON.stringify(widget);
 						sessionStorage.setItem(el.label.value + i, record);
 					};

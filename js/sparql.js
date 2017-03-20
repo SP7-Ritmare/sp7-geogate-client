@@ -29,12 +29,12 @@ function loadWidgets(widgetTypes) {
 								$('.head-b1 span').first().text(lVal);
 								$('.menu-f1 span').removeClass().addClass(iVal);
 								utils.loadMenu(lVal);
-							}
+							};
 							wId.attr("name", lVal);
 							wId.find("iframe").attr("src", aVal);
 							wId.css("background-color", cVal);
 							wId.css("visibility", "visible");
-						}
+						};
 					});
 				});
 				utils.addBadgeValue();
@@ -61,7 +61,7 @@ function loadSessions() {
 					$.each(element, function(i, el) {
 						if ($.inArray(el.sessionName.value, nameArr) < 0) {
 							nameArr.push(el.sessionName.value);
-							$("#open-session-div").append("<a href='#' class='open-session-a'>" + el.sessionName.value + "</a><br>");
+							$("#open-session-div").append("<a href='#' class='open-session-a' onclick='openSession(\"" + el.sessionName.value + "\")'>" + el.sessionName.value + "</a><br>");
 						}
 					});
 				} else {
@@ -134,21 +134,19 @@ function sparql() {
 				//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
 				url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
 			}).done(function(msg) {
-				localStorage.setItem("session", "l");
 				if (localStorage.getItem("widgetTest_message") != null) {
 					localStorage.removeItem("widgetTest_message");
 				}
+				localStorage.setItem("userOrcid", msg.orcid);
 				userQuery(msg.orcid);
-				$("#user-title").text("Logout");
-				$("#menulist").css("visibility", "visible");
-				$(".wrap-icons").css("top", "140px");
 			});
 		} else {
+			userQuery(localStorage.getItem("userOrcid"));
 			$("#user-login image").attr("xlink:href", localStorage.getItem("userPicture"));
-			$("#user-title").text("Logout");
-			$("#menulist").css("visibility", "visible");
-			$(".wrap-icons").css("top", "140px");
-		}
+		};
+		$("#user-title").text("Logout");
+		$("#menulist").css("visibility", "visible");
+		$(".wrap-icons").css("top", "140px");
 	} else {
 		var query = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { def:defaultUser foaf:img	?picture; ^foaf:member ?category . ?profile def:owner ?category; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
 		$.ajax({

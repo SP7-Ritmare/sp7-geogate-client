@@ -4,10 +4,10 @@
  */
 
 function storageType() {
-	if (localStorage.getItem("session") == "l") {
-		return localStorage;
-	} else {
+	if (localStorage.getItem("sessionOwner") == "notlogged") {
 		return sessionStorage;
+	} else {
+		return localStorage;
 	}
 };
 
@@ -84,9 +84,15 @@ var storage = {
 		}
 	},
 	storeWidget : function(position, name) {
+		if (localStorage.getItem("sessionName") != null) {
+			var session = localStorage.getItem("sessionName");
+		} else {
+			var session = null;
+		};
 		var widget = {
 			position : position,
-			name : name
+			name : name,
+			session : session
 		};
 		var record = JSON.stringify(widget);
 		storageType().setItem(position, record);
