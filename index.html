@@ -20,8 +20,7 @@
 		<link rel="stylesheet" type="text/css" href="fonts/stateface/stateface.css">
 		<script src="js/spin.min.js"></script>
 		<script src="js/mobile-detect.min.js"></script>
-		<script src="js/loadData.js"></script>
-		<script src="js/sparql.js"></script>
+		<script src="js/sparql_users.js"></script>
 		<script>
 			var md = new MobileDetect(window.navigator.userAgent);
 			if (md.phone() != null) {
@@ -55,7 +54,7 @@
 		<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 	</head>
 
-	<body onload="loadData(); sparql();">
+	<body onload="loadData();">
 		<div id="menudx">
 			<img src="img/logo-menu.png" alt="Ritmare" height="50" id="logomenu" />
 			<ul id="menulist" style="visibility:hidden;">
@@ -231,7 +230,7 @@
 		<script type="text/javascript" src="js/ui.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 		<script type="text/javascript" src="js/interaction-ui.js"></script>
-		<script type="text/javascript" src="js/sessions.js"></script>
+		<script type="text/javascript" src="js/sparql_sessions.js"></script>
 		<script type="text/javascript" src="widgets/widgetTest/js/widgetTest.js"></script>
 	</body>
 </html>

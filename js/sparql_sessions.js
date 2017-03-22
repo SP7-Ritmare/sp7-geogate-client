@@ -76,7 +76,7 @@ function getWidgetList() {
 };
 
 function openSession(sessionName) {
-	var query_sessionwidgetslist = "PREFIX def:	<http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName \"" + sessionName + "\"; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName . }";
+	var query_sessionwidgetslist = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName \"" + sessionName + "\"; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName . }";
 	$.ajax({
 		url : utils.endpoint_query,
 		type : "POST",
@@ -116,4 +116,4 @@ $('#save-session-btn').click(function() {
 			alert("session saved!");
 		}
 	});
-}); 
+});
