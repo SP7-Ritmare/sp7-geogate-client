@@ -156,8 +156,8 @@ function getOrcidLoggedUser() {
 			},
 			method : "POST",
 			dataType : 'json',
-			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
-			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
+			url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://localhost/sp7-geogate-client"
+			//url : "https://pub.orcid.org/oauth/token?client_id=APP-KCZPVLP7OMJ1P69L&client_secret=bec72dc4-c107-4fd7-8cda-12ac18ff5fd9&grant_type=authorization_code&code=" + getUrlVars()["code"] + "&redirect_uri=http://geogate.sp7.irea.cnr.it/client"
 		}).done(function(msg) {
 			if (localStorage.getItem("widgetTest_message") != null) {
 				localStorage.removeItem("widgetTest_message");
@@ -222,39 +222,53 @@ function loadData() {
 			format : "json"
 		},
 		success : function(result) {
-			var arrLabels = [];
+			var labels = [];
+			var itemLabels = [];
+			var varLabels = [];
 			$.each(result, function(index, element) {
 				$.each(element.bindings, function(i, el) {
 					if (el.itemTooltip != undefined && el.icon != undefined && el.label != undefined && el.color != undefined && el.address != undefined) {
-						var itemVal = el.widget.value;
 						var widget = {
-							widget : itemVal.substr(itemVal.lastIndexOf("#") + 1),
 							itemTooltip : el.itemTooltip.value,
 							icon : el.icon.value,
 							color : el.color.value,
 							address : el.address.value
 						};
-						if (el.itemLabel != undefined && el.isVisible != undefined && el.isVisible.value == "true") {
-							widget["itemLabel"] = el.itemLabel.value;
-							widget["isVisible"] = el.isVisible.value;
-						};
-						if (el.varLabel != undefined) {
-							widget["varLabel"] = el.varLabel.value;
+					};
+
+					if ($.inArray(el.label.value, labels) < 0) {
+						itemLabels = [];
+						varLabels = [];
+						labels.push(el.label.value);
+						if ($.isEmptyObject(widget) == false) {
+							var record = JSON.stringify(widget);
+							sessionStorage.setItem(el.label.value, record);
 						};
 					};
-					if ($.isEmptyObject(widget) == false) {
-						var record = JSON.stringify(widget);
-						sessionStorage.setItem(el.label.value + i, record);
+
+					if (el.itemLabel != undefined && el.isVisible != undefined && el.isVisible.value == "true") {
+						if ($.inArray(el.itemLabel.value, itemLabels) < 0) {
+							itemLabels.push(el.itemLabel.value);
+						};
 					};
-					if ($.inArray(el.label.value, arrLabels) < 0) {
-						arrLabels.push(el.label.value);
-					}
+
+					if (el.varLabel != undefined) {
+						if ($.inArray(el.varLabel.value, varLabels) < 0) {
+							varLabels.push(el.varLabel.value);
+						};
+					};
+
+					var w = JSON.parse(sessionStorage.getItem(el.label.value));
+					w["itemLabel"] = itemLabels;
+					w["varLabel"] = varLabels;
+					var r = JSON.stringify(w);
+					sessionStorage.setItem(el.label.value, r);
 				});
 			});
 
 			var i = 0;
-			while (i < arrLabels.length) {
-				$('.wrap-icons').append('<div><!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2=""></span><span id="' + arrLabels[i] + '" class="cwidg ' + widgetOptions.icon(arrLabels[i]) + '" title = "" style="color:' + widgetOptions.color(arrLabels[i]) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(arrLabels[i]) + '">' + arrLabels[i].toLowerCase() + '</span></div>');
+			while (i < labels.length) {
+				$('.wrap-icons').append('<div><!--<span class="badge" data-badge="0"></span>--><span class="badge2" data-badge2=""></span><span id="' + labels[i] + '" class="cwidg ' + widgetOptions.icon(labels[i]) + '" title = "" style="color:' + widgetOptions.color(labels[i]) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(labels[i]) + '">' + labels[i].toLowerCase() + '</span></div>');
 				i++;
 			}
 			enableCwidg();

@@ -19,7 +19,7 @@ var widgetOptions = {
 			}
 		}
 	},
-	image : function(string) {
+	address : function(string) {
 		for (var key in sessionStorage) {
 			if (key.startsWith(string)) {
 				return JSON.parse(sessionStorage.getItem(key)).address;
@@ -34,13 +34,10 @@ var widgetOptions = {
 		}
 	},
 	menu : function(string) {
-		var labels = [];
+		var labels;
 		for (var key in sessionStorage) {
 			if (key.startsWith(string)) {
-				var itemLabel = JSON.parse(sessionStorage.getItem(key)).itemLabel;
-				if (itemLabel != undefined && $.inArray(itemLabel, labels) < 0) {
-					labels.push(JSON.parse(sessionStorage.getItem(key)).itemLabel);
-				}
+				labels = JSON.parse(sessionStorage.getItem(key)).itemLabel;
 			}
 		}
 		return labels;
@@ -53,18 +50,13 @@ var widgetOptions = {
 		}
 	},
 	varlabel : function(widget) {
-		var arrLabels = [];
+		var varlabels;
 		for (var key in sessionStorage) {
 			if (key.startsWith(widget)) {
-				if (JSON.parse(sessionStorage.getItem(key)).widget == "widget" + widget) {
-					var varLabel = (JSON.parse(sessionStorage.getItem(key)).varLabel).slice(0, -2);
-					if ($.inArray(varLabel, arrLabels) < 0) {
-						arrLabels.push(varLabel);
-					}
-				}
+				varLabels = (JSON.parse(sessionStorage.getItem(key)).varLabel).slice(0, -2);
 			}
 		}
-		return arrLabels;
+		return varLabels;
 	}
 };
 
@@ -152,7 +144,7 @@ var storage = {
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(wName));
 				};
 				wId.attr("name", wName);
-				wId.find("iframe").attr("src", widgetOptions.image(wName));
+				wId.find("iframe").attr("src", widgetOptions.address(wName));
 				wId.css("background-color", widgetOptions.color(wName));
 				wId.css("visibility", "visible");
 				utils.reloadWidgetAttivi();
@@ -207,9 +199,10 @@ var utils = {
 		$('#dropdown-menu').empty();
 		var arr = widgetOptions.menu(str);
 		if ( typeof arr !== 'undefined' && arr.length > 0) {
-			var i = arr.length;
-			while (i--) {
+			var i = 0;
+			while (i < arr.length) {
 				$('#dropdown-menu').append("<li><a href='#'>" + arr[i] + "</a></li>");
+				i++;
 			};
 		};
 		$('#dropdown-menu').append("<li><a href='#' onclick='toggleWidget(this)'>Toggle fullscreen</a></li>");

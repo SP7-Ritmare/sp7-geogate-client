@@ -15,7 +15,7 @@ function addWidget(clickedId) {
 			var fwName = formerWidget.name;
 			storage.storeWidget(i, fwName);
 			var wId = $('#draggable' + i);
-			wId.find("iframe").attr("src", widgetOptions.image(fwName));
+			wId.find("iframe").attr("src", widgetOptions.address(fwName));
 			wId.attr("name", fwName);
 			wId.css("background-color", widgetOptions.color(fwName));
 			if (wId.css("visibility") == "hidden") {
@@ -38,7 +38,7 @@ function addWidget(clickedId) {
 	$('.head-b1 span').first().text(clickedId);
 	$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedId));
 	utils.loadMenu(clickedId);
-	wnId.find("iframe").attr("src", widgetOptions.image(clickedId));
+	wnId.find("iframe").attr("src", widgetOptions.address(clickedId));
 	wnId.attr("name", clickedId);
 	wnId.css("background-color", widgetOptions.color(clickedId));
 
@@ -102,10 +102,10 @@ $('[id^=draggable]').droppable({
 					utils.loadMenu(targetName);
 				}
 				wdrId.attr("name", targetName);
-				wdrId.find("iframe").attr("src", widgetOptions.image(targetName));
+				wdrId.find("iframe").attr("src", widgetOptions.address(targetName));
 				wdrId.css("background-color", widgetOptions.color(targetName));
 				wtaId.attr("name", draggedName);
-				wtaId.find("iframe").attr("src", widgetOptions.image(draggedName));
+				wtaId.find("iframe").attr("src", widgetOptions.address(draggedName));
 				wtaId.css("background-color", widgetOptions.color(draggedName));
 				utils.reloadWidgetAttivi();
 				break;
@@ -161,8 +161,8 @@ $(document).on('click', '.cwidg', function() {
 //logout + login dialog
 $('.user-press-login').click(function() {
 	if (window.location.href.indexOf("code") > -1) {
-		//window.location.href = "http://localhost/sp7-geogate-client";
-		window.location.href = "http://geogate.sp7.irea.cnr.it/client";
+		window.location.href = "http://localhost/sp7-geogate-client";
+		//window.location.href = "http://geogate.sp7.irea.cnr.it/client";
 		localStorage.clear();
 		$("#user-title").text("Login");
 	} else {
@@ -201,7 +201,7 @@ function closeWidget() {
 				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nwName));
 				utils.loadMenu(nwName);
 			}
-			$('#draggable' + i).find("iframe").attr("src", widgetOptions.image(nwName));
+			$('#draggable' + i).find("iframe").attr("src", widgetOptions.address(nwName));
 			$('#draggable' + i).attr("name", nwName);
 			$('#draggable' + i).css("background-color", widgetOptions.color(nwName));
 			$('#draggable' + i).css("visibility", "visible");
@@ -239,10 +239,10 @@ function switchWidgets(clickedPosition) {
 		storage.storeWidget(1, clickedWidgetName);
 		storage.storeWidget(clickedPosition, mainWidgetName);
 		cwId.attr("name", mainWidgetName);
-		cwId.find("iframe").attr("src", widgetOptions.image(mainWidgetName));
+		cwId.find("iframe").attr("src", widgetOptions.address(mainWidgetName));
 		cwId.css("background-color", widgetOptions.color(mainWidgetName));
 		mwId.attr("name", clickedWidgetName);
-		mwId.find("iframe").attr("src", widgetOptions.image(clickedWidgetName));
+		mwId.find("iframe").attr("src", widgetOptions.address(clickedWidgetName));
 		mwId.css("background-color", widgetOptions.color(clickedWidgetName));
 		$('.head-b1 span').first().text(clickedWidgetName);
 		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));
@@ -269,7 +269,7 @@ function clickSwitchWidgets(pos) {
 };
 
 function openORCID() {
-	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
-	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
+	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
+	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
 	$("#user_login").dialog("close");
 };
