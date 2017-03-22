@@ -161,8 +161,7 @@ $(document).on('click', '.cwidg', function() {
 //logout + login dialog
 $('.user-press-login').click(function() {
 	if (window.location.href.indexOf("code") > -1) {
-		window.location.href = "http://localhost/sp7-geogate-client";
-		//window.location.href = "http://geogate.sp7.irea.cnr.it/client";
+		window.location.href = utils.site_url;
 		localStorage.clear();
 		$("#user-title").text("Login");
 	} else {
@@ -269,7 +268,6 @@ function clickSwitchWidgets(pos) {
 };
 
 function openORCID() {
-	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://localhost/sp7-geogate-client&show_login=true';
-	//window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=http://geogate.sp7.irea.cnr.it/client&show_login=true';
+	window.location.href = 'https://orcid.org/oauth/authorize?client_id=APP-KCZPVLP7OMJ1P69L&response_type=code&scope=/authenticate&redirect_uri=' + utils.site_url + '&show_login=true';
 	$("#user_login").dialog("close");
 };

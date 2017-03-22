@@ -208,6 +208,8 @@ var utils = {
 		$('#dropdown-menu').append("<li><a href='#' onclick='toggleWidget(this)'>Toggle fullscreen</a></li>");
 		$('#dropdown-menu').append("<li><a href='#' onclick='closeWidget()'>Close widget</a></li>");
 	},
+//	site_url : "http://localhost/sp7-geogate-client",
+	site_url : "http://geogate.sp7.irea.cnr.it/client",
 	endpoint_query : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query",
 	endpoint_update : "http://geogate.sp7.irea.cnr.it/fuseki/portal/update"
 };
