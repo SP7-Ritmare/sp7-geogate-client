@@ -38,7 +38,14 @@ $("#menuopen").click(function() {
 
 $("#clearworkspace").click(function() {
 	localStorage.setItem("sessionName", "null");
+	storage.clearStoredWidgets();
 	loggedUserDef(localStorage.getItem("userOrcid"));
+	var i = 0;
+	while (i < 5) {
+		i++;
+		var wId = $('#draggable' + i);
+		wId.css("visibility", "hidden");
+	};
 });
 
 function getVarValue(widget, variable) {
@@ -148,7 +155,7 @@ $('#save-session-btn').click(function() {
 		success : function(result) {
 			localStorage.setItem("sessionName", sessionName);
 			alert("session saved!");
-			loadSessionList();
+			loadSessionsList();
 		}
 	});
 });
