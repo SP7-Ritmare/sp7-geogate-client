@@ -3,7 +3,7 @@
  * @copyright SP7 Ritmare (http://www.ritmare.it)
  */
 
-function loadSessions() {
+function loadSessionList() {
 	var query_listsessions = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName ?varLabel ?varValue ?varType FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName ?sessionName; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName; def:stateVars/rdf:rest*/rdf:first ?variable . ?variable def:varLabel ?varLabel; def:varValue ?varValue; def:varType ?varType . }";
 	$.ajax({
 		url : utils.endpoint_query,
@@ -20,7 +20,7 @@ function loadSessions() {
 					$.each(element, function(i, el) {
 						if ($.inArray(el.sessionName.value, nameArr) < 0) {
 							nameArr.push(el.sessionName.value);
-							$("#open-session-div").append("<a href='#' class='open-session-a' onclick='openSession(\"" + el.sessionName.value + "\")'>" + el.sessionName.value + "</a><br>");
+							$("#open-session-div").append("<a href='#' class='open-session-a' onclick='openSession(\"" + el.sessionName.value + "\");return false;'>" + el.sessionName.value + "</a><br>");
 						}
 					});
 				} else {
@@ -88,32 +88,37 @@ function loggedUserDef(orcid) {
 					if (i == 0) {
 						var userIdVal = el.userid.value;
 						localStorage.setItem("sessionOwner", userIdVal);
-						var query_listwidgets = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { " + 'sp7:' + userIdVal.substring(userIdVal.lastIndexOf('/') + 1) + " foaf:img	?picture ; ^foaf:member	?category . ?profile def:owner ?category ; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
-						$.ajax({
-							url : utils.endpoint_query,
-							dataType : "json",
-							type : "POST",
-							data : {
-								query : query_listwidgets,
-								format : "json"
-							},
-							success : function(result) {
-								var widgetTypes = [];
-								$.each(result, function(index, element) {
-									$.each(element.bindings, function(i, el) {
-										if (i == 0) {
-											var pVal = el.picture.value;
-											$("#user-login image").attr("xlink:href", pVal);
-											localStorage.setItem("userPicture", pVal);
-										};
-										var itemVal = el.item.value;
-										widgetTypes.push(itemVal.substr(itemVal.lastIndexOf("#") + 1));
+						var sessionName = localStorage.getItem("sessionName");
+						if (sessionName == "null") {
+							var query_listwidgets = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7:	<http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?item ?picture ?profile ?category FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> WHERE { " + 'sp7:' + userIdVal.substring(userIdVal.lastIndexOf('/') + 1) + " foaf:img ?picture ; ^foaf:member ?category . ?profile def:owner ?category ; def:entries/rdf:rest*/rdf:first ?item . } LIMIT 5";
+							$.ajax({
+								url : utils.endpoint_query,
+								dataType : "json",
+								type : "POST",
+								data : {
+									query : query_listwidgets,
+									format : "json"
+								},
+								success : function(result) {
+									var widgetTypes = [];
+									$.each(result, function(index, element) {
+										$.each(element.bindings, function(i, el) {
+											if (i == 0) {
+												var pVal = el.picture.value;
+												$("#user-login image").attr("xlink:href", pVal);
+												localStorage.setItem("userPicture", pVal);
+											};
+											var itemVal = el.item.value;
+											widgetTypes.push(itemVal.substr(itemVal.lastIndexOf("#") + 1));
+										});
 									});
-								});
-								loadWidgets(widgetTypes);
-								loadSessions();
-							}
-						});
+									loadWidgets(widgetTypes);
+								}
+							});
+						} else {
+							openSession(sessionName);
+						};
+						loadSessionList();
 					}
 				});
 			});
@@ -203,7 +208,10 @@ function loadData() {
 	if (localStorage.getItem("sessionOwner") == null) {
 		localStorage.setItem("sessionOwner", "notlogged");
 	};
-	localStorage.removeItem("sessionName");
+	if (localStorage.getItem("sessionName") == null) {
+		localStorage.setItem("sessionName", "null");
+	};
+	storage.clearStoredWidgets();
 
 	var spinner = new Spinner().spin();
 	$("body")[0].appendChild(spinner.el);

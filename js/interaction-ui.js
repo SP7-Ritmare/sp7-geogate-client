@@ -188,22 +188,24 @@ function closeWidget() {
 	var i = 0;
 	while (i < storage.countWidgets()) {
 		i++;
-		var nextWidget = storage.getWidgetByPosition(i + 1);
+		var k = i + 1;
+		var nextWidget = storage.getWidgetByPosition(k);
 		if (nextWidget != null) {
 			var widget = storage.getWidgetByPosition(i);
 			var nwName = nextWidget.name;
 			storage.storeWidget(i, nwName);
-			$('#draggable' + (i + 1)).css("visibility", "hidden");
-			$('#draggable' + (i + 1)).attr("name", "");
+			$('#draggable' + k).css("visibility", "hidden");
+			$('#draggable' + k).attr("name", "");
 			if (i == 1) {
 				$('.head-b1 span').first().text(nwName);
 				$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(nwName));
 				utils.loadMenu(nwName);
-			}
-			$('#draggable' + i).find("iframe").attr("src", widgetOptions.address(nwName));
-			$('#draggable' + i).attr("name", nwName);
-			$('#draggable' + i).css("background-color", widgetOptions.color(nwName));
-			$('#draggable' + i).css("visibility", "visible");
+			};
+			var wId = $('#draggable' + i);
+			wId.find("iframe").attr("src", widgetOptions.address(nwName));
+			wId.attr("name", nwName);
+			wId.css("background-color", widgetOptions.color(nwName));
+			wId.css("visibility", "visible");
 		} else {
 			if (i == 1) {
 				$('#draggable1').css("visibility", "hidden");

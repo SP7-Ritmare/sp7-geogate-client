@@ -36,6 +36,11 @@ $("#menuopen").click(function() {
 	}
 });
 
+$("#clearworkspace").click(function() {
+	localStorage.setItem("sessionName", "null");
+	loggedUserDef(localStorage.getItem("userOrcid"));
+});
+
 function getVarValue(widget, variable) {
 	if (widget == "Test") {
 		if (localStorage.getItem("widgetTest_message") == null || variable != "message") {
@@ -69,7 +74,7 @@ function getWidgetList() {
 			var name = "Mydata";
 		} else {
 			var name = widgetNames[i];
-		}
+		};
 		str += "[ def:widgetName <http://sp7.irea.cnr.it/rdfdata/schemas/widget" + name + ">; def:stateVars ( " + getVariablesValues(widgetNames[i]) + " ) ]";
 	};
 	return str;
@@ -85,15 +90,44 @@ function openSession(sessionName) {
 			format : "json"
 		},
 		success : function(result) {
+			localStorage.setItem("sessionName", sessionName);
 			var query_open = "PREFIX def: <http://sp7.irea.cnr.it/rdfdata/schemas#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX foaf: <http://xmlns.com/foaf/0.1/> PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> PREFIX sp7: <http://sp7.irea.cnr.it/rdfdata/project/> SELECT ?session ?sessionName ?widgetName ?varLabel ?varValue ?varType FROM <http://sp7.irea.cnr.it/rdfdata/widgetDefs> FROM <http://sp7.irea.cnr.it/rdfdata/userDefs> FROM <http://sp7.irea.cnr.it/rdfdata/sessionData> WHERE { ?session def:sessionOwner <" + localStorage.getItem("sessionOwner") + ">; def:sessionName \"" + sessionName + "\"; def:widgetList/rdf:rest*/rdf:first ?widget . ?widget def:widgetName ?widgetName; def:stateVars/rdf:rest*/rdf:first ?variable . ?variable def:varLabel ?varLabel; def:varValue ?varValue; def:varType ?varType . }";
 			var nameArr = [];
 			$.each(result.results, function(index, element) {
 				$.each(element, function(i, el) {
-					nameArr.push(el.widgetName.value);
+					var widgetName = el.widgetName.value;
+					nameArr.push(widgetName.substring(widgetName.lastIndexOf("/") + 1).substring(6));
 				});
 			});
-			console.log(nameArr);
-			localStorage.setItem("sessionName", sessionName);
+			storage.clearStoredWidgets();
+			var i = 0;
+			while (i < 6) {
+				var k = i + 1;
+				var wId = $('#draggable' + k);
+				if ( typeof nameArr[i] == 'undefined') {
+					wId.css("visibility", "hidden");
+				} else {
+					if (nameArr[i] == "Mydata") {
+						var name = "My data";
+					} else {
+						var name = nameArr[i];
+					};
+					storage.storeWidget(k, name);
+					if (i == 0) {
+						$('.head-b1 span').first().text(name);
+						$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(name));
+						utils.loadMenu(name);
+					};
+					wId.find("iframe").attr("src", widgetOptions.address(name));
+					wId.attr("name", name);
+					wId.css("background-color", widgetOptions.color(name));
+					wId.css("visibility", "visible");
+				}
+				i++;
+			};
+
+			utils.addBadgeValue();
+			utils.reloadWidgetAttivi();
 		}
 	});
 };
@@ -114,6 +148,7 @@ $('#save-session-btn').click(function() {
 		success : function(result) {
 			localStorage.setItem("sessionName", sessionName);
 			alert("session saved!");
+			loadSessionList();
 		}
 	});
 });

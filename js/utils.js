@@ -79,7 +79,7 @@ var storage = {
 		if (localStorage.getItem("sessionName") != null) {
 			var session = localStorage.getItem("sessionName");
 		} else {
-			var session = null;
+			var session = "null";
 		};
 		var widget = {
 			position : position,
@@ -88,6 +88,15 @@ var storage = {
 		};
 		var record = JSON.stringify(widget);
 		storageType().setItem(position, record);
+	},
+	clearStoredWidgets : function() {
+		var i = 0;
+		while (i < 6) {
+			i++;
+			if (localStorage.getItem(i) != null) {
+				localStorage.removeItem(i);
+			};
+		};
 	},
 	countWidgets : function() {
 		var length = 0;
@@ -124,39 +133,6 @@ var storage = {
 			};
 		};
 		return namesArr;
-	},
-	reloadWidgets : function() {
-		/* var st = storageType();
-		 for (var i = 0; i < st.length; i++) {
-		 var item = st.getItem(st.key(i));
-		 console.log(item);
-		 }; */
-
-		var i = 0;
-		while (i < this.countWidgets()) {
-			i++;
-			var widget = this.getWidgetByPosition(i);
-			var wId = $('#draggable' + i);
-			if (widget != null) {
-				var wName = widget.name;
-				if (widget.position == 1) {
-					$('.head-b1 span').first().text(wName);
-					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(wName));
-				};
-				wId.attr("name", wName);
-				wId.find("iframe").attr("src", widgetOptions.address(wName));
-				wId.css("background-color", widgetOptions.color(wName));
-				wId.css("visibility", "visible");
-				utils.reloadWidgetAttivi();
-				if (this.countWidgetsByName(wName) > 0) {
-					$('#' + wName).prev().attr("data-badge2", this.countWidgetsByName(wName) + "x");
-				} else {
-					$(this).removeAttr("data-badge2");
-				}
-			} else {
-				wId.css("visibility", "hidden");
-			};
-		};
 	}
 };
 
@@ -181,8 +157,15 @@ var utils = {
 		$('.widget-attivi a:gt(0)').remove();
 		var i = storage.countWidgets() + 1;
 		while (--i) {
-			if (storage.getWidgetByPosition(i) !== null) {
-				this.doAppend(i, storage.getWidgetByPosition(i).name);
+			var w = storage.getWidgetByPosition(i);
+			if (w !== null) {
+				if (localStorage.getItem("sessionOwner") == "notlogged") {
+					this.doAppend(i, w.name);
+				} else {
+					if (w.session == localStorage.getItem("sessionName")) {
+						this.doAppend(i, w.name);
+					}
+				}
 			}
 		}
 	},
@@ -208,7 +191,7 @@ var utils = {
 		$('#dropdown-menu').append("<li><a href='#' onclick='toggleWidget(this)'>Toggle fullscreen</a></li>");
 		$('#dropdown-menu').append("<li><a href='#' onclick='closeWidget()'>Close widget</a></li>");
 	},
-//	site_url : "http://localhost/sp7-geogate-client",
+	//site_url : "http://localhost/sp7-geogate-client",
 	site_url : "http://geogate.sp7.irea.cnr.it/client",
 	endpoint_query : "http://geogate.sp7.irea.cnr.it/fuseki/portal/query",
 	endpoint_update : "http://geogate.sp7.irea.cnr.it/fuseki/portal/update"
