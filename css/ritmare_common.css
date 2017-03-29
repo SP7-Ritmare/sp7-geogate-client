@@ -238,9 +238,18 @@ a {
 	overflow: auto;
 }
 
+#open-session-div div {
+	display: table-row;
+	line-height: 25px;
+}
+
 #open-session-div a, #open-session-div span {
-	height: 25px;
-	vertical-align: top;
+	display: table-cell;
+	cursor: pointer;
 	font-size: 0.9em;
 	color: white;
+}
+
+#open-session-div span {
+	padding-left: 50px;
 }

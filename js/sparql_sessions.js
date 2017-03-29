@@ -30,7 +30,7 @@ $("#menuopen").click(function() {
 	} else {
 		$("#open-session-div").fadeIn(150);
 		$(".wrap-icons").animate({
-			"top" : "225px"
+			"top" : "215px"
 		}, "fast", "linear");
 		$("#save-session-div").fadeOut(400);
 	}

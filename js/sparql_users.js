@@ -20,7 +20,7 @@ function loadSessionsList() {
 					$.each(element, function(i, el) {
 						if ($.inArray(el.sessionName.value, nameArr) < 0) {
 							nameArr.push(el.sessionName.value);
-							$("#open-session-div").append("<a href='#' class='open-session-a' onclick='openSession(\"" + el.sessionName.value + "\");return false;'>" + el.sessionName.value + "</a><br>");
+							$("#open-session-div").append("<div><a href='#' class='open-session-a' onclick='openSession(\"" + el.sessionName.value + "\");return false;'>" + el.sessionName.value + "</a><span class='fa fa-trash-o' title='Delete session'></span></div>");
 						}
 					});
 				} else {
