@@ -39,7 +39,6 @@ $("#menuopen").click(function() {
 $("#clearworkspace").click(function() {
 	localStorage.setItem("sessionName", "null");
 	storage.clearStoredWidgets();
-	loggedUserDef(localStorage.getItem("userOrcid"));
 	var i = 0;
 	while (i < 5) {
 		i++;
