@@ -141,32 +141,24 @@ var utils = {
 		$('.widget-attivi a:first-child').after('<a href="#" onclick="clickSwitchWidgets(' + pos + ')"><!--<span class="badge" data-badge="0">--></span><span class="awidg ' + widgetOptions.icon(str) + '" style="color:' + widgetOptions.color(str) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(str) + '">' + str + '</span></a>');
 	},
 	removeFromWidgetAttivi : function(str) {
-		if (str == "beforeAppending") {
-			$('.widget-attivi a:eq(5)').remove();
-		} else {
-			$('.widget-attivi a:eq(1)').remove();
-		}
-	},
-	appendToWidgetAttivi : function(pos, str) {
-		if ($('#widget-attivi.widget-attivi a').length > 5 || $('#widget-attivi-top.widget-attivi a').length > 5) {
-			this.removeFromWidgetAttivi("beforeAppending");
-		}
-		this.doAppend(pos, str);
+		$('.widget-attivi a:eq(1)').remove();
 	},
 	reloadWidgetAttivi : function() {
 		$('.widget-attivi a:gt(0)').remove();
 		var i = storage.countWidgets() + 1;
 		while (--i) {
-			var w = storage.getWidgetByPosition(i);
-			if (w !== null) {
-				if (localStorage.getItem("sessionOwner") == "notlogged") {
-					this.doAppend(i, w.name);
-				} else {
-					if (w.session == localStorage.getItem("sessionName")) {
+			if (i < 6) {
+				var w = storage.getWidgetByPosition(i);
+				if (w !== null) {
+					if (localStorage.getItem("sessionOwner") == "notlogged") {
 						this.doAppend(i, w.name);
+					} else {
+						if (w.session == localStorage.getItem("sessionName")) {
+							this.doAppend(i, w.name);
+						}
 					}
 				}
-			}
+			};
 		}
 	},
 	addBadgeValue : function() {
@@ -190,6 +182,26 @@ var utils = {
 		};
 		$('#dropdown-menu').append("<li><a href='#' onclick='toggleWidget(this)'>Toggle fullscreen</a></li>");
 		$('#dropdown-menu').append("<li><a href='#' onclick='closeWidget()'>Close widget</a></li>");
+	},
+	getWidgetData : function() {
+		bloccoPos = [];
+		bloccoWidth = [];
+		bloccoHeight = [];
+		ifbWidth = [];
+		ifbHeight = [];
+		data = [];
+		var i = 0;
+		while (i < 5) {
+			i++;
+			var wId = $('#draggable' + i);
+			bloccoPos.push(wId.position());
+			bloccoWidth.push(wId.width());
+			bloccoHeight.push(wId.height());
+			ifbWidth.push(wId.find('.ifb').width());
+			ifbHeight.push(wId.find('.ifb').height());
+		};
+		data = [bloccoPos, bloccoWidth, bloccoHeight, ifbWidth, ifbHeight];
+		return data;
 	},
 	//site_url : "http://localhost/sp7-geogate-client",
 	site_url : "http://geogate.sp7.irea.cnr.it/client",

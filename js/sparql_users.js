@@ -212,6 +212,7 @@ function loadData() {
 		localStorage.setItem("sessionName", "null");
 	};
 	storage.clearStoredWidgets();
+	widgetData = utils.getWidgetData();
 
 	var spinner = new Spinner().spin();
 	$("body")[0].appendChild(spinner.el);

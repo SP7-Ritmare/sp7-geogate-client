@@ -182,7 +182,7 @@ a {
 }
 
 .widget-overlay {
-	display: none;
+	display: block;
 	/* Fall-back for browsers that don't
 	 support rgba */
 	background: rgb(58, 58, 58);
