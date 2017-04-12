@@ -3,14 +3,6 @@
  * @copyright SP7 Ritmare (http://www.ritmare.it)
  */
 
-function storageType() {
-	if (localStorage.getItem("sessionOwner") == "notlogged") {
-		return sessionStorage;
-	} else {
-		return localStorage;
-	}
-};
-
 var widgetOptions = {
 	color : function(string) {
 		for (var key in sessionStorage) {
@@ -36,7 +28,7 @@ var widgetOptions = {
 	menu : function(string) {
 		var labels;
 		for (var key in sessionStorage) {
-			if (key.startsWith(string)) {
+			if (key.startsWith(string) && sessionStorage.getItem(key) != null) {
 				labels = JSON.parse(sessionStorage.getItem(key)).itemLabel;
 			}
 		}
@@ -75,6 +67,13 @@ var storage = {
 			});
 		}
 	},
+	getStorageType : function() {
+		if (localStorage.getItem("sessionOwner") == "notlogged") {
+			return sessionStorage;
+		} else {
+			return localStorage;
+		}
+	},
 	storeWidget : function(position, name) {
 		if (localStorage.getItem("sessionName") != null) {
 			var session = localStorage.getItem("sessionName");
@@ -87,7 +86,7 @@ var storage = {
 			session : session
 		};
 		var record = JSON.stringify(widget);
-		storageType().setItem(position, record);
+		this.getStorageType().setItem(position, record);
 	},
 	clearStoredWidgets : function() {
 		var i = 0;
@@ -100,7 +99,7 @@ var storage = {
 	},
 	countWidgets : function() {
 		var length = 0;
-		for (var i in storageType()) {
+		for (var i in this.getStorageType()) {
 			if ($.isNumeric(i)) {
 				length = length + 1;
 			};
@@ -109,10 +108,11 @@ var storage = {
 	},
 	countWidgetsByName : function(name) {
 		var count = 0;
-		for (var i in storageType()) {
-			val = storageType().getItem(i);
+		var storageType = this.getStorageType();
+		for (var i in storageType) {
+			val = storageType.getItem(i);
 			if (val != null && $.isNumeric(i)) {
-				if (JSON.parse(val).name == name) {
+				if (JSON.parse(val).name == name && JSON.parse(val).position < 6) {
 					count = count + 1;
 				};
 			};
@@ -120,7 +120,7 @@ var storage = {
 		return count;
 	},
 	getWidgetByPosition : function(pos) {
-		return JSON.parse(storageType().getItem(pos));
+		return JSON.parse(this.getStorageType().getItem(pos));
 	},
 	getWidgetNames : function() {
 		var namesArr = [];
@@ -140,8 +140,11 @@ var utils = {
 	doAppend : function(pos, str) {
 		$('.widget-attivi a:first-child').after('<a href="#" onclick="clickSwitchWidgets(' + pos + ')"><!--<span class="badge" data-badge="0">--></span><span class="awidg ' + widgetOptions.icon(str) + '" style="color:' + widgetOptions.color(str) + '"></span><br /><span class="icon-title" style="color:' + widgetOptions.color(str) + '">' + str + '</span></a>');
 	},
-	removeFromWidgetAttivi : function(str) {
+	removeFromWidgetAttivi : function() {
 		$('.widget-attivi a:eq(1)').remove();
+		if (storage.countWidgets() == 1) {
+			$('.widget-attivi a:eq(1)').remove();
+		};
 	},
 	reloadWidgetAttivi : function() {
 		$('.widget-attivi a:gt(0)').remove();
@@ -183,6 +186,27 @@ var utils = {
 		$('#dropdown-menu').append("<li><a href='#' onclick='toggleWidget(this)'>Toggle fullscreen</a></li>");
 		$('#dropdown-menu').append("<li><a href='#' onclick='closeWidget()'>Close widget</a></li>");
 	},
+	getScaling : function(pos) {
+		var scaling;
+		switch (pos) {
+		case 1:
+			scaling = "1, 1";
+			break;
+		case 2:
+			scaling = "0.605, 0.634";
+			break;
+		case 3:
+			scaling = "0.380, 0.380";
+			break;
+		case 4:
+			scaling = "0.198, 0.215";
+			break;
+		case 5:
+			scaling = "0.127, 0.121";
+			break;
+		}
+		return scaling;
+	},
 	getWidgetData : function() {
 		bloccoPos = [];
 		bloccoWidth = [];
@@ -202,6 +226,17 @@ var utils = {
 		};
 		data = [bloccoPos, bloccoWidth, bloccoHeight, ifbWidth, ifbHeight];
 		return data;
+	},
+	getSpinner : function() {
+		var spinner = new Spinner().spin();
+		$('body').append('<div id="spinner_modal" />');
+		$("#spinner_modal")[0].appendChild(spinner.el);
+		$('iframe').on("load", function() {
+			setTimeout(function() {
+				$("#spinner_modal").remove();
+				spinner.stop();
+			}, 1000);
+		});
 	},
 	//site_url : "http://localhost/sp7-geogate-client",
 	site_url : "http://geogate.sp7.irea.cnr.it/client",

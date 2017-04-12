@@ -80,6 +80,7 @@ driver.actions().click(driver.findElement(By.css('span#Discovery'))).click(drive
 driver.sleep(250);
 driver.executeScript("arguments[0].setAttribute('style', 'display:block')", driver.findElement(By.css("#draggable2 div.content div.widget-overlay")));
 driver.findElement(By.css('#draggable2 span')).click();
+driver.sleep(250);
 driver.executeScript("arguments[0].setAttribute('style', 'display:block')", driver.findElement(By.css("#draggable3 div.content div.widget-overlay")));
 driver.findElement(By.css('#draggable3 span')).click();
 driver.findElement(By.css(".widget-attivi a:nth-child(2) span:nth-child(1)")).getAttribute("class").then(function(value) {

@@ -5,11 +5,7 @@
 
 //add a new widget by drag & drop or click
 function addWidget(clickedId) {
-	var spinner = new Spinner().spin();
-	$("body")[0].appendChild(spinner.el);
-	$('iframe').on("load", function() {
-		spinner.stop();
-	});
+	utils.getSpinner();
 
 	var i = 7;
 	while (--i) {
@@ -31,11 +27,11 @@ function addWidget(clickedId) {
 		fwId.animate(widgetData[0][j]).css("position", "absolute");
 		fwId.width(widgetData[1][j]);
 		fwId.height(widgetData[2][j]);
-		fwId.find('.ifb').width(widgetData[3][j]);
-		fwId.find('.ifb').height(widgetData[4][j]);
+		fwId.find(".ifb").width(widgetData[3][0]);
+		fwId.find(".ifb").height(widgetData[4][0]);
+		fwId.find(".ifb").css("transform", "scale(" + utils.getScaling(Number(i)) + ")");
+		fwId.find(".ifb").css("transform-origin", "0 0");
 	};
-
-	//	$('#menudx').after('<div id="draggable1" class="block blocco-1" rel="b1" name="' + clickedId + '" style="visibility: visible; background-color: rgb(88, 167, 173); left: 0px; top: 0px; position: absolute; width: 814px; height: 357px;><div class="content"><div id="bar"><div id="blocco-menu-f1"><ul id="dropdown-menu"></ul></div><div class="head-b1"><span></span><a href="#" class="menu-f1"><span></span></a><a href="#" class="forward-f1" title="forward"><span class="fa fa-chevron-right"></span></a><a href="#" class="back-f1" title="back"><span class="fa fa-chevron-left"></span></a><a href="#" class="close-f1"><span class="metro-icon glyphicon glyphicon-remove"></span></a><a href="#" class="full-f1"><span class="metro-icon glyphicon glyphicon-fullscreen"></span></a></div></div><iframe class="ifb" src="blank.html" width="100%" height="100%"></iframe><div class="widget-invisible-overlay"></div></div></div>');
 
 	storage.storeWidget(1, clickedId);
 	var fwnId = $('#draggable6');
@@ -55,8 +51,8 @@ function addWidget(clickedId) {
 	}).css("position", "absolute");
 	fwnId.width(widgetData[1][0]);
 	fwnId.height(widgetData[2][0]);
-	fwnId.find('.ifb').width(widgetData[3][0]);
-	fwnId.find('.ifb').height(widgetData[4][0]);
+	fwnId.find(".ifb").removeAttr("style");
+	fwnId.find(".ifb").css("transform", "scale(1, 1)");
 	fwnId.find("iframe").attr("src", widgetOptions.address(clickedId));
 	fwnId.attr("name", clickedId);
 	fwnId.css("background-color", widgetOptions.color(clickedId));
@@ -121,10 +117,6 @@ $('[id^=draggable]').droppable({
 				wdrId.height(widgetData[2][targetElement]);
 				wtaId.width(widgetData[1][draggedElement]);
 				wtaId.height(widgetData[2][draggedElement]);
-				wdrId.find('.ifb').width(widgetData[3][targetElement]);
-				wdrId.find('.ifb').height(widgetData[4][targetElement]);
-				wtaId.find('.ifb').width(widgetData[3][draggedElement]);
-				wtaId.find('.ifb').height(widgetData[4][draggedElement]);
 				storage.storeWidget(targetPosition, draggedName);
 				storage.storeWidget(draggedPosition, targetName);
 				if (draggedPosition == 1) {
@@ -137,6 +129,20 @@ $('[id^=draggable]').droppable({
 					$('.head-b1 span').first().text(draggedName);
 					$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(draggedName));
 					utils.loadMenu(draggedName);
+					wdrId.find(".ifb").css("transform", "scale(1, 1)");
+					wtaId.find(".ifb").width(widgetData[3][0]);
+					wtaId.find(".ifb").height(widgetData[4][0]);
+					wtaId.find(".ifb").css("transform", "scale(" + utils.getScaling(Number(draggedPosition)) + ")");
+					wtaId.find(".ifb").css("transform-origin", "0 0");
+				} else if (targetPosition != 1) {
+					wdrId.find(".ifb").width(widgetData[3][0]);
+					wdrId.find(".ifb").height(widgetData[4][0]);
+					wdrId.find(".ifb").css("transform", "scale(" + utils.getScaling(Number(targetPosition)) + ")");
+					wdrId.find(".ifb").css("transform-origin", "0 0");
+					wtaId.find(".ifb").width(widgetData[3][0]);
+					wtaId.find(".ifb").height(widgetData[4][0]);
+					wtaId.find(".ifb").css("transform", "scale(" + utils.getScaling(Number(draggedPosition)) + ")");
+					wtaId.find(".ifb").css("transform-origin", "0 0");
 				}
 				var i = 0;
 				while (i < 6) {
@@ -223,8 +229,11 @@ $('.full-f1').click(function() {
 });
 
 function closeWidget() {
-	var nextId = $('#draggable6');
-	var widgetId = $('#draggable1');
+	var nextId = $("#draggable6");
+	var widgetId = $("#draggable1");
+	if (widgetId.hasClass("fullscreen") == true) {
+		widgetId.removeClass("fullscreen");
+	};
 	widgetId.attr("id", "draggable6");
 	var nextClass = "blocco-6";
 	var widgetClass = "blocco-1";
@@ -258,11 +267,13 @@ function closeWidget() {
 			nwId.animate(widgetData[0][j]).css("position", "absolute");
 			nwId.width(widgetData[1][j]);
 			nwId.height(widgetData[2][j]);
-			nwId.find('.ifb').width(widgetData[3][j]);
-			nwId.find('.ifb').height(widgetData[4][j]);
+			nwId.find(".ifb").width(widgetData[3][0]);
+			nwId.find(".ifb").height(widgetData[4][0]);
+			nwId.find(".ifb").css("transform", "scale(" + utils.getScaling(Number(i)) + ")");
+			nwId.find(".ifb").css("transform-origin", "0 0");
 		};
 	};
-	storageType().removeItem(storage.countWidgets());
+	storage.getStorageType().removeItem(storage.countWidgets());
 
 	if (storage.getWidgetByPosition(1) != null) {
 		$('#bar').animate({
@@ -315,10 +326,11 @@ function switchWidgets(clickedPosition) {
 		cwId.height(widgetData[2][mainElement]);
 		mwId.width(widgetData[1][clickedElement]);
 		mwId.height(widgetData[2][clickedElement]);
-		cwId.find('.ifb').width(widgetData[3][mainElement]);
-		cwId.find('.ifb').height(widgetData[4][mainElement]);
-		mwId.find('.ifb').width(widgetData[3][clickedElement]);
-		mwId.find('.ifb').height(widgetData[4][clickedElement]);
+		cwId.find(".ifb").css("transform", "scale(1, 1)");
+		mwId.find(".ifb").width(widgetData[3][0]);
+		mwId.find(".ifb").height(widgetData[4][0]);
+		mwId.find(".ifb").css("transform", "scale(" + utils.getScaling(Number(clickedPosition)) + ")");
+		mwId.find(".ifb").css("transform-origin", "0 0");
 		$('#bar').prependTo("#draggable1 .content");
 		$('.head-b1 span').first().text(clickedWidgetName);
 		$('.menu-f1 span').removeClass().addClass(widgetOptions.icon(clickedWidgetName));

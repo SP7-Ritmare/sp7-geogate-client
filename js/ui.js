@@ -151,7 +151,7 @@ $(window).on('resize', function() {
 	var vh = window.innerHeight;
 	var vw = window.innerWidth;
 
-	if ( typeof widgetData_resize != 'undefined') {
+	if ( typeof widgetData_resize !== 'undefined') {
 		var b1w = (vw - 50) * 0.618181818181818;
 		var b1h = vh;
 
@@ -191,27 +191,45 @@ $(window).on('resize', function() {
 
 		$('.blocco-1').height(b1h);
 		$('.blocco-1').width(b1w);
-		$('.blocco-1 .ifb').height(b1h - 55);
-		$('.blocco-1 .ifb').width(b1w - 25);
 		$('.blocco-2').height(b2h);
 		$('.blocco-2').width(b2w);
-		$('.blocco-2 .ifb').height(b2h - 25);
-		$('.blocco-2 .ifb').width(b2w - 25);
 		$('.blocco-2').stop().animate(b2p);
 		$('.blocco-3').height(b3h);
 		$('.blocco-3').width(b3w);
-		$('.blocco-3 .ifb').height(b3h - 25);
-		$('.blocco-3 .ifb').width(b3w - 25);
 		$('.blocco-3').stop().animate(b3p);
 		$('.blocco-4').height(b4h);
 		$('.blocco-4').width(b4w);
-		$('.blocco-4 .ifb').height(b4h - 25);
-		$('.blocco-4 .ifb').width(b4w - 25);
 		$('.blocco-4').stop().animate(b4p);
 		$('.blocco-5').height(b5h);
 		$('.blocco-5').width(b5w);
-		$('.blocco-5 .ifb').height(b5h - 25);
-		$('.blocco-5 .ifb').width(b5w - 25);
 		$('.blocco-5').stop().animate(b5p);
+	}
+
+	if ( typeof widgetData !== 'undefined') {
+		var b1w = (vw - 50) * 0.618181818181818;
+		var b1h = vh;
+
+		var b2w = (vw - 50) - b1w;
+		var b2h = vh * 0.617647058823529;
+
+		var b3w = vw * 0.236363636363636;
+		var b3h = vh - b2h;
+
+		var b4h = vh * 0.235294117647059;
+		var b4w = b2w - b3w;
+
+		var b5w = vw * 0.090909090909091;
+		var b5h = b3h - b4h;
+
+		$('.blocco-1 .ifb').height(b1h - 55);
+		$('.blocco-1 .ifb').width(b1w - 25);
+		$('.blocco-2 .ifb').height(b1h - 55);
+		$('.blocco-2 .ifb').width(b1w - 25);
+		$('.blocco-3 .ifb').height(b1h - 55);
+		$('.blocco-3 .ifb').width(b1w - 25);
+		$('.blocco-4 .ifb').height(b1h - 55);
+		$('.blocco-4 .ifb').width(b1w - 25);
+		$('.blocco-5 .ifb').height(b1h - 55);
+		$('.blocco-5 .ifb').width(b1w - 25);
 	}
 });
